@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<!DOCTYPE park SYSTEM "park.dtd">
-<park name='Lincoln Natural Forest'>
-	<trail climb='medium' dist='600'>Canyon Trail</trail>
-	<trail climb='easy' dist='1200'>Pickle Madden Trail</trail>
-</park>

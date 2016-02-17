@@ -10,4 +10,11 @@
 /war/WEB-INF/lib/a*.jar
 /war/WEB-INF/lib/gwt-servlet.jar
 /LinacLegoWebApp.war
-/doc/
+/.gwt/
+/.settings/
+/src/
+/test/
+/war/
+/.classpath
+/.project
+/warbuilder.xml

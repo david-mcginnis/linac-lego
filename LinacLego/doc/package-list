@@ -1,0 +1,11 @@
+se.esss.litterbox.linaclego
+se.esss.litterbox.linaclego.matcher
+se.esss.litterbox.linaclego.structures
+se.esss.litterbox.linaclego.structures.beamlineelement
+se.esss.litterbox.linaclego.structures.cell
+se.esss.litterbox.linaclego.structures.legomonitor
+se.esss.litterbox.linaclego.structures.legoset
+se.esss.litterbox.linaclego.structures.slot
+se.esss.litterbox.linaclego.tracewinreader
+se.esss.litterbox.linaclego.tracewinreader.tracewinbledata
+se.esss.litterbox.linaclego.utilities

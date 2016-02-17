@@ -1,3 +1,7 @@
 /test2.xml
 /bin/
-/doc/
+/dist/
+/exampleFiles/
+/src/
+/.classpath
+/.project

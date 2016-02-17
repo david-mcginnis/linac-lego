@@ -1,0 +1,104 @@
+/** Add css rules here for your application. */
+
+
+/** Example rules used by the template application (remove for your app) */
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  color: #3099D7;
+  margin: 40px 0px 70px;
+  text-align: center;
+}
+.titleLabel {
+  display: block;
+	color: #3099D7;
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: center;
+}
+.csvFilePanelHeader {
+  background-color: #3099D7;
+  color: white;
+}
+.partsFilePanelHeader {
+  background-color: #008000;
+  color: white;
+}
+.csvFilePanelEvenRow {
+  background-color: #FFFFFF;
+  color: black;
+}
+.csvFilePanelOddRow {
+  background-color: #EFEFEF;
+  color: black;
+}
+.csvFilePanelSelectedRow {
+  background-color: #FFFF00;
+  color: black;
+}
+.pbsTagLabel {
+	color: #0000FF;
+	font-family:monospace;
+	font-size: 1.5em;
+}
+.pbsAttLabel {
+	color: #FF0000;
+	font-family:monospace;
+	font-size: 1.5em;
+}
+.pbsAttValue {
+	color: #9933FF;
+	font-family:monospace;
+	font-size: 1.5em;
+}
+.pbsWhiteSpace {
+	color: #FFFFFF;
+	font-family:monospace;
+	font-size: 1.5em;
+}
+.xmlTagLabel {
+	color: #0000FF;
+	font-size: 1.5em;
+}
+.xmlAttLabel {
+	color: #FF0000;
+	font-size: 1.5em;
+}
+.xmlAttValue {
+	color: #9933FF;
+	font-size: 1.5em;
+}
+.xmlWhiteSpace {
+	color: #FFFFFF;
+	font-size: 1.5em;
+}
+.pbsBackGroundOdd   {background-color:#C4E4FF; } 
+.pbsBackGroundEven  {background-color:#FCFFBA; } 
+.pbsBackGroundOdd0  {background-color:#FFB2B2; } 
+.pbsBackGroundEven0 {background-color:#FFD8D8; } 
+.pbsBackGroundOdd1  {background-color:#FFFF66; } 
+.pbsBackGroundEven1 {background-color:#FFFFB2; } 
+.pbsBackGroundOdd2  {background-color:#B2FFB2; } 
+.pbsBackGroundEven2 {background-color:#D8FFD8; } 
+.pbsBackGroundOdd3  {background-color:#B2FFFF; } 
+.pbsBackGroundEven3 {background-color:#D8FFFF; } 
+.pbsBackGroundOdd4  {background-color:#B2B2FF; } 
+.pbsBackGroundEven4 {background-color:#D8D8FF; } 
+.pbsBackGroundOdd5  {background-color:#FFB2FF; } 
+.pbsBackGroundEven5 {background-color:#FFD8FF; }
+ 
+.pbsBorderOdd   {border-color:#C4E4FF; border-style: solid; border-width: 4px;} 
+.pbsBorderEven  {border-color:#FCFFBA; border-style: solid; border-width: 4px;} 
+.pbsBorderOdd0  {border-color:#FFB2B2; border-style: solid; border-width: 4px;} 
+.pbsBorderEven0 {border-color:#FFD8D8; border-style: solid; border-width: 4px;} 
+.pbsBorderOdd1  {border-color:#FFFF66; border-style: solid; border-width: 4px;} 
+.pbsBorderEven1 {border-color:#FFFFB2; border-style: solid; border-width: 4px;} 
+.pbsBorderOdd2  {border-color:#B2FFB2; border-style: solid; border-width: 4px;} 
+.pbsBorderEven2 {border-color:#D8FFD8; border-style: solid; border-width: 4px;} 
+.pbsBorderOdd3  {border-color:#B2FFFF; border-style: solid; border-width: 4px;} 
+.pbsBorderEven3 {border-color:#D8FFFF; border-style: solid; border-width: 4px;} 
+.pbsBorderOdd4  {border-color:#B2B2FF; border-style: solid; border-width: 4px;} 
+.pbsBorderEven4 {border-color:#D8D8FF; border-style: solid; border-width: 4px;} 
+.pbsBorderOdd5  {border-color:#FFB2FF; border-style: solid; border-width: 4px;} 
+.pbsBorderEven5 {border-color:#FFD8FF; border-style: solid; border-width: 4px;} 
+

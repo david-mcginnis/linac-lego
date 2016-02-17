@@ -1,0 +1,11 @@
+<!ELEMENT fieldProfile (d+)>
+<!ATTLIST fieldProfile
+ 	title        CDATA      #REQUIRED
+ 	storedEnergy CDATA      #REQUIRED
+ 	length       CDATA      #REQUIRED
+	storedEnergyUnit CDATA  #REQUIRED
+ 	lengthUnit   CDATA      #REQUIRED
+ 	fieldUnit    CDATA      #REQUIRED >
+<!ELEMENT d (#PCDATA) >
+<!ATTLIST d
+	id CDATA #REQUIRED>

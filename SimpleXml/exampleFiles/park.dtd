@@ -1,0 +1,7 @@
+<!ELEMENT park (trail*)>
+<!ATTLIST park
+	name CDATA #IMPLIED>
+<!ELEMENT trail (#PCDATA)>
+<!ATTLIST trail
+	dist CDATA #REQUIRED
+	climb CDATA #REQUIRED>

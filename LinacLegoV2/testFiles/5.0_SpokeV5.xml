@@ -1,0 +1,1196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE linacLego SYSTEM "../dtdFiles/LinacLego.dtd">
+<linacLego title="5.0_SpokeV2">
+    <legoSets id="5.0_SpokeV2LegoSets"/>
+    <linac>
+        <linacData>
+            <d id="ekin" type="double" unit="MeV">89.0</d>
+            <d id="beamFrequency" type="double" unit="MHz">352.21</d>
+            <d id="xSurvey" type="double" unit="m">0.0</d>
+            <d id="ySurvey" type="double" unit="m">0.0</d>
+            <d id="zSurvey" type="double" unit="m">0.0</d>
+            <d id="pitchSurvey" type="double" unit="deg">0.0</d>
+            <d id="rollSurvey" type="double" unit="deg">0.0</d>
+            <d id="yawSurvey" type="double" unit="deg">0.0</d>
+            <d id="alphaX" type="double" unit="unit">0.0</d>
+            <d id="alphaY" type="double" unit="unit">0.0</d>
+            <d id="alphaZ" type="double" unit="unit">0.0</d>
+            <d id="betaX" type="double" unit="mm/pi.mrad">0.0</d>
+            <d id="betaY" type="double" unit="mm/pi.mrad">0.0</d>
+            <d id="betaZ" type="double" unit="mm/pi.mrad">0.0</d>
+            <d id="emitX" type="double" unit="pi.mm.mrad">0.0</d>
+            <d id="emitY" type="double" unit="pi.mm.mrad">0.0</d>
+            <d id="emitZ" type="double" unit="pi.mm.mrad">0.0</d>
+            <d id="beamCurrent" type="double" unit="mA">0.0</d>
+        </linacData>
+        <section id="DtlSpokeTransSect" rfHarmonic="1">
+            <cell id="DtlSpokeTransCell">
+                <slot id="DtlSpokeTransSlot">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">DTL5_Spoke_Optical</d>
+                    </beam>
+                    <beam disc="booger" id="DRF-0020" model="crappy" type="drift">
+                        <d id="l" type="double" unit="mm">211</d>
+                        <d id="r" type="double" unit="mm">20</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0030" type="marker">
+                        <d id="name" type="string" unit="unit">DTL_Spoke_Mechanical</d>
+                    </beam>
+                </slot>
+            </cell>
+        </section>
+        <section id="SPK" rfHarmonic="1">
+            <cell id="01">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">189</d>
+                        <d id="r" type="double" unit="mm">20</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">6.27303</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0040" type="beamPosition">
+                        <d id="data" type="string" unit="unit">39005 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0060" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="PBI" id="WSC-0070" type="beamSize">
+                        <d id="data" type="string" unit="unit">41101 0 0 2.082</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0080" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0090" type="beamPosition">
+                        <d id="data" type="string" unit="unit">39005 0 0 0.2</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0100" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.65192</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0110" type="drift">
+                        <d id="l" type="double" unit="mm">400</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_01</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">0.671508</d>
+                        <d id="xelmax" type="double" unit="unit">0.950174</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">17.4919</d>
+                        <d id="xelmax" type="double" unit="unit">0.876163</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_01</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="02">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">5.80773</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0040" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49001 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0060" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="PBI" id="WSC-0070" type="beamSize">
+                        <d id="data" type="string" unit="unit">41001 2.501 1.813</d>
+                    </beam>
+                    <beam disc="PBI" id="WSC-0080" type="beamSize">
+                        <d id="data" type="string" unit="unit">41901 2.501 1.813</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0100" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.74303</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0110" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_02</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">36.0463</d>
+                        <d id="xelmax" type="double" unit="unit">0.908178</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">42.1914</d>
+                        <d id="xelmax" type="double" unit="unit">0.931311</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_02</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="03">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">5.23058</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0040" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0060" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49002 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0070" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0080" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.22278</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_03</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">47.5973</d>
+                        <d id="xelmax" type="double" unit="unit">1.02375</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">57.5917</d>
+                        <d id="xelmax" type="double" unit="unit">1.01803</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_03</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="04">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">5.11078</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0040" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49003 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0060" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="PBI" id="WSC-0070" type="beamSize">
+                        <d id="data" type="string" unit="unit">41002 2.787 2.107</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0080" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0090" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.11797</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0100" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_04</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">67.924</d>
+                        <d id="xelmax" type="double" unit="unit">1.00639</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">80.9363</d>
+                        <d id="xelmax" type="double" unit="unit">0.975257</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_04</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="05">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">5.05419</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="WSC-0040" type="beamSize">
+                        <d id="data" type="string" unit="unit">41003 2.144 2.683</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0050" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0070" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49004 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0080" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0090" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.00827</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0100" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_05</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">85.389</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">92.58</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_05</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="06">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">5.11809</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0040" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49005 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0060" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0070" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0080" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.09687</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_06</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">99.357</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">105.744</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_06</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="07">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">4.97323</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0040" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0060" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49006 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0070" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0080" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-4.94183</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_07</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">111.764</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">116.655</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_07</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="08">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">4.95605</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0040" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49007 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0060" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0070" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0080" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-4.90616</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_08</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">121.197</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">125.417</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_08</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="09">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">5.23281</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0040" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0060" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49008 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0070" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0080" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.19492</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_09</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">129.338</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">132.982</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_09</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="10">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">5.30576</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0040" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49009 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0060" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0070" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0080" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.25855</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_10</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">136.371</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">139.523</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_10</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="11">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">5.43374</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0040" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0060" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49010 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0070" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0080" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.39152</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_11</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">142.456</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">144.814</d>
+                        <d id="xelmax" type="double" unit="unit">0.997051</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_11</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="12">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">5.46786</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0040" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49011 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0060" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0070" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0080" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-5.42863</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_12</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">146.953</d>
+                        <d id="xelmax" type="double" unit="unit">0.973405</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">148.853</d>
+                        <d id="xelmax" type="double" unit="unit">0.973405</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_12</d>
+                    </beam>
+                </slot>
+            </cell>
+            <cell id="13">
+                <slot id="SpokeLwu">
+                    <beam disc="VAC" id="DRF-0010" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QH-0020" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">4.50613</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0030" type="drift">
+                        <d id="l" type="double" unit="mm">475</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="COR-0040" type="thinSteering">
+                        <d id="xkick" type="double" unit="Tm">0</d>
+                        <d id="ykick" type="double" unit="Tm">0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="kickType" type="int" unit="unit">0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0050" type="drift">
+                        <d id="l" type="double" unit="mm">70.0</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="PBI" id="BPM-0060" type="beamPosition">
+                        <d id="data" type="string" unit="unit">49012 0 0 0.2</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0070" type="drift">
+                        <d id="l" type="double" unit="mm">35</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="BMD" id="QV-0080" type="quad">
+                        <d id="l" type="double" unit="mm">250</d>
+                        <d id="g" type="double" unit="T/m">-4.38973</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0090" type="drift">
+                        <d id="l" type="double" unit="mm">160</d>
+                        <d id="r" type="double" unit="mm">28.55</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                </slot>
+                <slot id="SpokeCryomodule">
+                    <beam id="MKR-0010" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_in_13</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0020" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0030" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">153.137</d>
+                        <d id="xelmax" type="double" unit="unit">0.990154</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0040" type="drift">
+                        <d id="l" type="double" unit="mm">141</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam disc="EMR" id="CAV-0050" type="fieldMap">
+                        <d id="rfpdeg" type="double" unit="deg">162.529</d>
+                        <d id="xelmax" type="double" unit="unit">0.990154</d>
+                        <d id="radiusmm" type="double" unit="mm">28</d>
+                        <d id="lengthmm" type="double" unit="mm">988</d>
+                        <d id="file" type="string" unit="unit">Spoke_W_coupler</d>
+                        <d id="scaleFactor" type="double" unit="unit">1.0</d>
+                    </beam>
+                    <beam disc="VAC" id="DRF-0060" type="drift">
+                        <d id="l" type="double" unit="mm">371.5</d>
+                        <d id="r" type="double" unit="mm">28</d>
+                        <d id="ry" type="double" unit="mm">0</d>
+                    </beam>
+                    <beam id="MKR-0070" type="marker">
+                        <d id="name" type="string" unit="unit">CRYO_SPK_out_13</d>
+                    </beam>
+                </slot>
+            </cell>
+        </section>
+    </linac>
+</linacLego>
+

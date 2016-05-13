@@ -1,0 +1,37 @@
+;Date: Fri Mar 13 13:40:14 2015
+;Project: /Users/mohammadeshraqi/Copy/CEA/GenLin/ESSS/LINACs_2015g/OptimusPlus_W_coupler_Adv.gen
+;Input energy(MeV): 89.6779,  Output energy (MeV): 1990
+;Input phase advance (deg./m): 20
+;Phase advances file used: /Users/mohammadeshraqi/Copy/CEA/GenLin/ESSS/LINACs_2015g/sigma.sig
+; ----------------------------------------------------------------------------------------------------------------------------------
+;Sect:1 - Cell/Cav: 3/  2	 Cav/Cryo: 2/  1	Cryo/Per: 1/  1	L:  4.5000 m	Bg:0.500	Btrans:0.410	Eo:  97.030 MeV
+;Sect:1p - Cell/Cav: 3/24	 Cav/Cryo: 2/ 12	Cryo/Per: 1/ 12	L: 51.1200 m	Bg:0.500	Btrans:0.580	Eo: 215.868 MeV
+;Sect:2 - Cell/Cav: 6/36	 Cav/Cryo: 4/ 9	Cryo/Per: 1/ 9	L: 76.6800 m	Bg:0.670	Btrans:0.770	Eo: 571.862 MeV
+;Sect:3 - Cell/Cav: 5/ 84	 Cav/Cryo: 4/ 21	Cryo/Per: 1/ 21	L:178.9200 m	Bg:0.860	Btrans:0.947	Eo:1996.036 MeV
+;NSection: 3  --  NCav: 146     NCryo: 43     NLattice: 43     Length: 311.22 m    Energy: 1996.04 MeV
+; ----------------------------------------------------------------------------------------------------------------------------------
+;Synch. phase(deg.) Input: -28,  Output: -26,  Max: -26,  StepMax: 3.5, Continuity: No,  Constant acceptance: NoNo
+;Cavity: Bg: 0.5,  Freq(Mhz): 352.21,  Max Power(W): 900, Eacc(MV/m): 9
+;Analytic model: No,  Cavity file: /Users/mohammadeshraqi/Copy/CEA/GenLin/ESSS/LINACs_2015g/Spoke_w_coupler.edz
+;
+;0.0013145001 is a random number used for the max strength of the steerers. Should be adjusted.
+;3.1415926535 is a random number in diagnostic elements, should be adjusted.
+;lego <linac>
+;lego <info info="section info">
+;section info2
+;lego <section id="DtlSpokeTransSect" rfHarmonic="1">
+;lego <info info="cell info">
+;cell info2
+;lego <cell id="DtlSpokeTransCell">
+;lego <info info="slot info">
+;slot info2
+;lego <slot id="DtlSpokeTransSlot">
+MARKER DTL5_Spoke_Optical
+DRIFT 211 20 0 ;lego <beam disc="booger" model="crappy">
+MARKER DTL_Spoke_Mechanical
+;lego </slot>
+;lego </cell>
+;lego </section>
+;lego </linac>
+END
+

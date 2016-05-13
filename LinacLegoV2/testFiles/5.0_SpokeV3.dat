@@ -1,0 +1,305 @@
+;lego <linac>
+;lego    <section id="DtlSpokeTransSect" rfHarmonic="1">
+;lego       <cell id="DtlSpokeTransCell">
+;lego          <slot id="DtlSpokeTransSlot">
+                  MARKER   DTL5_Spoke_Optical                                                        ;lego <beam id="MKR-0010">
+                  DRIFT   211   20   0                                                               ;lego <beam id="DRF-0020" disc="booger" model="crappy">
+                  MARKER   DTL_Spoke_Mechanical                                                      ;lego <beam id="MKR-0030">
+;lego          </slot>
+;lego       </cell>
+;lego    </section>
+;lego    <section id="SPK" rfHarmonic="1">
+;lego       <cell id="01">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   189   20   0                                                               ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   6.27303   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0030" disc="VAC">
+                  DIAG_POSITION   39005 0 0 0.2                                                      ;lego <beam id="BPM-0040" disc="PBI">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0060" disc="BMD">
+                  DIAG_SIZE   41101 0 0 2.082                                                        ;lego <beam id="WSC-0070" disc="PBI">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0080" disc="VAC">
+                  DIAG_POSITION   39005 0 0 0.2                                                      ;lego <beam id="BPM-0090" disc="PBI">
+                  QUAD   250   -5.65192   28.55                                                      ;lego <beam id="QV-0100" disc="BMD">
+                  DRIFT   400   28.55   0                                                            ;lego <beam id="DRF-0110" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_01                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   0.671508   28   0   0.950174   0   0   Spoke_W_coupler       ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   17.4919   28   0   0.876163   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_01                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="02">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   5.80773   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0030" disc="VAC">
+                  DIAG_POSITION   49001 0 0 0.2                                                      ;lego <beam id="BPM-0040" disc="PBI">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0060" disc="BMD">
+                  DIAG_SIZE   41001 2.501 1.813                                                      ;lego <beam id="WSC-0070" disc="PBI">
+                  DIAG_SIZE   41901 2.501 1.813                                                      ;lego <beam id="WSC-0080" disc="PBI">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+                  QUAD   250   -5.74303   28.55                                                      ;lego <beam id="QV-0100" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0110" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_02                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   36.0463   28   0   0.908178   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   42.1914   28   0   0.931311   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_02                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="03">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   5.23058   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0030" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0040" disc="BMD">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  DIAG_POSITION   49002 0 0 0.2                                                      ;lego <beam id="BPM-0060" disc="PBI">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0070" disc="VAC">
+                  QUAD   250   -5.22278   28.55                                                      ;lego <beam id="QV-0080" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_03                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   47.5973   28   0   1.02375   0   0   Spoke_W_coupler         ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   57.5917   28   0   1.01803   0   0   Spoke_W_coupler         ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_03                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="04">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   5.11078   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0030" disc="VAC">
+                  DIAG_POSITION   49003 0 0 0.2                                                      ;lego <beam id="BPM-0040" disc="PBI">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0060" disc="BMD">
+                  DIAG_SIZE   41002 2.787 2.107                                                      ;lego <beam id="WSC-0070" disc="PBI">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0080" disc="VAC">
+                  QUAD   250   -5.11797   28.55                                                      ;lego <beam id="QV-0090" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0100" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_04                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   67.924   28   0   1.00639   0   0   Spoke_W_coupler          ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   80.9363   28   0   0.975257   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_04                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="05">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   5.05419   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0030" disc="VAC">
+                  DIAG_SIZE   41003 2.144 2.683                                                      ;lego <beam id="WSC-0040" disc="PBI">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0050" disc="BMD">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0060" disc="VAC">
+                  DIAG_POSITION   49004 0 0 0.2                                                      ;lego <beam id="BPM-0070" disc="PBI">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0080" disc="VAC">
+                  QUAD   250   -5.00827   28.55                                                      ;lego <beam id="QV-0090" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0100" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_05                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   85.389   28   0   0.997051   0   0   Spoke_W_coupler         ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   92.58   28   0   0.997051   0   0   Spoke_W_coupler          ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_05                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="06">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   5.11809   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0030" disc="VAC">
+                  DIAG_POSITION   49005 0 0 0.2                                                      ;lego <beam id="BPM-0040" disc="PBI">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0060" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0070" disc="VAC">
+                  QUAD   250   -5.09687   28.55                                                      ;lego <beam id="QV-0080" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_06                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   99.357   28   0   0.997051   0   0   Spoke_W_coupler         ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   105.744   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_06                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="07">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   4.97323   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0030" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0040" disc="BMD">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  DIAG_POSITION   49006 0 0 0.2                                                      ;lego <beam id="BPM-0060" disc="PBI">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0070" disc="VAC">
+                  QUAD   250   -4.94183   28.55                                                      ;lego <beam id="QV-0080" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_07                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   111.764   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   116.655   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_07                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="08">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   4.95605   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0030" disc="VAC">
+                  DIAG_POSITION   49007 0 0 0.2                                                      ;lego <beam id="BPM-0040" disc="PBI">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0060" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0070" disc="VAC">
+                  QUAD   250   -4.90616   28.55                                                      ;lego <beam id="QV-0080" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_08                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   121.197   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   125.417   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_08                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="09">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   5.23281   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0030" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0040" disc="BMD">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  DIAG_POSITION   49008 0 0 0.2                                                      ;lego <beam id="BPM-0060" disc="PBI">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0070" disc="VAC">
+                  QUAD   250   -5.19492   28.55                                                      ;lego <beam id="QV-0080" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_09                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   129.338   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   132.982   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_09                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="10">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   5.30576   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0030" disc="VAC">
+                  DIAG_POSITION   49009 0 0 0.2                                                      ;lego <beam id="BPM-0040" disc="PBI">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0060" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0070" disc="VAC">
+                  QUAD   250   -5.25855   28.55                                                      ;lego <beam id="QV-0080" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_10                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   136.371   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   139.523   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_10                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="11">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   5.43374   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0030" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0040" disc="BMD">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  DIAG_POSITION   49010 0 0 0.2                                                      ;lego <beam id="BPM-0060" disc="PBI">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0070" disc="VAC">
+                  QUAD   250   -5.39152   28.55                                                      ;lego <beam id="QV-0080" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_11                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   142.456   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   144.814   28   0   0.997051   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_11                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="12">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   5.46786   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0030" disc="VAC">
+                  DIAG_POSITION   49011 0 0 0.2                                                      ;lego <beam id="BPM-0040" disc="PBI">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0060" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0070" disc="VAC">
+                  QUAD   250   -5.42863   28.55                                                      ;lego <beam id="QV-0080" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_12                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   146.953   28   0   0.973405   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   148.853   28   0   0.973405   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_12                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego       <cell id="13">
+;lego          <slot id="SpokeLwu">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0010" disc="VAC">
+                  QUAD   250   4.50613   28.55                                                       ;lego <beam id="QH-0020" disc="BMD">
+                  DRIFT   475   28.55   0                                                            ;lego <beam id="DRF-0030" disc="VAC">
+                  THIN_STEERING   0   0   28.55   0                                                  ;lego <beam id="COR-0040" disc="BMD">
+                  DRIFT   70.0   28.55   0                                                           ;lego <beam id="DRF-0050" disc="VAC">
+                  DIAG_POSITION   49012 0 0 0.2                                                      ;lego <beam id="BPM-0060" disc="PBI">
+                  DRIFT   35   28.55   0                                                             ;lego <beam id="DRF-0070" disc="VAC">
+                  QUAD   250   -4.38973   28.55                                                      ;lego <beam id="QV-0080" disc="BMD">
+                  DRIFT   160   28.55   0                                                            ;lego <beam id="DRF-0090" disc="VAC">
+;lego          </slot>
+;lego          <slot id="SpokeCryomodule">
+                  MARKER   CRYO_SPK_in_13                                                            ;lego <beam id="MKR-0010">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0020" disc="VAC">
+                  FIELD_MAP 100   988   153.137   28   0   0.990154   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0030" disc="EMR">
+                  DRIFT   141   28   0                                                               ;lego <beam id="DRF-0040" disc="VAC">
+                  FIELD_MAP 100   988   162.529   28   0   0.990154   0   0   Spoke_W_coupler        ;lego <beam id="CAV-0050" disc="EMR">
+                  DRIFT   371.5   28   0                                                             ;lego <beam id="DRF-0060" disc="VAC">
+                  MARKER   CRYO_SPK_out_13                                                           ;lego <beam id="MKR-0070">
+;lego          </slot>
+;lego       </cell>
+;lego    </section>
+;lego </linac>

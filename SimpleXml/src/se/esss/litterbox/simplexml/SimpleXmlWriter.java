@@ -139,41 +139,34 @@ public class SimpleXmlWriter
 		}
 	}
 	public SimpleXmlDoc getSimpleXmlDoc() {return simpleXmlDoc;}
-	public static void main(String[] args) 
+	public static void main(String[] args) throws SimpleXmlException 
 	{
 		SimpleXmlWriter xw;
-		try 
-		{
-			xw = new SimpleXmlWriter("BigTag", "park.dtd");
+		xw = new SimpleXmlWriter("BigTag", "park.dtd");
+		xw.setAttribute("att1", "10.0");
+		xw.openXmlTag("SmallTagX");
+			xw.openXmlTag("TinyTag");
+				xw.setAttribute("ctt1", "1.0");
+					xw.openXmlTag("TinyTinyTag");
+						xw.setAttribute("dtt1", "2.0");
+					xw.closeXmlTag("TinyTinyTag");
+			xw.closeXmlTag("TinyTag");
+			xw.setAttribute("att1", "3.0");
+			xw.setAttribute("att2", "4.0");
+			xw.setAttribute("att3", "5.0");
+		xw.closeXmlTag("SmallTagX");
+		xw.openXmlTag("SmallTag");
+			xw.setAttribute("att1", "6.0");
+			xw.setAttribute("att2", "7.0");
+			xw.setAttribute("att3", "8.0");
+			xw.setAttribute("att4", "9.0");
+		xw.closeXmlTag("SmallTag");
+		xw.openXmlTag("SmallTag");
 			xw.setAttribute("att1", "10.0");
-			xw.openXmlTag("SmallTagX");
-				xw.openXmlTag("TinyTag");
-					xw.setAttribute("ctt1", "1.0");
-						xw.openXmlTag("TinyTinyTag");
-							xw.setAttribute("dtt1", "2.0");
-						xw.closeXmlTag("TinyTinyTag");
-				xw.closeXmlTag("TinyTag");
-				xw.setAttribute("att1", "3.0");
-				xw.setAttribute("att2", "4.0");
-				xw.setAttribute("att3", "5.0");
-			xw.closeXmlTag("SmallTagX");
-			xw.openXmlTag("SmallTag");
-				xw.setAttribute("att1", "6.0");
-				xw.setAttribute("att2", "7.0");
-				xw.setAttribute("att3", "8.0");
-				xw.setAttribute("att4", "9.0");
-			xw.closeXmlTag("SmallTag");
-			xw.openXmlTag("SmallTag");
-				xw.setAttribute("att1", "10.0");
-				xw.setAttribute("att2", "11.0");
-			xw.closeXmlTag("SmallTag");
-			xw.closeDocument();
-			xw.saveXmlDocument("test.xml");
-		} 
-		catch (SimpleXmlException e) 
-		{
-			e.printErrorMessage();
-		}
+			xw.setAttribute("att2", "11.0");
+		xw.closeXmlTag("SmallTag");
+		xw.closeDocument();
+		xw.saveXmlDocument("test.xml");
 	}
 
 }

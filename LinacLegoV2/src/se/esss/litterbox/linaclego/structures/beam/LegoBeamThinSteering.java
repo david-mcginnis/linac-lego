@@ -41,7 +41,7 @@ public class LegoBeamThinSteering extends LegoBeam
 		return localRotMat;
 	}
 	@Override
-	protected void addDataElements() throws LinacLegoException 
+	public void addDataElements() throws LinacLegoException 
 	{
 		addDataElement("xkick", "0.0", "double","Tm");
 		addDataElement("ykick", "0.0", "double","Tm");

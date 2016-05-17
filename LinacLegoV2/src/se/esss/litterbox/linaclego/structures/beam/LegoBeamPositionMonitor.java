@@ -33,7 +33,7 @@ public class LegoBeamPositionMonitor extends LegoBeam
 		return localRotMat;
 	}
 	@Override
-	protected void addDataElements() throws LinacLegoException 
+	public void addDataElements() throws LinacLegoException 
 	{
 		addDataElement("data", "", "string", "unit");
 	}

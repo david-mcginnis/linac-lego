@@ -11,6 +11,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import se.esss.litterbox.linaclego.app.LegoApp;
 import se.esss.litterbox.linaclego.data.LegoInfo;
 import se.esss.litterbox.linaclego.data.LegoSet;
 import se.esss.litterbox.linaclego.structures.LegoCell;
@@ -58,7 +59,9 @@ public class Lego
 	private String revComment = "none";
 	private String revDate = "01-Jan-1970";
 	private SimpleXmlDoc simpleXmlDoc = null;
+	private URL sourceParentUrl = null;
 	private ArrayList<LegoBeam> beamTypeList = new ArrayList<LegoBeam>();
+	private LegoApp legoApp = null;
 	
 	public ArrayList<LegoSlotTemplate> getLegoSlotTempateList() {return legoSlotTemplateList;}
 	public ArrayList<LegoSet> getLegoSetlList() {return legoSetlList;}
@@ -69,9 +72,12 @@ public class Lego
 	public String getRevDate() {return revDate;}
 	public SimpleXmlDoc getSimpleXmlDoc() {return simpleXmlDoc;}
 	public ArrayList<LegoBeam> getBeamTypes() {return beamTypeList;}
+	public LegoApp getLegoApp() {return legoApp;}
+	public URL getSourceParentUrl() {return sourceParentUrl;}
 	
-	public Lego(String title, String revNo, String revComment, String revDate, double ekinMeV, double beamFrequencyMHz) throws LinacLegoException
+	public Lego(String title, String revNo, String revComment, String revDate, double ekinMeV, double beamFrequencyMHz, LegoApp legoApp) throws LinacLegoException
 	{
+		this.legoApp = legoApp;
 		addBeamTypes();
 		this.title = title;
 		this.revNo = revNo;
@@ -90,12 +96,14 @@ public class Lego
 		beamTypeList.add(new LegoBeamSizeMonitor());
 	}
 	
-	public Lego(SimpleXmlDoc sxd) throws LinacLegoException
+	public Lego(SimpleXmlDoc sxd, LegoApp legoApp) throws LinacLegoException
 	{
+		this.legoApp = legoApp;
 		addBeamTypes();
 		simpleXmlDoc = sxd;
 		try 
 		{
+			sourceParentUrl = simpleXmlDoc.getXmlSourceParentUrl();
 			SimpleXmlReader legoTag = new SimpleXmlReader(sxd);
 			try {revNo = legoTag.attribute("revNo");} 
 			catch (SimpleXmlException e) {if (e.getMessage().equals("Attribute does not exist")) revNo = "0";}
@@ -126,24 +134,32 @@ public class Lego
 			throw lle;
 		}
 
-	}
-	public Lego(URL url) throws LinacLegoException, SimpleXmlException 
+		System.out.println(sourceParentUrl);
+}
+	public Lego(URL url, LegoApp legoApp) throws LinacLegoException, SimpleXmlException 
 	{
-		this(new SimpleXmlDoc(url));
+		this(new SimpleXmlDoc(url), legoApp);
 	}
-	public Lego(File file) throws MalformedURLException, LinacLegoException, SimpleXmlException
+	public Lego(File file, LegoApp legoApp) throws LinacLegoException, MalformedURLException, SimpleXmlException
 	{
-		this(file.toURI().toURL());
+		this(file.toURI().toURL(), legoApp);
 	}
-	public Lego(String filePath) throws MalformedURLException, LinacLegoException, SimpleXmlException
+	public Lego(String filePath, LegoApp legoApp) throws LinacLegoException, MalformedURLException, SimpleXmlException
 	{
-		this(new File(filePath));
+		this(new File(filePath), legoApp);
 	}
 	public void writeStatus(String statusText) 
 	{
-		System.out.println(statusText);
+		if (legoApp != null)
+		{
+			legoApp.setStatusText(statusText);
+		}
+		else
+		{
+			System.out.println(statusText);
+		}
 	}
-	public void writeXmlFile(String filePath, String dtdLink, boolean expandSlotTemplate) throws LinacLegoException
+	public void updateXmlFile(String dtdLink, boolean expandSlotTemplate) throws LinacLegoException
 	{
 		try 
 		{
@@ -161,9 +177,12 @@ public class Lego
 			xw.closeXmlTag("legoSets");
 			legoLinac.writeXml(xw, expandSlotTemplate);
 			xw.closeDocument();
-			xw.saveXmlDocument(filePath);
-		} catch (SimpleXmlException e) {throw new LinacLegoException(e);}
-		
+			simpleXmlDoc = xw.getSimpleXmlDoc();
+		} catch (SimpleXmlException e) {throw new LinacLegoException(e);}		
+	}
+	public void writeXmlFile(String filePath) throws LinacLegoException
+	{
+		try {simpleXmlDoc.saveXmlDocument(filePath);} catch (SimpleXmlException e) {throw new LinacLegoException(e);}
 	}
 	public void readLatticeFile(String fileLocationPath, String latticeType) throws LinacLegoException
 	{
@@ -172,6 +191,8 @@ public class Lego
 		ArrayList<String> fileBuffer = new ArrayList<String>();
 		try 
 		{
+			String parentPath = new File(fileLocationPath).getParent();
+			sourceParentUrl = new File(parentPath).toURI().toURL();
 			br = new BufferedReader(new FileReader(fileLocationPath));
 			String line;
 			while ((line = br.readLine()) != null) 
@@ -282,27 +303,34 @@ public class Lego
 			}
 		}
 	}
+	public void triggerUpdate(String dtdLink, boolean expandSlotTemplate) throws LinacLegoException
+	{
+		getLegoLinac().triggerUpdate();
+		updateXmlFile( dtdLink, expandSlotTemplate);
+	}
 	public static String addLeadingZeros(int counter, int stringLength)
 	{
 		String scounter = Integer.toString(counter);
 		while (scounter.length() < stringLength) scounter = "0" + scounter;
 		return scounter;
 	}
-	public static void main(String[] args) throws LinacLegoException, MalformedURLException, SimpleXmlException, FileNotFoundException 
+	public static void main(String[] args) throws LinacLegoException, MalformedURLException, SimpleXmlException 
 	{
-// 		Lego lego = new Lego("test", "revNo", "revComment", "revDate", 89.0, 352.21);
-//		lego.readLatticeFile("5.0_SpokeV2.dat", "tracewin");
+//		Lego lego = new Lego("test", "revNo", "revComment", "revDate", 89.0, 352.21, null);
+//		lego.readLatticeFile("testFiles/5.0_SpokeV2.dat", "tracewin");
+//		lego.getLegoLinac().triggerUpdate();
 // 		lego.writeXmlFile("5.0_SpokeV2.xml", "../dtdFiles/LinacLego.dtd", false);
 
-		Lego lego = new Lego("5.0_SpokeV4.xml");
-		lego.getLegoLinac().triggerUpdate();
+		Lego lego = new Lego("testFiles/5.0_SpokeV3.xml", null);
 		lego.replaceSlotsWithTemplates();
+		lego.triggerUpdate("../dtdFiles/LinacLego.dtd", false);
 /*		PrintWriter beamTablePw = new PrintWriter("5.0_SpokeV2.csv");
 		lego.getLegoLinac().printBeamTable(beamTablePw);
 		beamTablePw.close();
 		PrintWriter traceWinPw = new PrintWriter("5.0_SpokeV3.dat");
 		lego.getLegoLinac().printLatticeCommand(traceWinPw, "tracewin");
 		traceWinPw.close();
-*/		lego.writeXmlFile("5.0_SpokeV5.xml", "../dtdFiles/LinacLego.dtd", true);
+*/
+		lego.writeXmlFile("testFiles/booger.xml");
 	}
 }

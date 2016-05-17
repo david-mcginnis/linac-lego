@@ -38,7 +38,7 @@ public class LegoBeamQuad extends LegoBeam
 		return localRotMat;
 	}
 	@Override
-	protected void addDataElements() throws LinacLegoException 
+	public void addDataElements() throws LinacLegoException 
 	{
 		addDataElement("l", "0.0", "double","mm");
 		addDataElement("g", "0.0", "double","T/m");

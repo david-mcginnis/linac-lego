@@ -98,7 +98,6 @@ public class LegoSlotTemplate
 			{
 				LegoVariable lv = LegoVariable.findLegoDataById(legoVariableList, legoSlot.getLegoDataList().get(ii).getId());
 				lv.setValue(legoSlot.getLegoDataList().get(ii).getValue());
-				System.out.println(lv.getId() + " " + lv.getValue());
 			}
 		}
 		if (legoBeamTemplateList.size() > 0)

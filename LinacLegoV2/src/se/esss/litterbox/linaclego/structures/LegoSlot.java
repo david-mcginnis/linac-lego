@@ -36,6 +36,7 @@ public class LegoSlot
 	public Lego getLego() {return getLegoSection().getLego();}
 	public LegoBeam getFirstBeam() {return getLegoBeamList().get(0);}
 	public LegoBeam getLastBeam() {return getLegoBeamList().get(getLegoBeamList().size() - 1);}
+	public ArrayList<LegoInfo> getLegoInfoList() {return legoInfoList;}
 	public void setInfoList(ArrayList<LegoInfo> legoInfoList) {this.legoInfoList = legoInfoList;}
 
 	public LegoSlot(LegoCell legoCell, int slotListIndex, String id)
@@ -248,6 +249,7 @@ public class LegoSlot
 						{
 							lb = beamType.getClass().getConstructor(LegoSlot.class, int.class, String.class, String.class, String.class).newInstance(this, beamListIndex, beamId, null, null);
 						} catch (Exception e) {throw new LinacLegoException(e);}
+						lb.addDataElements();
 						lb.addLatticeData(latticeType, latticeData);
 						lb.setId(lb.getPreferredIdLabelHeader() + beamId);
 						lb.setDisc(lb.getPreferredDiscipline());

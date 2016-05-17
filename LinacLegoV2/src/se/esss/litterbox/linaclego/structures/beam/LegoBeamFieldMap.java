@@ -7,7 +7,6 @@ import se.esss.litterbox.linaclego.Lego;
 import se.esss.litterbox.linaclego.LinacLegoException;
 import se.esss.litterbox.linaclego.structures.LegoSlot;
 import se.esss.litterbox.linaclego.utilities.FieldProfileBuilder;
-import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 
 public class LegoBeamFieldMap extends LegoBeam
@@ -51,7 +50,7 @@ public class LegoBeamFieldMap extends LegoBeam
 		return localRotMat;
 	}
 	@Override
-	protected void addDataElements() throws LinacLegoException 
+	public void addDataElements() throws LinacLegoException 
 	{
 		addDataElement("rfpdeg", "0.0", "double", "deg");
 		addDataElement("xelmax", "0.0", "double", "unit");
@@ -103,8 +102,7 @@ public class LegoBeamFieldMap extends LegoBeam
 		file = getDataValue("file");
 		try 
 		{
-			URL fieldProfileBuilderUrl = new URL(getLego().getSimpleXmlDoc().getXmlSourceParentUrl() + "/" + file + ".xml");
-//			getLegoBeam().getLego().writeStatus(fieldProfileBuilderUrl.toString());
+			URL fieldProfileBuilderUrl = new URL(getLego().getSourceParentUrl() + "/" + file + ".xml");
 			fieldProfileBuilder = FieldProfileBuilder.readXmlFile(fieldProfileBuilderUrl);
 			if (!(fieldProfileBuilder.getZmax() == lengthmm )) 
 			{
@@ -114,7 +112,6 @@ public class LegoBeamFieldMap extends LegoBeam
  			updateEnergyGain();
 		} 
 		catch (MalformedURLException e) {throw new LinacLegoException(e); }
-		catch (SimpleXmlException e) {throw new LinacLegoException(e); }
 		
 	}
 	private void updateEnergyGain() throws LinacLegoException

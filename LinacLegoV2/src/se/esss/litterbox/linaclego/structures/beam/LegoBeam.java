@@ -68,7 +68,7 @@ public abstract class LegoBeam
 	
 	protected abstract double[] getLocalTranslationVector() throws LinacLegoException;
 	protected abstract double[][] getLocalRotationMatrix() throws LinacLegoException;
-	protected abstract void addDataElements() throws LinacLegoException;
+	public abstract void addDataElements() throws LinacLegoException;
 	protected abstract void calcParameters() throws LinacLegoException;
 	protected abstract String latticeCommand(String latticeType) throws LinacLegoException;
 	protected abstract double reportEnergyChange() throws LinacLegoException;

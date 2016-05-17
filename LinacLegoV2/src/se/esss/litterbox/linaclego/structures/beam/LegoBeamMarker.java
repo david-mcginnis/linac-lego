@@ -33,7 +33,7 @@ public class LegoBeamMarker extends LegoBeam
 		return localRotMat;
 	}
 	@Override
-	protected void addDataElements() throws LinacLegoException 
+	public void addDataElements() throws LinacLegoException 
 	{
 		addDataElement("name", "", "string", "unit");
 	}

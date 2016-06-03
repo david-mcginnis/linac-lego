@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
@@ -40,8 +41,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-public class SimpleXmlDoc 
+public class SimpleXmlDoc implements Serializable
 {
+	private static final long serialVersionUID = -8792621009854746872L;
 	private Document xmlDoc;
 	private  DocumentBuilderFactory docFactory;
     private DocumentBuilder documentBuilder;

@@ -7,6 +7,7 @@ import se.esss.litterbox.simplexml.SimpleXmlReader;
 
 public class LegoBeamDrift extends LegoBeam
 {
+	private static final long serialVersionUID = 7038739635711784611L;
 	private double lengthmm;
 	public LegoBeamDrift() throws LinacLegoException   
 	{
@@ -88,5 +89,9 @@ public class LegoBeamDrift extends LegoBeam
 	public String getPreferredIdLabelHeader() {return "DRF-";}
 	@Override
 	public String getPreferredDiscipline() {return "VAC";}
+	@Override
+	public double characteristicValue() {return lengthmm;}
+	@Override
+	public String characteristicValueUnit() {return "mm";}
 
 }

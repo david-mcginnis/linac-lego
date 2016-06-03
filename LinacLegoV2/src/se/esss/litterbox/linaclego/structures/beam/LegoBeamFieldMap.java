@@ -1,16 +1,18 @@
 package se.esss.litterbox.linaclego.structures.beam;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import se.esss.litterbox.linaclego.Lego;
 import se.esss.litterbox.linaclego.LinacLegoException;
 import se.esss.litterbox.linaclego.structures.LegoSlot;
-import se.esss.litterbox.linaclego.utilities.FieldProfileBuilder;
+import se.esss.litterbox.linaclego.utilities.RfFieldProfileBuilder;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 
 public class LegoBeamFieldMap extends LegoBeam
 {
+	private static final long serialVersionUID = -507594913033285726L;
 	private double rfpdeg;
 	private double xelmax;
 	@SuppressWarnings("unused")
@@ -19,7 +21,7 @@ public class LegoBeamFieldMap extends LegoBeam
 	private String file;
 	private double scaleFactor;
 
-	private FieldProfileBuilder fieldProfileBuilder = null;
+	private RfFieldProfileBuilder fieldProfileBuilder = null;
 	private double[] phiZprofile;
 	private double phisdeg = -361.0;
 	private double energyGain = 0.0;
@@ -74,6 +76,8 @@ public class LegoBeamFieldMap extends LegoBeam
 			latticeCommand = latticeCommand + Lego.space + "0";
 			latticeCommand = latticeCommand + Lego.space + "0";
 			latticeCommand = latticeCommand + Lego.space + getDataValue("file").split("\\.")[0];
+			String traceWinFieldProfilePath = getlatticeFileOutputLocation().getParent() + Lego.delim + getDataValue("file").split("\\.")[0] + ".edz";
+			fieldProfileBuilder.writeTraceWinFile(new File(traceWinFieldProfilePath));
 		}
 		return latticeCommand;
 	}
@@ -100,18 +104,23 @@ public class LegoBeamFieldMap extends LegoBeam
 		lengthmm = Double.parseDouble(getDataValue("lengthmm"));
 		scaleFactor = Double.parseDouble(getDataValue("scaleFactor"));
 		file = getDataValue("file");
-		try 
+		fieldProfileBuilder = RfFieldProfileBuilder.getFieldProfileBuilderFromList(getLegoLinac().getRfFieldProfileBuilderList(), file);
+		if (fieldProfileBuilder == null)
 		{
-			URL fieldProfileBuilderUrl = new URL(getLego().getSourceParentUrl() + "/" + file + ".xml");
-			fieldProfileBuilder = FieldProfileBuilder.readXmlFile(fieldProfileBuilderUrl);
-			if (!(fieldProfileBuilder.getZmax() == lengthmm )) 
+			try 
 			{
-				throw new LinacLegoException("Length does not match field profile Length");
-			}
-			phiZprofile = new double[fieldProfileBuilder.getNpts()];
- 			updateEnergyGain();
-		} 
-		catch (MalformedURLException e) {throw new LinacLegoException(e); }
+				URL fieldProfileBuilderUrl = new URL(getLego().getSourceParentUrl() + "/" + file + ".xml");
+				fieldProfileBuilder = new RfFieldProfileBuilder(fieldProfileBuilderUrl);
+				getLegoLinac().getRfFieldProfileBuilderList().add(fieldProfileBuilder);
+			} 
+			catch (MalformedURLException e) {throw new LinacLegoException(e); }
+		}
+		if (!(fieldProfileBuilder.getZmax() == lengthmm )) 
+		{
+			throw new LinacLegoException("Length does not match field profile Length");
+		}
+		phiZprofile = new double[fieldProfileBuilder.getNpts()];
+		updateEnergyGain();
 		
 	}
 	private void updateEnergyGain() throws LinacLegoException
@@ -163,5 +172,9 @@ public class LegoBeamFieldMap extends LegoBeam
 	public String getPreferredIdLabelHeader() {return "CAV-";}
 	@Override
 	public String getPreferredDiscipline() {return "EMR";}
+	@Override
+	public double characteristicValue() {return xelmax;}
+	@Override
+	public String characteristicValueUnit() {return "field ratio";}
 
 }

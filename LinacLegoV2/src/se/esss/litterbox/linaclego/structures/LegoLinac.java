@@ -1,23 +1,31 @@
 package se.esss.litterbox.linaclego.structures;
 
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import se.esss.litterbox.linaclego.Lego;
 import se.esss.litterbox.linaclego.LinacLegoException;
 import se.esss.litterbox.linaclego.data.LegoData;
 import se.esss.litterbox.linaclego.data.LegoInfo;
+import se.esss.litterbox.linaclego.data.LegoLatticeFileComment;
+import se.esss.litterbox.linaclego.data.LegoModel;
 import se.esss.litterbox.linaclego.structures.beam.LegoBeam;
-import se.esss.litterbox.linaclego.utilities.LegoLatticeFileComment;
+import se.esss.litterbox.linaclego.utilities.RfFieldProfileBuilder;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 import se.esss.litterbox.simplexml.SimpleXmlWriter;
 
-public class LegoLinac 
+public class LegoLinac  implements Serializable
 {
+	private static final long serialVersionUID = -3906241693712370506L;
 	private ArrayList<LegoData> legoDataList = new ArrayList<LegoData>();
 	private ArrayList<LegoSection> legoSectionList = new ArrayList<LegoSection>();
 	private ArrayList<LegoInfo> legoInfoList = new ArrayList<LegoInfo>();
+	private ArrayList<LegoModel> legoSlotModelList = new ArrayList<LegoModel>();
+	private ArrayList<LegoModel> legoBeamModelList = new ArrayList<LegoModel>();
+	private ArrayList<RfFieldProfileBuilder> rfFieldProfileBuilderList = new ArrayList<RfFieldProfileBuilder>();
 	private Lego lego = null;
 	private double[][] eulerMatrix   = {{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}};
 	private double[] transVec   = {0.0, 0.0, 0.0}; 
@@ -25,6 +33,9 @@ public class LegoLinac
 	public ArrayList<LegoData> getLegoDataList() {return legoDataList;}
 	public ArrayList<LegoSection> getLegoSectionList() {return legoSectionList;}
 	public ArrayList<LegoInfo> getLegoInfoList() {return legoInfoList;}
+	public ArrayList<LegoModel> getLegoSlotModelList() {return legoSlotModelList;}
+	public ArrayList<LegoModel> getLegoBeamModelList() {return legoBeamModelList;}
+	public ArrayList<RfFieldProfileBuilder> getRfFieldProfileBuilderList() {return rfFieldProfileBuilderList;}
 	public LegoSection getFirstSection() {return getLegoSectionList().get(0);}
 	public LegoSection getLastSection() {return getLegoSectionList().get(getLegoSectionList().size() - 1);}
 	public Lego getLego() {return lego;}
@@ -184,7 +195,9 @@ public class LegoLinac
 						LegoBeam legoBeam = legoSlot.getLegoBeamList().get(ibeam);
 						getLego().writeStatus("                    Updating beam " + legoBeam.getId());
 						legoBeam.triggerUpdate();
+						LegoModel.addLegoBeamToModelList(legoBeamModelList, legoBeam);
 					}
+					LegoModel.addLegoSlotToModelList(legoSlotModelList, legoSlot);
 				}
 			}
 		}
@@ -206,26 +219,73 @@ public class LegoLinac
 		}
 		pw.println(";lego " + "" + "</linac>");
 	}
-	public void printBeamTable(PrintWriter pw) throws LinacLegoException 
+	public void printStructureTable(PrintWriter pw, String tableHeader, String tableHeaderUnits, String structureType) throws LinacLegoException 
 	{
-		pw.println(LegoBeam.BEAM_TABLE_HEADER);
-		pw.println(LegoBeam.BEAM_TABLE_HEADER_UNITS);
-		for (int isec = 0; isec < getLegoSectionList().size(); ++isec) 
+		pw.println(tableHeader);
+		pw.println(tableHeaderUnits);
+		if (structureType.equals("section") || structureType.equals("cell") || structureType.equals("slot") || structureType.equals("beam"))
 		{
-			LegoSection legoSection = getLegoSectionList().get(isec);
-			for (int icell = 0; icell < legoSection.getLegoCellList().size(); ++icell) 
+			for (int isec = 0; isec < getLegoSectionList().size(); ++isec) 
 			{
-				LegoCell legoCell = legoSection.getLegoCellList().get(icell);
-				for (int islot = 0; islot < legoCell.getLegoSlotList().size(); ++islot) 
+				LegoSection legoSection = getLegoSectionList().get(isec);
+				if (structureType.equals("section")) legoSection.printTable(pw);
+				if (structureType.equals("cell") || structureType.equals("slot") || structureType.equals("beam"))
 				{
-					LegoSlot legoSlot = legoCell.getLegoSlotList().get(islot);
-					for (int ibeam = 0; ibeam < legoSlot.getLegoBeamList().size(); ++ibeam) 
+					for (int icell = 0; icell < legoSection.getLegoCellList().size(); ++icell) 
 					{
-						LegoBeam legoBeam = legoSlot.getLegoBeamList().get(ibeam);
-						legoBeam.printBeamTable(pw);
+						LegoCell legoCell = legoSection.getLegoCellList().get(icell);
+						if (structureType.equals("cell")) legoCell.printTable(pw);
+						if (structureType.equals("slot") || structureType.equals("beam"))
+						{
+							for (int islot = 0; islot < legoCell.getLegoSlotList().size(); ++islot) 
+							{
+								LegoSlot legoSlot = legoCell.getLegoSlotList().get(islot);
+								if (structureType.equals("slot")) legoSlot.printTable(pw);
+								if (structureType.equals("beam"))
+								{
+									for (int ibeam = 0; ibeam < legoSlot.getLegoBeamList().size(); ++ibeam) 
+									{
+										LegoBeam legoBeam = legoSlot.getLegoBeamList().get(ibeam);
+										legoBeam.printTable(pw);
+									}
+								}
+							}
+						}
 					}
 				}
 			}
+		}
+	}
+	public void printPartCounts(String fileName) throws FileNotFoundException, LinacLegoException
+	{
+		PrintWriter pwSlots = new PrintWriter(fileName + "SlotParts.csv");
+		PrintWriter pwBles = new PrintWriter(fileName + "BleParts.csv");
+		pwSlots.print("type" +"," + "model");
+		pwBles.print("type" +"," + "model");
+		for (int isection = 0; isection < legoSectionList.size(); ++isection)
+		{
+			pwSlots.print("," + legoSectionList.get(isection).getId());
+			pwBles.print("," + legoSectionList.get(isection).getId());
+		}	
+		pwSlots.println(",Total");
+		pwBles.println(",Total,minValue, avgValue,maxValue,Unit");
+		for (int imodel = 0; imodel < legoSlotModelList.size(); ++imodel)
+		{
+			pwSlots.println(legoSlotModelList.get(imodel).printRowOfPartCounts());
+		}
+		for (int imodel = 0; imodel < legoBeamModelList.size(); ++imodel)
+		{
+			pwBles.println(legoBeamModelList.get(imodel).printRowOfPartCounts());
+		}
+		pwSlots.close();
+		pwBles.close();
+	}
+	public void printRfFieldBuilder(String fileDirectoryPath) throws LinacLegoException
+	{
+		for (int ii = 0; ii < rfFieldProfileBuilderList.size(); ++ii)
+		{
+			String xmlFilePath = fileDirectoryPath + Lego.delim + rfFieldProfileBuilderList.get(ii).getTitle() + ".xml";
+			rfFieldProfileBuilderList.get(ii).writeXmlFile(xmlFilePath);
 		}
 	}
 	public int readLatticeFile(int iline, ArrayList<String> fileBuffer, String latticeType) throws LinacLegoException

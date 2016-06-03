@@ -7,9 +7,8 @@ import se.esss.litterbox.simplexml.SimpleXmlReader;
 
 public class LegoBeamThinSteering extends LegoBeam
 {
-	@SuppressWarnings("unused")
+	private static final long serialVersionUID = 7164618645216179173L;
 	private double xkick;
-	@SuppressWarnings("unused")
 	private double ykick;
 	@SuppressWarnings("unused")
 	private double radius;
@@ -103,4 +102,8 @@ public class LegoBeamThinSteering extends LegoBeam
 	public String getPreferredIdLabelHeader() {return "COR-";}
 	@Override
 	public String getPreferredDiscipline() {return "BMD";}
+	@Override
+	public double characteristicValue() {return Math.sqrt(xkick * xkick + ykick * ykick);}
+	@Override
+	public String characteristicValueUnit() {return "Tm";}
 }

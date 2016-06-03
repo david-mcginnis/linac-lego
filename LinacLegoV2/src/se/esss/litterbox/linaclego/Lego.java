@@ -1,18 +1,30 @@
 package se.esss.litterbox.linaclego;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import se.esss.litterbox.linaclego.app.LegoApp;
+import se.esss.litterbox.jframeskeleton.StatusPanel;
 import se.esss.litterbox.linaclego.data.LegoInfo;
+import se.esss.litterbox.linaclego.data.LegoLatticeFileComment;
 import se.esss.litterbox.linaclego.data.LegoSet;
 import se.esss.litterbox.linaclego.structures.LegoCell;
 import se.esss.litterbox.linaclego.structures.LegoLinac;
@@ -27,16 +39,18 @@ import se.esss.litterbox.linaclego.structures.beam.LegoBeamQuad;
 import se.esss.litterbox.linaclego.structures.beam.LegoBeamSizeMonitor;
 import se.esss.litterbox.linaclego.structures.beam.LegoBeamThinSteering;
 import se.esss.litterbox.linaclego.templates.LegoSlotTemplate;
-import se.esss.litterbox.linaclego.utilities.LegoLatticeFileComment;
+import se.esss.litterbox.linaclego.utilities.Zipper;
 import se.esss.litterbox.simplexml.SimpleXmlDoc;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 import se.esss.litterbox.simplexml.SimpleXmlWriter;
 
 
-public class Lego 
+public class Lego implements Serializable
 {
+	private static final long serialVersionUID = -2662383493225970334L;
 	public static final String newline = System.getProperty("line.separator");
+	public static final String delim = System.getProperty("file.separator");
 	public static final String space = "   ";
 	public static final double eVrest = 938.272046e+06;
 	public static final double PI = Math.PI;
@@ -61,7 +75,8 @@ public class Lego
 	private SimpleXmlDoc simpleXmlDoc = null;
 	private URL sourceParentUrl = null;
 	private ArrayList<LegoBeam> beamTypeList = new ArrayList<LegoBeam>();
-	private LegoApp legoApp = null;
+	private StatusPanel statusPanel = null;
+	private File latticeFileOutputLocation = null;
 	
 	public ArrayList<LegoSlotTemplate> getLegoSlotTempateList() {return legoSlotTemplateList;}
 	public ArrayList<LegoSet> getLegoSetlList() {return legoSetlList;}
@@ -72,17 +87,18 @@ public class Lego
 	public String getRevDate() {return revDate;}
 	public SimpleXmlDoc getSimpleXmlDoc() {return simpleXmlDoc;}
 	public ArrayList<LegoBeam> getBeamTypes() {return beamTypeList;}
-	public LegoApp getLegoApp() {return legoApp;}
 	public URL getSourceParentUrl() {return sourceParentUrl;}
+	public File getlatticeFileOutputLocation() {return latticeFileOutputLocation;}
+	public void setStatusPanel(StatusPanel statusPanel) {this.statusPanel = statusPanel;}
 	
-	public Lego(String title, String revNo, String revComment, String revDate, double ekinMeV, double beamFrequencyMHz, LegoApp legoApp) throws LinacLegoException
+	public Lego(String title, String revNo, String revComment, String revDate, double ekinMeV, double beamFrequencyMHz, StatusPanel statusPanel) throws LinacLegoException
 	{
-		this.legoApp = legoApp;
 		addBeamTypes();
 		this.title = title;
 		this.revNo = revNo;
 		this.revComment = revComment;
 		this.revDate = revDate;
+		this.statusPanel = statusPanel;
 		legoLinac = new LegoLinac(this, ekinMeV, beamFrequencyMHz);
 	}
 	private void addBeamTypes() throws LinacLegoException
@@ -96,11 +112,12 @@ public class Lego
 		beamTypeList.add(new LegoBeamSizeMonitor());
 	}
 	
-	public Lego(SimpleXmlDoc sxd, LegoApp legoApp) throws LinacLegoException
+	public Lego(SimpleXmlDoc sxd, StatusPanel statusPanel) throws LinacLegoException
 	{
-		this.legoApp = legoApp;
 		addBeamTypes();
 		simpleXmlDoc = sxd;
+		this.statusPanel = statusPanel;
+
 		try 
 		{
 			sourceParentUrl = simpleXmlDoc.getXmlSourceParentUrl();
@@ -134,32 +151,31 @@ public class Lego
 			throw lle;
 		}
 
-		System.out.println(sourceParentUrl);
-}
-	public Lego(URL url, LegoApp legoApp) throws LinacLegoException, SimpleXmlException 
-	{
-		this(new SimpleXmlDoc(url), legoApp);
 	}
-	public Lego(File file, LegoApp legoApp) throws LinacLegoException, MalformedURLException, SimpleXmlException
+	public Lego(URL url, StatusPanel statusPanel) throws LinacLegoException, SimpleXmlException 
 	{
-		this(file.toURI().toURL(), legoApp);
+		this(new SimpleXmlDoc(url), statusPanel);
 	}
-	public Lego(String filePath, LegoApp legoApp) throws LinacLegoException, MalformedURLException, SimpleXmlException
+	public Lego(File file, StatusPanel statusPanel) throws LinacLegoException, MalformedURLException, SimpleXmlException
 	{
-		this(new File(filePath), legoApp);
+		this(file.toURI().toURL(), statusPanel);
+	}
+	public Lego(String filePath, StatusPanel statusPanel) throws LinacLegoException, MalformedURLException, SimpleXmlException
+	{
+		this(new File(filePath), statusPanel);
 	}
 	public void writeStatus(String statusText) 
 	{
-		if (legoApp != null)
+		if (statusPanel != null)
 		{
-			legoApp.setStatusText(statusText);
+			statusPanel.setText(statusText);
 		}
 		else
 		{
 			System.out.println(statusText);
 		}
 	}
-	public void updateXmlFile(String dtdLink, boolean expandSlotTemplate) throws LinacLegoException
+	public void updateXmlFile(String newXmlDocPath, String dtdLink, boolean expandSlotTemplate) throws LinacLegoException
 	{
 		try 
 		{
@@ -178,7 +194,8 @@ public class Lego
 			legoLinac.writeXml(xw, expandSlotTemplate);
 			xw.closeDocument();
 			simpleXmlDoc = xw.getSimpleXmlDoc();
-		} catch (SimpleXmlException e) {throw new LinacLegoException(e);}		
+			simpleXmlDoc.setXmlSourceUrl(new File(newXmlDocPath).toURI().toURL());
+		} catch (SimpleXmlException | MalformedURLException e) {throw new LinacLegoException(e);}		
 	}
 	public void writeXmlFile(String filePath) throws LinacLegoException
 	{
@@ -260,10 +277,6 @@ public class Lego
 		}
 		writeStatus("Finished reading lattice file...");
 	}
-	public void printLatticeCommand(PrintWriter pw, String latticeType) throws LinacLegoException
-	{
-		legoLinac.printLatticeCommand(pw, latticeType);
-	}
 	public void replaceSlotsWithTemplates() throws LinacLegoException
 	{
 		writeStatus("Replacing Slots With Templates");
@@ -303,16 +316,130 @@ public class Lego
 			}
 		}
 	}
-	public void triggerUpdate(String dtdLink, boolean expandSlotTemplate) throws LinacLegoException
+	public void triggerUpdate(String newXmlDocPath, String dtdLink, boolean expandSlotTemplate) throws LinacLegoException
 	{
 		getLegoLinac().triggerUpdate();
-		updateXmlFile( dtdLink, expandSlotTemplate);
+		updateXmlFile(newXmlDocPath, dtdLink, expandSlotTemplate);
 	}
 	public static String addLeadingZeros(int counter, int stringLength)
 	{
 		String scounter = Integer.toString(counter);
 		while (scounter.length() < stringLength) scounter = "0" + scounter;
 		return scounter;
+	}
+	public void writeLatticeFile(String filePath, String latticeType) throws LinacLegoException
+	{
+		try 
+		{
+			latticeFileOutputLocation = new File(filePath);
+			PrintWriter pw = new PrintWriter(filePath);
+			getLegoLinac().printLatticeCommand(pw, latticeType);
+			pw.close();
+		} catch (FileNotFoundException | LinacLegoException e) {throw new LinacLegoException(e);}
+		
+	}
+	public void createReports(String parentDirectoryPath) throws LinacLegoException
+	{
+		File reportDirectory = new File(parentDirectoryPath + delim + "linacLegoOutput");
+		if (reportDirectory.exists()) 
+		{
+			File[] fileList = reportDirectory.listFiles();
+			if (fileList.length > 0) for (int ifile = 0; ifile < fileList.length; ++ifile) fileList[ifile].delete();
+		}
+		else
+		{
+			reportDirectory.mkdir();
+		}
+		if (reportDirectory.exists()) 
+		{
+			writeStatus("Report directory set to " + parentDirectoryPath + delim + "linacLegoOutput");
+			String baseName = simpleXmlDoc.getXmlDocName().substring(0, simpleXmlDoc.getXmlDocName().lastIndexOf("."));
+			try 
+			{
+				String fileName = reportDirectory.getPath() + delim +  baseName + ".dat";
+				writeStatus("Printing " + fileName);
+				writeLatticeFile(fileName, "tracewin");
+				fileName = reportDirectory.getPath() + delim +  baseName + "BeamData.csv";
+				writeStatus("Printing " + fileName);
+				PrintWriter pw = new PrintWriter(fileName);
+				getLegoLinac().printStructureTable(pw, LegoBeam.TABLE_HEADER, LegoBeam.TABLE_HEADER_UNITS, "beam");
+				pw.close();
+				fileName = reportDirectory.getPath() + delim +  baseName + "SlotData.csv";
+				writeStatus("Printing " + fileName);
+				pw = new PrintWriter(fileName);
+				getLegoLinac().printStructureTable(pw, LegoSlot.TABLE_HEADER, LegoSlot.TABLE_HEADER_UNITS, "slot");
+				pw.close();
+				fileName = reportDirectory.getPath() + delim +  baseName + "CellData.csv";
+				writeStatus("Printing " + fileName);
+				pw = new PrintWriter(fileName);
+				getLegoLinac().printStructureTable(pw, LegoCell.TABLE_HEADER, LegoCell.TABLE_HEADER_UNITS, "cell");
+				pw.close();
+				fileName = reportDirectory.getPath() + delim +  baseName + "SectionData.csv";
+				writeStatus("Printing " + fileName);
+				pw = new PrintWriter(fileName);
+				getLegoLinac().printStructureTable(pw, LegoSection.TABLE_HEADER, LegoSection.TABLE_HEADER_UNITS, "section");
+				pw.close();
+				fileName = reportDirectory.getPath() + delim +  baseName + "Parsed.xml";
+				writeStatus("Printing " + fileName);
+				writeXmlFile(fileName);
+				fileName = reportDirectory.getPath() + delim +  baseName;
+				writeStatus("Printing Part Counts");
+				getLegoLinac().printPartCounts(fileName);
+				writeStatus("Printing RFFieldBuilder files");
+				getLegoLinac().printRfFieldBuilder(reportDirectory.getPath());
+				fileName = reportDirectory.getPath() + delim +  baseName + ".bin";
+				writeStatus("Printing Serialized Lego");
+				writeSerializedFile(fileName);
+				
+				try 
+				{
+					Zipper zipper = new Zipper(reportDirectory.getParent() + delim + "linacLego.zip");
+					zipper.addFilesInDir(reportDirectory.getPath(), "xml");
+					zipper.addFilesInDir(reportDirectory.getPath(), "csv");
+					zipper.addFilesInDir(reportDirectory.getPath(), "dat");
+					zipper.addFilesInDir(reportDirectory.getPath(), "edz");
+					zipper.addFilesInDir(reportDirectory.getPath(), "bin");
+					zipper.close();
+					writeStatus("Compressed  file  created in " + reportDirectory.getParent() + delim +  "linacLego.zip");
+				} catch (Exception e) 
+				{
+					LinacLegoException lle = new LinacLegoException(e);
+					writeStatus(lle.getRootCause());
+					throw lle;
+				}
+			} catch (FileNotFoundException e) { throw new LinacLegoException(e);}
+		}
+	}
+	public void writeSerializedFile(String filePath) throws LinacLegoException 
+	{
+		
+		try 
+		{
+			OutputStream  file = new FileOutputStream(filePath);
+		    OutputStream buffer = new BufferedOutputStream(file);
+		    ObjectOutput output = new ObjectOutputStream(buffer);
+		    output.writeObject(this);
+		    output.close();
+		    buffer.close();
+		    file.close();
+		} catch (IOException e) {throw new LinacLegoException(e);}
+		
+	}
+	public static Lego readSerializedLego(String filePath) throws LinacLegoException
+	{
+		try 
+		{
+			InputStream file = new FileInputStream(filePath);
+			InputStream buffer = new BufferedInputStream(file);
+			ObjectInput input = new ObjectInputStream (buffer);
+			Lego serLego = (Lego) input.readObject();
+			input.close();
+			buffer.close();
+			file.close();
+			serLego.setStatusPanel(null);
+			return serLego;
+		} catch (IOException | ClassNotFoundException e) {throw new LinacLegoException(e);}
+		
 	}
 	public static void main(String[] args) throws LinacLegoException, MalformedURLException, SimpleXmlException 
 	{
@@ -322,15 +449,9 @@ public class Lego
 // 		lego.writeXmlFile("5.0_SpokeV2.xml", "../dtdFiles/LinacLego.dtd", false);
 
 		Lego lego = new Lego("testFiles/5.0_SpokeV3.xml", null);
+//		Lego lego = Lego.readSerializedLego("testFiles/5.0_SpokeV3.bin");
 		lego.replaceSlotsWithTemplates();
-		lego.triggerUpdate("../dtdFiles/LinacLego.dtd", false);
-/*		PrintWriter beamTablePw = new PrintWriter("5.0_SpokeV2.csv");
-		lego.getLegoLinac().printBeamTable(beamTablePw);
-		beamTablePw.close();
-		PrintWriter traceWinPw = new PrintWriter("5.0_SpokeV3.dat");
-		lego.getLegoLinac().printLatticeCommand(traceWinPw, "tracewin");
-		traceWinPw.close();
-*/
-		lego.writeXmlFile("testFiles/booger.xml");
+		lego.triggerUpdate("testFiles/5.0_SpokeV3.xml","../dtdFiles/LinacLego.dtd", false);
+		lego.createReports("testFiles");
 	}
 }

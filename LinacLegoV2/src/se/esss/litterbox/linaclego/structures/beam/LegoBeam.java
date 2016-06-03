@@ -1,6 +1,8 @@
 package se.esss.litterbox.linaclego.structures.beam;
 
+import java.io.File;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import se.esss.litterbox.linaclego.Lego;
@@ -16,10 +18,11 @@ import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 import se.esss.litterbox.simplexml.SimpleXmlWriter;
 
-public abstract class LegoBeam 
+public abstract class LegoBeam  implements Serializable
 {
-	public static final String BEAM_TABLE_HEADER       = "Section,Cell,Slot,Beam,Type,Model,Disc,Name,eVout,v/c,Length,Xend,Yend,Zend,Xsur,Ysur,Zsur,Volts,Phase,Grad,Bend";
-	public static final String BEAM_TABLE_HEADER_UNITS = "       ,    ,    ,    ,    ,     ,    ,    ,(MeV),   , (m)  , (m), (m), (m), (m), (m), (m), MV  , deg , T/m, deg";
+	private static final long serialVersionUID = -623912672912900885L;
+	public static final String TABLE_HEADER       = "Section,Cell,Slot,Beam,Type,Model,Disc,Name,eVout,v/c,Length,Xend,Yend,Zend,Xsur,Ysur,Zsur,Volts,Phase,Grad,Bend";
+	public static final String TABLE_HEADER_UNITS = "       ,    ,    ,    ,    ,     ,    ,    ,(MeV),   , (m)  , (m), (m), (m), (m), (m), (m), MV  , deg , T/m, deg";
 
 	private ArrayList<LegoData> legoDataList = new ArrayList<LegoData>();
 	private ArrayList<LegoInfo> legoInfoList = new ArrayList<LegoInfo>();
@@ -65,6 +68,7 @@ public abstract class LegoBeam
 	public LegoLinac getLegoLinac() {return getLegoCell().getLegoLinac();}
 	public Lego getLego() {return getLegoCell().getLego();}
 	public ArrayList<LegoInfo> getLegoInfoList() {return legoInfoList;}
+	public File getlatticeFileOutputLocation() {return getLego().getlatticeFileOutputLocation();}
 	
 	protected abstract double[] getLocalTranslationVector() throws LinacLegoException;
 	protected abstract double[][] getLocalRotationMatrix() throws LinacLegoException;
@@ -80,6 +84,8 @@ public abstract class LegoBeam
 	public abstract void addLatticeData(String latticeType, String[] sdata);
 	public abstract String getPreferredIdLabelHeader();
 	public abstract String getPreferredDiscipline();
+	public abstract double characteristicValue();
+	public abstract String characteristicValueUnit();
 	
 	public LegoBeam() throws LinacLegoException
 	{
@@ -305,7 +311,7 @@ public abstract class LegoBeam
 		latticeCommand = latticeCommand + legoComment;
 		pw.println(latticeCommand);
 	}
-	public void printBeamTable(PrintWriter pw) throws LinacLegoException 
+	public void printTable(PrintWriter pw) throws LinacLegoException 
 	{
 		double[] endVec = getEndPosVec();
 		double[] surveyCoords = getLegoLinac().getSurveyCoords(endVec);

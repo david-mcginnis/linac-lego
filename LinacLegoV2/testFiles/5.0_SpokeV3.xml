@@ -2,12 +2,12 @@
 <!DOCTYPE linacLego SYSTEM "../dtdFiles/LinacLego.dtd">
 <linacLego title="5.0_SpokeV2">
     <slotTemplate id="spokeCryomodule">
-        <var id="xelmax1" type="double" unit="mm"/>
-        <var id="xelmax2" type="double" unit="mm"/>
+        <var id="xelmax1" type="double" unit="unit"/>
+        <var id="xelmax2" type="double" unit="unit"/>
         <var id="rfpdeg1" type="double" unit="deg"/>
         <var id="rfpdeg2" type="double" unit="deg"/>
-        <var id="markerIn" type="string" unit="mm"/>
-        <var id="markerOut" type="string" unit="mm"/>
+        <var id="markerIn" type="string" unit="unit"/>
+        <var id="markerOut" type="string" unit="unit"/>
         <beam id="MKR-0010" type="marker">
             <d id="name" type="string" unit="unit">#markerIn</d>
         </beam>

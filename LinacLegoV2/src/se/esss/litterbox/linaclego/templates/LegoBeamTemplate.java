@@ -1,5 +1,6 @@
 package se.esss.litterbox.linaclego.templates;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import se.esss.litterbox.linaclego.LinacLegoException;
@@ -11,8 +12,9 @@ import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 import se.esss.litterbox.simplexml.SimpleXmlWriter;
 
-public class LegoBeamTemplate 
+public class LegoBeamTemplate  implements Serializable
 {
+	private static final long serialVersionUID = -2226904536763451428L;
 	private ArrayList<LegoData> legoDataList = new ArrayList<LegoData>();
 	private String id = null;
 	private String type = null;

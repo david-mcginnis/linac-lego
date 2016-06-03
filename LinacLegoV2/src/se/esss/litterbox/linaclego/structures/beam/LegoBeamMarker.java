@@ -7,6 +7,7 @@ import se.esss.litterbox.simplexml.SimpleXmlReader;
 
 public class LegoBeamMarker extends LegoBeam 
 {
+	private static final long serialVersionUID = -913632874641094277L;
 	String name = "";
 	public LegoBeamMarker() throws LinacLegoException
 	{
@@ -81,5 +82,9 @@ public class LegoBeamMarker extends LegoBeam
 	public String getPreferredIdLabelHeader() {return "MKR-";}
 	@Override
 	public String getPreferredDiscipline() {return null;}
+	@Override
+	public double characteristicValue() {return 0.0;}
+	@Override
+	public String characteristicValueUnit() {return "";}
 
 }

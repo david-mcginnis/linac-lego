@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -16,8 +17,9 @@ import se.esss.litterbox.simplexml.SimpleXmlDoc;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 
-public class FieldProfileBuilder 
+public class RfFieldProfileBuilder  implements Serializable
 {
+	private static final long serialVersionUID = -4621367822785570283L;
 	public static final String newline = System.getProperty("line.separator");
 	public static final String space = "\t";
 	public static final DecimalFormat onePlaces = new DecimalFormat("###.#");
@@ -35,8 +37,16 @@ public class FieldProfileBuilder
 	private String lengthUnit = "mm";
 	private String storedEnergyUnit = "Joules";
 	private double storedEnergy;
-	public FieldProfileBuilder() 
+	public RfFieldProfileBuilder() 
 	{
+	}
+	public RfFieldProfileBuilder(URL xmlFileUrl) throws LinacLegoException 
+	{
+		readXmlFile(xmlFileUrl);
+	}
+	public RfFieldProfileBuilder(String xmlFilePath) throws LinacLegoException 
+	{
+		readXmlFile(xmlFilePath);
 	}
 	public void writeTraceWinFile(File traceWinFile) throws LinacLegoException
 	{
@@ -56,11 +66,10 @@ public class FieldProfileBuilder
 			throw new LinacLegoException(e);
 		}
 	}	
-	public static FieldProfileBuilder readTraceWinFieldProfile(double storedEnergy, File traceWinFile) throws LinacLegoException
+	public  static RfFieldProfileBuilder readTraceWinFieldProfile(double storedEnergy, String traceWinFilePath) throws LinacLegoException
 	{
-		FieldProfileBuilder fieldProfileBuilder = new FieldProfileBuilder();
-		fieldProfileBuilder.storedEnergy = storedEnergy;
-		String traceWinFilePath = traceWinFile.getPath();
+		RfFieldProfileBuilder fpb = new RfFieldProfileBuilder();
+		fpb.storedEnergy = storedEnergy;
 		BufferedReader br;
 		ArrayList<String> outputBuffer = new ArrayList<String>();
 		try {
@@ -74,26 +83,28 @@ public class FieldProfileBuilder
 		} 
 		catch (FileNotFoundException e) {throw new LinacLegoException(e);}
 		catch (IOException e) {throw new LinacLegoException(e);}
+		fpb.title = new File(traceWinFilePath).getName();
+		fpb.title = fpb.title.substring(0, fpb.title.lastIndexOf("."));
 		String delims = "[ ,\t]+";
-		fieldProfileBuilder.npts = Integer.parseInt(outputBuffer.get(0).split(delims)[0]);
-		fieldProfileBuilder.zmax = Double.parseDouble(outputBuffer.get(0).split(delims)[1]);
+		fpb.npts = Integer.parseInt(outputBuffer.get(0).split(delims)[0]);
+		fpb.zmax = Double.parseDouble(outputBuffer.get(0).split(delims)[1]);
 // Read scaleFactor but do not use it.
 		double twScaleFactor = Double.parseDouble(outputBuffer.get(1).split(delims)[0]);
 		if (twScaleFactor != 1.0 ) throw new LinacLegoException("edz file scale factor not equal to 1.0!");
-		fieldProfileBuilder.fieldUnit = "Volt/m";
+		fpb.fieldUnit = "Volt/m";
 // Convert zmax from meters to mm
-		fieldProfileBuilder.zmax  = fieldProfileBuilder.zmax * 1000;
-		fieldProfileBuilder.fieldProfile = new double[fieldProfileBuilder.npts + 1];
-		for (int ii = 0; ii <= fieldProfileBuilder.npts; ++ii)
+		fpb.zmax  = fpb.zmax * 1000;
+		fpb.fieldProfile = new double[fpb.npts + 1];
+		for (int ii = 0; ii <= fpb.npts; ++ii)
 		{
-			fieldProfileBuilder.fieldProfile[ii] = Double.parseDouble(outputBuffer.get(ii + 2).split(delims)[0]);
+			fpb.fieldProfile[ii] = Double.parseDouble(outputBuffer.get(ii + 2).split(delims)[0]);
 		}
-		return fieldProfileBuilder;
+		return fpb;
 	}
-	public void writeXmlFile(File xmlFile, String title) throws LinacLegoException
+	public void writeXmlFile(String xmlFilePath) throws LinacLegoException
 	{
 		try {
-			PrintWriter pw = new PrintWriter(xmlFile);
+			PrintWriter pw = new PrintWriter(xmlFilePath);
 			pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
 			pw.println("<!DOCTYPE fieldProfile SYSTEM \"FieldProfile.dtd\" >");
 			pw.println(
@@ -117,32 +128,45 @@ public class FieldProfileBuilder
 			throw new LinacLegoException(e);
 		}
 	}
-	public static FieldProfileBuilder readXmlFile(URL xmlFileUrl) throws LinacLegoException
+	public  void readXmlFile(String xmlFilePath) throws LinacLegoException
 	{
-		FieldProfileBuilder fieldProfileBuilder = new FieldProfileBuilder();
+		File xmlFile = new File(xmlFilePath);
+		try {readXmlFile(xmlFile.toURI().toURL());} catch (MalformedURLException e) {throw new LinacLegoException(e);}
+	}
+	public  void readXmlFile(URL xmlFileUrl) throws LinacLegoException
+	{
 		try 
 		{
 			SimpleXmlDoc xdoc = new SimpleXmlDoc(xmlFileUrl);
 			SimpleXmlReader fieldProfileTag = new SimpleXmlReader(xdoc);
-			fieldProfileBuilder.zmax = Double.parseDouble(fieldProfileTag.attribute("length"));
-			fieldProfileBuilder.storedEnergy = Double.parseDouble(fieldProfileTag.attribute("storedEnergy"));
-			fieldProfileBuilder.fieldUnit = fieldProfileTag.attribute("fieldUnit");
-			fieldProfileBuilder.title = fieldProfileTag.attribute("title");
-			fieldProfileBuilder.lengthUnit = fieldProfileTag.attribute("lengthUnit");
-			fieldProfileBuilder.storedEnergyUnit = fieldProfileTag.attribute("storedEnergyUnit");
+			this.zmax = Double.parseDouble(fieldProfileTag.attribute("length"));
+			this.storedEnergy = Double.parseDouble(fieldProfileTag.attribute("storedEnergy"));
+			this.fieldUnit = fieldProfileTag.attribute("fieldUnit");
+			this.title = fieldProfileTag.attribute("title");
+			this.lengthUnit = fieldProfileTag.attribute("lengthUnit");
+			this.storedEnergyUnit = fieldProfileTag.attribute("storedEnergyUnit");
 			SimpleXmlReader dataTags = fieldProfileTag.tagsByName("d");
-			fieldProfileBuilder.npts = dataTags.numChildTags() - 1;
-			fieldProfileBuilder.fieldProfile = new double[fieldProfileBuilder.npts + 1];
-			for (int ii = 0; ii <= fieldProfileBuilder.npts; ++ii)
+			this.npts = dataTags.numChildTags() - 1;
+			this.fieldProfile = new double[this.npts + 1];
+			for (int ii = 0; ii <= this.npts; ++ii)
 			{
-				fieldProfileBuilder.fieldProfile[ii] = Double.parseDouble(dataTags.tag(ii).getCharacterData());
+				this.fieldProfile[ii] = Double.parseDouble(dataTags.tag(ii).getCharacterData());
 			}
 		} 
 		catch (SimpleXmlException e) 
 		{
 			throw new LinacLegoException(e);
 		}
-		return fieldProfileBuilder;
+	}
+	public static RfFieldProfileBuilder getFieldProfileBuilderFromList(ArrayList<RfFieldProfileBuilder> fieldProfileBuilderList, String title)
+	{
+		int icount = 0;
+		while (icount < fieldProfileBuilderList.size())
+		{
+			if (fieldProfileBuilderList.get(icount).getTitle().equals(title)) return fieldProfileBuilderList.get(icount);
+			icount = icount + 1;
+		}
+		return null;
 	}
 	public static boolean fileExists(String path) {return new File(path).exists(); }
 	public static boolean  removeFile(String path) 
@@ -160,18 +184,10 @@ public class FieldProfileBuilder
 	public String getLengthUnit() {return lengthUnit;}
 	public String getTitle() {return title;}
 	
-	public static void main(String[] args) throws LinacLegoException, MalformedURLException 
+	public static void main(String[] args) throws LinacLegoException 
 	{
-		File inputFile = new File("C:\\Users\\davidmcginnis\\Google Drive\\ESS\\linacLego\\public\\medBetaFieldMap.xml");
-		String linacLegoWebSite = "https://cba4504235597b04fef2d0b4e6294cb45a84179e.googledrive.com/host/0B3Hieedgs_7FWlpGRHBXNVA2Rmc";
-		URL inputFileUrl = new URL(linacLegoWebSite + "/public/medBetaFieldMap.xml");
-		inputFileUrl = inputFile.toURI().toURL();
-		FieldProfileBuilder fpb = FieldProfileBuilder.readXmlFile(inputFileUrl);
-		File outputTraceWinFile = new File("C:\\Users\\davidmcginnis\\Google Drive\\ESS\\linacLego\\public\\testTraceWinFieldMap.edz");
-		fpb.writeTraceWinFile(outputTraceWinFile);
-		fpb = FieldProfileBuilder.readTraceWinFieldProfile(1.0, outputTraceWinFile);
-		File outputXmlFile = new File("C:\\Users\\davidmcginnis\\Google Drive\\ESS\\linacLego\\public\\testXml.xml");
-		fpb.writeXmlFile(outputXmlFile, "testXml");
+		RfFieldProfileBuilder fpb = RfFieldProfileBuilder.readTraceWinFieldProfile(1.0, "testFiles/Spoke_W_coupler.edz");
+		fpb.writeXmlFile("testFiles/Spoke_W_coupler.xml");
 	}
 
 }

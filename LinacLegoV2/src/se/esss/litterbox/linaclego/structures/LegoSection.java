@@ -1,18 +1,24 @@
 package se.esss.litterbox.linaclego.structures;
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import se.esss.litterbox.linaclego.Lego;
 import se.esss.litterbox.linaclego.LinacLegoException;
 import se.esss.litterbox.linaclego.data.LegoInfo;
-import se.esss.litterbox.linaclego.utilities.LegoLatticeFileComment;
+import se.esss.litterbox.linaclego.data.LegoLatticeFileComment;
+import se.esss.litterbox.linaclego.structures.beam.LegoBeam;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 import se.esss.litterbox.simplexml.SimpleXmlWriter;
 
-public class LegoSection 
+public class LegoSection  implements Serializable
 {
+	private static final long serialVersionUID = 6504606673665119364L;
+	public static final String TABLE_HEADER       = "Section,eVout,v/c,Length,Xend,Yend,Zend,Xsur,Ysur,Zsur";
+	public static final String TABLE_HEADER_UNITS = "       ,(MeV),   ,  (m) , (m), (m), (m), (m), (m), (m)";
+
 	private String id = null;
 	private int rfHarmonic = 1;
 	private LegoLinac legoLinac;
@@ -180,5 +186,35 @@ public class LegoSection
 			ilineMarker = ilineMarker + 1;
 		}
 		return ilineMarker;
+	}
+	public double getLength()
+	{
+		double length = 0.0;
+		for (int icell = 0; icell < legoCellList.size(); ++ icell) length = length + legoCellList.get(icell).getLength();
+		return length;
+	}
+	public double geteVout()
+	{
+		return legoCellList.get(legoCellList.size() - 1).geteVout();
+	}
+	public double[] getEndPosVec()
+	{
+		return legoCellList.get(legoCellList.size() - 1).getEndPosVec();
+		
+	}
+	public void printTable(PrintWriter pw) throws LinacLegoException
+	{
+		double[] surveyCoords = getLegoLinac().getSurveyCoords(getEndPosVec());
+		pw.print(getId());
+		pw.print(" ," + Lego.sixPlaces.format((geteVout() / 1.0e6)));
+		pw.print(" ," + Lego.sixPlaces.format(LegoBeam.beta(geteVout())));
+		pw.print(" ," + Lego.sixPlaces.format(getLength()));
+		pw.print(" ," + Lego.sixPlaces.format(getEndPosVec()[0]));
+		pw.print(" ," + Lego.sixPlaces.format(getEndPosVec()[1]));
+		pw.print(" ," + Lego.sixPlaces.format(getEndPosVec()[2]));
+		pw.print(" ," +Lego. sixPlaces.format(surveyCoords[0]));
+		pw.print(" ," + Lego.sixPlaces.format(surveyCoords[1]));
+		pw.print(" ," + Lego.sixPlaces.format(surveyCoords[2]));
+		pw.println("");
 	}
 }

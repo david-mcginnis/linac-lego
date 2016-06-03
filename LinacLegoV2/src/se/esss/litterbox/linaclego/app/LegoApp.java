@@ -28,6 +28,7 @@ import se.esss.litterbox.linaclego.structures.LegoCell;
 import se.esss.litterbox.linaclego.structures.LegoSection;
 import se.esss.litterbox.linaclego.structures.LegoSlot;
 import se.esss.litterbox.linaclego.structures.beam.LegoBeam;
+import se.esss.litterbox.linaclego.utilities.RfFieldProfileBuilder;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 
 @SuppressWarnings("serial")
@@ -60,9 +61,9 @@ public class LegoApp extends JFrameSkeleton
 	public LegoApp() 
 	{
 		super(iconLocation, frametitle, statusBarTitle, numStatusLines, version, versionDate);
-		setStatusText(frametitle);
-		setStatusText("Version " + version);
-		setStatusText("Last Updated " + versionDate);
+		getStatusPanel().setText(frametitle);
+		getStatusPanel().setText("Version " + version);
+		getStatusPanel().setText("Last Updated " + versionDate);
 
 		try {watchService = FileSystems.getDefault().newWatchService();} catch (IOException e) {};
 		watchKeyRunnable = new LegoAppWatchKeyRunnable(this);
@@ -83,10 +84,15 @@ public class LegoApp extends JFrameSkeleton
 		if (menu.equals("File") && menuItem.equals("Open LinacLego File")) openLinacLegoFile();
 		if (menu.equals("File") && menuItem.equals("Save LinacLego File")) saveLinacLegoFile();
 		if (menu.equals("File") && menuItem.equals("Open TraceWin File")) openTraceWinFile();
+		if (menu.equals("File") && menuItem.equals("Exit")) this.quitProgram();
 		if (menu.equals("PBS Level View") && menuItem.equals("Section")) expandPbsTreeTo(1);
 		if (menu.equals("PBS Level View") && menuItem.equals("Cell")) expandPbsTreeTo(2);
 		if (menu.equals("PBS Level View") && menuItem.equals("Slot")) expandPbsTreeTo(3);
 		if (menu.equals("PBS Level View") && menuItem.equals("Beam")) expandPbsTreeTo(4);
+		if (menu.equals("Actions") && menuItem.equals("Match Slot Models")) matchSlotModels();
+		if (menu.equals("Actions") && menuItem.equals("Create Reports")) createReports();
+		if (menu.equals("Actions") && menuItem.equals("Build XML Field File")) buildRFField();
+		
 	}
 
 	@Override
@@ -146,18 +152,35 @@ public class LegoApp extends JFrameSkeleton
 	}
 	private void openLinacLegoFile()
 	{
-		String[] xmlExtensions = {"xml"};
+		String[] xmlExtensions = {"xml", "bin"};
 		
 		File xmlFile  = openFileDialog(xmlExtensions, "Open LinacLego File");
 		if (xmlFile != null)
 		{
-			openedXmlFile = new File(xmlFile.getPath());
-			suggestedFileName = xmlFile.getName();
+			String extension = xmlFile.getName().substring(xmlFile.getName().lastIndexOf(".") + 1);
+			String pathWoExt = xmlFile.getPath().substring(0, xmlFile.getPath().lastIndexOf("."));
+			if (extension.equals("xml"))
+			{
+				openedXmlFile = new File(xmlFile.getPath());
+			}
+			else
+			{
+				openedXmlFile = new File(pathWoExt + ".xml");
+			}
+			suggestedFileName = openedXmlFile.getName();
 			
 			try 
 			{
-				lego = new Lego(openedXmlFile, this);
-				loadLinacLegoFile();
+				if (extension.equals("xml"))
+				{
+					lego = new Lego(openedXmlFile, getStatusPanel());
+				}
+				else
+				{
+					lego = Lego.readSerializedLego(pathWoExt + ".bin");
+					lego.setStatusPanel(getStatusPanel());
+				}
+				loadLinacLegoFile(openedXmlFile.getPath());
 				Path path = Paths.get(this.getLastFileDirectory());	// Get the directory to be monitored
 				path.register(watchService,
 						StandardWatchEventKinds.ENTRY_CREATE,
@@ -167,27 +190,31 @@ public class LegoApp extends JFrameSkeleton
 				
 			} catch (IOException | LinacLegoException | SimpleXmlException e) 
 			{
-				messageDialog("Error: " + e.getMessage());
 				if (printStackTrace) e.printStackTrace();
+				messageDialog("Error: " + e.getMessage());
 			}
 		}
 	}
-	protected void loadLinacLegoFile()
+	protected void loadLinacLegoFile(String newXmlDocPath)
 	{
 		try 
 		{
-			lego.triggerUpdate("../dtdFiles/LinacLego.dtd", false);
-//			setTitle("LinacLego " + openedXmlFile.getPath());
+			lego.triggerUpdate(newXmlDocPath, "../dtdFiles/LinacLego.dtd", false);
+			setTitle("LinacLego " + openedXmlFile.getName());
 			xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) lego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
 			buildPbsTreeNew(lego);
 			setEnabledMenu("PBS Level View", true);
 			setEnabledMenuItem("File","Save LinacLego File",true);
+			setEnabledMenuItem("Actions","Match Slot Models",true);
+			setEnabledMenuItem("Actions","Create Reports",true);
 		} catch (LinacLegoException e) 
 		{
+			if (printStackTrace) e.printStackTrace();
 			messageDialog("Error: " + e.getMessage());
 			setEnabledMenu("PBS Level View", false);
 			setEnabledMenuItem("File","Save LinacLego File",false);
-			if (printStackTrace) e.printStackTrace();
+			setEnabledMenuItem("Actions","Match Slot Models",false);
+			setEnabledMenuItem("Actions","Create Reports",false);
 		}
 	}
     private void buildPbsTreeNew(Lego lego) throws LinacLegoException
@@ -274,18 +301,22 @@ public class LegoApp extends JFrameSkeleton
 			try 
 			{
 				suggestedFileName = xmlFile.getName();
+				getStatusPanel().setText("Saving "+ xmlFile.getPath());
 				lego.writeXmlFile(xmlFile.getPath());
+				String serPath = xmlFile.getPath().substring(0, xmlFile.getPath().lastIndexOf(".")) + ".bin";
+				getStatusPanel().setText("Saving "+ serPath);
+				lego.writeSerializedFile(serPath);
 				openedXmlFile = new File(xmlFile.getPath());
 				Path path = Paths.get(this.getLastFileDirectory());	// Get the directory to be monitored
 				path.register(watchService,
 						StandardWatchEventKinds.ENTRY_CREATE,
 						StandardWatchEventKinds.ENTRY_MODIFY,
 						StandardWatchEventKinds.ENTRY_DELETE);	// Register the directory
-				this.setTitle("LinacLego " + openedXmlFile.getPath());
+				this.setTitle("LinacLego " + openedXmlFile.getName());
 			} catch (LinacLegoException | IOException e) 
 			{
-				messageDialog("Error: " + e.getMessage());
 				if (printStackTrace) e.printStackTrace();
+				messageDialog("Error: " + e.getMessage());
 			}
 		}
 	}
@@ -297,8 +328,8 @@ public class LegoApp extends JFrameSkeleton
 		{
 			String xmlFilePath = traceWinFile.getPath().substring(0, traceWinFile.getPath().lastIndexOf(".")) + ".xml";
 			suggestedFileName = new File(xmlFilePath).getName();
+			openedXmlFile = new File(xmlFilePath);
 			
-			this.setTitle("LinacLego " + traceWinFile.getPath());
 			try 
 			{
 				double ekinMeV = 0.0;
@@ -307,20 +338,73 @@ public class LegoApp extends JFrameSkeleton
 				if (ekinMeVString != null) ekinMeV = Double.parseDouble(ekinMeVString);
 				String beamFreqMHzString = JOptionPane.showInputDialog("Enter Bunch Frequency in MHz: ");
 				if (beamFreqMHzString != null) beamFreqMHz = Double.parseDouble(beamFreqMHzString);
-		 		lego = new Lego(traceWinFile.getName(), "1.0", "revComment", new Date().toString(), ekinMeV, beamFreqMHz, this);
+		 		lego = new Lego(traceWinFile.getName(), "1.0", "revComment", new Date().toString(), ekinMeV, beamFreqMHz, getStatusPanel());
 				lego.readLatticeFile(traceWinFile.getPath(), "tracewin");
-				loadLinacLegoFile();				
+				loadLinacLegoFile(xmlFilePath);				
 			} catch (LinacLegoException e)
 			{
 				messageDialog("Error: " + e.getRootCause());
 			} 
 			catch (RuntimeException e)
 			{
-				messageDialog("Error: " + e.getMessage());
 				if (printStackTrace) e.printStackTrace();
+				messageDialog("Error: " + e.getMessage());
 			} 
 		}
 		
+	}
+	private void buildRFField()
+	{
+		String[] extensions = {"edz"};
+		File traceWinFile  = openFileDialog(extensions, "Open TraceWin FieldMap File");
+		if (traceWinFile != null)
+		{
+			double storedEnergy = 1.0;
+			String storedEnergyString = JOptionPane.showInputDialog("Enter Stored Energy (J): ");
+			if (storedEnergyString != null) storedEnergy = Double.parseDouble(storedEnergyString);
+			try {
+				RfFieldProfileBuilder fpb = RfFieldProfileBuilder.readTraceWinFieldProfile(storedEnergy, traceWinFile.getPath());
+				String xmlFieldFilePath = traceWinFile.getPath().substring(0, traceWinFile.getPath().lastIndexOf(".")) + ".xml";
+				getStatusPanel().setText("Writing RfFieldProfileBuilder " + xmlFieldFilePath);
+				fpb.writeXmlFile(xmlFieldFilePath);
+			} catch (LinacLegoException e) 
+			{
+				if (printStackTrace) e.printStackTrace();
+				messageDialog("Error: " + e.getMessage());
+			}
+		}
+		
+	}
+	private void matchSlotModels()
+	{
+		if (lego != null)
+		{
+			try 
+			{
+				lego.replaceSlotsWithTemplates();
+				loadLinacLegoFile(openedXmlFile.getPath());
+			} catch (LinacLegoException e) 
+			{
+				if (printStackTrace) e.printStackTrace();
+				messageDialog("Error: " + e.getMessage());
+			}
+		}
+	}
+	private void createReports()
+	{
+		if (lego != null)
+		{
+			File reportDirectoryParent  = chooseDirectoryDialog("Select Parent Directory...");
+			if (reportDirectoryParent != null)
+			{
+				try {lego.createReports(reportDirectoryParent.getPath());} 
+				catch (LinacLegoException e) 
+				{
+					if (printStackTrace) e.printStackTrace();
+					messageDialog("Error: " + e.getMessage());
+				}
+			} 
+		}
 	}
 	public static void main(String[] args) 
 	{

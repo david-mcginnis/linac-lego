@@ -7,6 +7,7 @@ import se.esss.litterbox.simplexml.SimpleXmlReader;
 
 public class LegoBeamQuad extends LegoBeam
 {
+	private static final long serialVersionUID = -4796356135331798183L;
 	private double lengthmm;
 	private double gradient;
 	@SuppressWarnings("unused")
@@ -105,5 +106,9 @@ public class LegoBeamQuad extends LegoBeam
 
 	@Override
 	public String getPreferredDiscipline() {return "BMD";}
+	@Override
+	public double characteristicValue() {return Math.abs(gradient);}
+	@Override
+	public String characteristicValueUnit() {return "T/m";}
 
 }

@@ -7,6 +7,7 @@ import se.esss.litterbox.simplexml.SimpleXmlReader;
 
 public class LegoBeamPositionMonitor extends LegoBeam 
 {
+	private static final long serialVersionUID = -8717805986390419636L;
 	String data = "";
 	public LegoBeamPositionMonitor() throws LinacLegoException 
 	{
@@ -83,5 +84,9 @@ public class LegoBeamPositionMonitor extends LegoBeam
 	public String getPreferredIdLabelHeader() {return "BPM-";}
 	@Override
 	public String getPreferredDiscipline() {return "PBI";}
+	@Override
+	public double characteristicValue() {return 0.0;}
+	@Override
+	public String characteristicValueUnit() {return "";}
 
 }

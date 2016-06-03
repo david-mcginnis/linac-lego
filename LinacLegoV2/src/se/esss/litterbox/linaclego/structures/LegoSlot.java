@@ -1,22 +1,27 @@
 package se.esss.litterbox.linaclego.structures;
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import se.esss.litterbox.linaclego.Lego;
 import se.esss.litterbox.linaclego.LinacLegoException;
 import se.esss.litterbox.linaclego.data.LegoData;
 import se.esss.litterbox.linaclego.data.LegoInfo;
+import se.esss.litterbox.linaclego.data.LegoLatticeFileComment;
 import se.esss.litterbox.linaclego.structures.beam.LegoBeam;
 import se.esss.litterbox.linaclego.templates.LegoBeamTemplate;
 import se.esss.litterbox.linaclego.templates.LegoSlotTemplate;
-import se.esss.litterbox.linaclego.utilities.LegoLatticeFileComment;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 import se.esss.litterbox.simplexml.SimpleXmlWriter;
 
-public class LegoSlot 
+public class LegoSlot  implements Serializable
 {
+	private static final long serialVersionUID = -2766328744732348452L;
+	public static final String TABLE_HEADER       = "Section,Cell,Slot,Model,eVout,v/c,Length,Xend,Yend,Zend,Xsur,Ysur,Zsur";
+	public static final String TABLE_HEADER_UNITS = "       ,    ,    ,     ,(MeV),   ,  (m) , (m), (m), (m), (m), (m), (m)";
+
 	private ArrayList<LegoData> legoDataList = new ArrayList<LegoData>();
 	private ArrayList<LegoBeam> legoBeamList = new ArrayList<LegoBeam>();
 	private ArrayList<LegoInfo> legoInfoList = new ArrayList<LegoInfo>();
@@ -326,6 +331,46 @@ public class LegoSlot
 				}
 			}
 		}
+	}
+	public double getLength()
+	{
+		double length = 0.0;
+		for (int ibeam = 0; ibeam < legoBeamList.size(); ++ ibeam) length = length + legoBeamList.get(ibeam).getLength();
+		return length;
+	}
+	public double geteVout()
+	{
+		return legoBeamList.get(legoBeamList.size() - 1).geteVout();
+	}
+	public double[] getEndPosVec()
+	{
+		return legoBeamList.get(legoBeamList.size() - 1).getEndPosVec();
+		
+	}
+	public void printTable(PrintWriter pw) throws LinacLegoException
+	{
+		double[] surveyCoords = getLegoLinac().getSurveyCoords(getEndPosVec());
+		pw.print(getLegoSection().getId());
+		pw.print("," + getLegoCell().getId());
+		pw.print("," + getId());
+		if (!(template == null))
+		{
+			pw.print(" ," + template);
+		}
+		else
+		{
+			pw.print(" ," + "");
+		}
+		pw.print(" ," + Lego.sixPlaces.format((geteVout() / 1.0e6)));
+		pw.print(" ," + Lego.sixPlaces.format(LegoBeam.beta(geteVout())));
+		pw.print(" ," + Lego.sixPlaces.format(getLength()));
+		pw.print(" ," + Lego.sixPlaces.format(getEndPosVec()[0]));
+		pw.print(" ," + Lego.sixPlaces.format(getEndPosVec()[1]));
+		pw.print(" ," + Lego.sixPlaces.format(getEndPosVec()[2]));
+		pw.print(" ," + Lego.sixPlaces.format(surveyCoords[0]));
+		pw.print(" ," + Lego.sixPlaces.format(surveyCoords[1]));
+		pw.print(" ," + Lego.sixPlaces.format(surveyCoords[2]));
+		pw.println("");
 	}
 				
 }

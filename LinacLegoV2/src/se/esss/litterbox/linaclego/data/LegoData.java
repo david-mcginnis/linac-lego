@@ -1,5 +1,6 @@
 package se.esss.litterbox.linaclego.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import se.esss.litterbox.linaclego.LinacLegoException;
@@ -7,8 +8,9 @@ import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 import se.esss.litterbox.simplexml.SimpleXmlWriter;
 
-public class LegoData 
+public class LegoData  implements Serializable
 {
+	private static final long serialVersionUID = 9089341391422767526L;
 	private String id = null;
 	private String value = null;
 	private String type = null;

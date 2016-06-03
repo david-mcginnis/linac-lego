@@ -1,11 +1,13 @@
-package se.esss.litterbox.linaclego.utilities;
+package se.esss.litterbox.linaclego.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import se.esss.litterbox.linaclego.LinacLegoException;
 
-public class LegoLatticeFileComment 
+public class LegoLatticeFileComment  implements Serializable
 {
+	private static final long serialVersionUID = 9096446273791360264L;
 	private String keyword = "";
 	private ArrayList<String> attributeName = new ArrayList<String>();
 	private ArrayList<String> attributeValue = new ArrayList<String>();

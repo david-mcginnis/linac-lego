@@ -18,16 +18,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import se.esss.litterbox.jframeskeleton.JFrameSkeleton;
 import se.esss.litterbox.linaclego.Lego;
 import se.esss.litterbox.linaclego.LinacLegoException;
-import se.esss.litterbox.linaclego.structures.LegoCell;
-import se.esss.litterbox.linaclego.structures.LegoSection;
-import se.esss.litterbox.linaclego.structures.LegoSlot;
-import se.esss.litterbox.linaclego.structures.beam.LegoBeam;
 import se.esss.litterbox.linaclego.utilities.RfFieldProfileBuilder;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 
@@ -48,7 +41,6 @@ public class LegoApp extends JFrameSkeleton
 	private JScrollPane xmlTreeView;
 	private JTree pbsTree;
 	private JTree xmlTree;
-	private DefaultMutableTreeNode pbsTreeNode;
 	private String suggestedFileName = "linacLego.xml";
 	private File openedXmlFile = null;
 	private WatchService watchService = null;
@@ -85,10 +77,10 @@ public class LegoApp extends JFrameSkeleton
 		if (menu.equals("File") && menuItem.equals("Save LinacLego File")) saveLinacLegoFile();
 		if (menu.equals("File") && menuItem.equals("Open TraceWin File")) openTraceWinFile();
 		if (menu.equals("File") && menuItem.equals("Exit")) this.quitProgram();
-		if (menu.equals("PBS Level View") && menuItem.equals("Section")) expandPbsTreeTo(1);
-		if (menu.equals("PBS Level View") && menuItem.equals("Cell")) expandPbsTreeTo(2);
-		if (menu.equals("PBS Level View") && menuItem.equals("Slot")) expandPbsTreeTo(3);
-		if (menu.equals("PBS Level View") && menuItem.equals("Beam")) expandPbsTreeTo(4);
+		if (menu.equals("PBS Level View") && menuItem.equals("Section")) expandPbsTreeTo(1, pbsTree);
+		if (menu.equals("PBS Level View") && menuItem.equals("Cell")) expandPbsTreeTo(2, pbsTree);
+		if (menu.equals("PBS Level View") && menuItem.equals("Slot")) expandPbsTreeTo(3, pbsTree);
+		if (menu.equals("PBS Level View") && menuItem.equals("Beam")) expandPbsTreeTo(4, pbsTree);
 		if (menu.equals("Actions") && menuItem.equals("Match Slot Models")) matchSlotModels();
 		if (menu.equals("Actions") && menuItem.equals("Create Reports")) createReports();
 		if (menu.equals("Actions") && menuItem.equals("Build XML Field File")) buildRFField();
@@ -104,8 +96,7 @@ public class LegoApp extends JFrameSkeleton
 	public void setupMainPanel() 
 	{
         xmlTree = new JTree(new DefaultMutableTreeNode("LinacLego"));
-        pbsTreeNode = new DefaultMutableTreeNode("LinacLego");
-        pbsTree = new JTree(pbsTreeNode);
+        pbsTree = new JTree(new DefaultMutableTreeNode("LinacLego"));
         
         xmlTreeView = new JScrollPane(xmlTree);
         xmlTreeView.setPreferredSize(new Dimension(800,600));
@@ -171,16 +162,18 @@ public class LegoApp extends JFrameSkeleton
 			
 			try 
 			{
+				boolean triggerLegoUpdate = true;
 				if (extension.equals("xml"))
 				{
 					lego = new Lego(openedXmlFile, getStatusPanel());
 				}
 				else
 				{
+					triggerLegoUpdate = false;
 					lego = Lego.readSerializedLego(pathWoExt + ".bin");
 					lego.setStatusPanel(getStatusPanel());
 				}
-				loadLinacLegoFile(openedXmlFile.getPath());
+				loadLinacLegoFile(openedXmlFile.getPath(), triggerLegoUpdate);
 				Path path = Paths.get(this.getLastFileDirectory());	// Get the directory to be monitored
 				path.register(watchService,
 						StandardWatchEventKinds.ENTRY_CREATE,
@@ -195,14 +188,15 @@ public class LegoApp extends JFrameSkeleton
 			}
 		}
 	}
-	protected void loadLinacLegoFile(String newXmlDocPath)
+	protected void loadLinacLegoFile(String newXmlDocPath, boolean triggerLegoUpdate)
 	{
 		try 
 		{
-			lego.triggerUpdate(newXmlDocPath, "../dtdFiles/LinacLego.dtd", false);
+			if (triggerLegoUpdate) lego.triggerUpdate(newXmlDocPath, "../dtdFiles/LinacLego.dtd", false);
 			setTitle("LinacLego " + openedXmlFile.getName());
-			xmlTree.setModel(new DefaultTreeModel(buildTreeNode((Node) lego.getSimpleXmlDoc().getXmlDoc().getDocumentElement())));
-			buildPbsTreeNew(lego);
+			xmlTree.setModel(new DefaultTreeModel(lego.getLegoXmlTreeNode()));
+			pbsTree.setModel(new DefaultTreeModel(lego.getLegoPbsTreeNode()));
+			expandPbsTreeTo(3, pbsTree);
 			setEnabledMenu("PBS Level View", true);
 			setEnabledMenuItem("File","Save LinacLego File",true);
 			setEnabledMenuItem("Actions","Match Slot Models",true);
@@ -217,76 +211,21 @@ public class LegoApp extends JFrameSkeleton
 			setEnabledMenuItem("Actions","Create Reports",false);
 		}
 	}
-    private void buildPbsTreeNew(Lego lego) throws LinacLegoException
+    private void expandPbsTreeTo(int level, JTree jtree)
     {
-		pbsTreeNode = new LegoAppDefaultMutableTreeNode(lego);
-		pbsTree.setModel(new DefaultTreeModel(pbsTreeNode));
-    	LegoAppDefaultMutableTreeNode linacNode = new LegoAppDefaultMutableTreeNode(lego.getLegoLinac());
-     	pbsTreeNode.add(linacNode);
-		for (int isec = 0; isec < lego.getLegoLinac().getLegoSectionList().size(); ++isec)
-		{
-			LegoSection section = lego.getLegoLinac().getLegoSectionList().get(isec);
-			LegoAppDefaultMutableTreeNode sectionNode = new LegoAppDefaultMutableTreeNode(section);
-			linacNode.add(sectionNode);
-			for (int icell = 0; icell < section.getLegoCellList().size(); ++icell)
-			{
-				LegoCell cell = section.getLegoCellList().get(icell);
-				LegoAppDefaultMutableTreeNode cellNode = new LegoAppDefaultMutableTreeNode(cell);
-				sectionNode.add(cellNode);
-				for (int islot = 0; islot < cell.getLegoSlotList().size(); ++islot)
-				{
-					LegoSlot slot = cell.getLegoSlotList().get(islot);
-					LegoAppDefaultMutableTreeNode slotNode = new LegoAppDefaultMutableTreeNode(slot);
-					cellNode.add(slotNode);
-					for (int ibeam = 0; ibeam < slot.getLegoBeamList().size(); ++ibeam)
-					{
-						LegoBeam beam = slot.getLegoBeamList().get(ibeam);
-						LegoAppDefaultMutableTreeNode beamNode = new LegoAppDefaultMutableTreeNode(beam);
-						slotNode.add(beamNode);
-					}
-				}
-			}
-		}
-    }
-    private LegoAppDefaultMutableTreeNodeWrapper buildTreeNode(Node root){
-    	LegoAppDefaultMutableTreeNodeWrapper dmtNode;
-
-        dmtNode = new LegoAppDefaultMutableTreeNodeWrapper(root);
-        NodeList nodeList = root.getChildNodes();
-        for (int count = 0; count < nodeList.getLength(); count++) 
-        {
-            Node tempNode = nodeList.item(count);
-            // make sure it's element node.
-            if (tempNode.getNodeType() == Node.ELEMENT_NODE) 
-            {
-                if (tempNode.hasChildNodes()) 
-                {
-                    // loop again if has child nodes
-                    dmtNode.add(buildTreeNode(tempNode));
-                }
-                else
-                {
-                	dmtNode.add(new LegoAppDefaultMutableTreeNodeWrapper(tempNode));
-                }
-            }
-        }
-        return dmtNode;
-    }
-    private void expandPbsTreeTo(int level)
-    {
-    	int row = pbsTree.getRowCount() - 1;
+    	int row = jtree.getRowCount() - 1;
     	while (row >= 0) 
     	{
-    		pbsTree.collapseRow(row);
+    		jtree.collapseRow(row);
           row--;
     	}
-    	DefaultMutableTreeNode currentNode = pbsTreeNode.getNextNode();
+    	DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) jtree.getModel().getRoot();
     	if (currentNode == null) return;
     	do 
     	{
     		if (currentNode.getLevel() == level) 
     		{
-    			pbsTree.expandPath(new TreePath(currentNode.getPath()));
+    			jtree.expandPath(new TreePath(currentNode.getPath()));
     		}
     		currentNode = currentNode.getNextNode();
     	}
@@ -340,7 +279,7 @@ public class LegoApp extends JFrameSkeleton
 				if (beamFreqMHzString != null) beamFreqMHz = Double.parseDouble(beamFreqMHzString);
 		 		lego = new Lego(traceWinFile.getName(), "1.0", "revComment", new Date().toString(), ekinMeV, beamFreqMHz, getStatusPanel());
 				lego.readLatticeFile(traceWinFile.getPath(), "tracewin");
-				loadLinacLegoFile(xmlFilePath);				
+				loadLinacLegoFile(xmlFilePath, true);				
 			} catch (LinacLegoException e)
 			{
 				messageDialog("Error: " + e.getRootCause());
@@ -382,7 +321,7 @@ public class LegoApp extends JFrameSkeleton
 			try 
 			{
 				lego.replaceSlotsWithTemplates();
-				loadLinacLegoFile(openedXmlFile.getPath());
+				loadLinacLegoFile(openedXmlFile.getPath(), true);
 			} catch (LinacLegoException e) 
 			{
 				if (printStackTrace) e.printStackTrace();

@@ -77,6 +77,8 @@ public class Lego implements Serializable
 	private ArrayList<LegoBeam> beamTypeList = new ArrayList<LegoBeam>();
 	private StatusPanel statusPanel = null;
 	private File latticeFileOutputLocation = null;
+	private LegoPbsTreeNode legoPbsTreeNode = null;
+	private LegoXmlTreeNode legoXmlTreeNode = null;
 	
 	public ArrayList<LegoSlotTemplate> getLegoSlotTempateList() {return legoSlotTemplateList;}
 	public ArrayList<LegoSet> getLegoSetlList() {return legoSetlList;}
@@ -90,6 +92,8 @@ public class Lego implements Serializable
 	public URL getSourceParentUrl() {return sourceParentUrl;}
 	public File getlatticeFileOutputLocation() {return latticeFileOutputLocation;}
 	public void setStatusPanel(StatusPanel statusPanel) {this.statusPanel = statusPanel;}
+	public LegoPbsTreeNode getLegoPbsTreeNode() {return legoPbsTreeNode;}
+	public LegoXmlTreeNode getLegoXmlTreeNode() {return legoXmlTreeNode;}
 	
 	public Lego(String title, String revNo, String revComment, String revDate, double ekinMeV, double beamFrequencyMHz, StatusPanel statusPanel) throws LinacLegoException
 	{
@@ -320,6 +324,9 @@ public class Lego implements Serializable
 	{
 		getLegoLinac().triggerUpdate();
 		updateXmlFile(newXmlDocPath, dtdLink, expandSlotTemplate);
+		legoPbsTreeNode = new LegoPbsTreeNode(this);
+		legoXmlTreeNode = LegoXmlTreeNode.buildLegoXmlTreeNodes(this);
+		
 	}
 	public static String addLeadingZeros(int counter, int stringLength)
 	{

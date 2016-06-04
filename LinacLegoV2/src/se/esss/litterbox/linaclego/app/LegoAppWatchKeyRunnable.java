@@ -31,7 +31,7 @@ public class LegoAppWatchKeyRunnable implements Runnable
 						{
 							int ichoice = legoApp.optionDialog("File Modified!", legoApp.getOpenedXmlFile().getName() + " modified! Reload?", 
 									"Reload", "Cancel",1);
-							if (ichoice == 1) legoApp.loadLinacLegoFile(legoApp.getOpenedXmlFile().getPath());
+							if (ichoice == 1) legoApp.loadLinacLegoFile(legoApp.getOpenedXmlFile().getPath(), true);
 							oldDate.setTime(newDate.getTime());
 						}
 					}

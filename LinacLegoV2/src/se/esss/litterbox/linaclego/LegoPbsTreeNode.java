@@ -1,24 +1,9 @@
-/*
-Copyright (c) 2014 European Spallation Source
-
-This file is part of LinacLego.
-LinacLego is free software: you can redistribute it and/or modify it under the terms of the 
-GNU General Public License as published by the Free Software Foundation, either version 2 
-of the License, or any newer version.
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
-without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-See the GNU General Public License for more details.
-You should have received a copy of the GNU General Public License along with this program. 
-If not, see https://www.gnu.org/licenses/gpl-2.0.txt
-*/
-package se.esss.litterbox.linaclego.app;
+package se.esss.litterbox.linaclego;
 
 import java.util.ArrayList;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import se.esss.litterbox.linaclego.Lego;
-import se.esss.litterbox.linaclego.LinacLegoException;
 import se.esss.litterbox.linaclego.data.LegoData;
 import se.esss.litterbox.linaclego.data.LegoInfo;
 import se.esss.litterbox.linaclego.structures.LegoCell;
@@ -28,17 +13,16 @@ import se.esss.litterbox.linaclego.structures.LegoSlot;
 import se.esss.litterbox.linaclego.structures.beam.LegoBeam;
 
 
-@SuppressWarnings("serial")
-public class LegoAppDefaultMutableTreeNode extends DefaultMutableTreeNode
+public class LegoPbsTreeNode extends DefaultMutableTreeNode
 {
-	
-	public LegoAppDefaultMutableTreeNode() 
+	private static final long serialVersionUID = -1947606434614685025L;
+	public LegoPbsTreeNode(String title)  
+	{
+		super(title);
+	}
+	public LegoPbsTreeNode(Lego lego) throws LinacLegoException 
 	{
 		super();
-	}
-	public LegoAppDefaultMutableTreeNode(Lego lego) 
-	{
-		this();
 		String html = "<html>";
 		html = html + "<font color=\"0000FF\">" + "linacLego" + "</font>";
 		html =  html + "<font color=\"FF0000\"> title</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + lego.getTitle() + "\"</font>";
@@ -47,10 +31,36 @@ public class LegoAppDefaultMutableTreeNode extends DefaultMutableTreeNode
 		html =  html + "<font color=\"FF0000\">" + " " + "rev Comment" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + lego.getRevComment() + "\"</font>";
 		html = html + "</html>";
 		setUserObject(html); 
+		DefaultMutableTreeNode linacNode = legoPbsLinacTreeNode(lego.getLegoLinac());
+     	add(linacNode);
+		for (int isec = 0; isec < lego.getLegoLinac().getLegoSectionList().size(); ++isec)
+		{
+			LegoSection section = lego.getLegoLinac().getLegoSectionList().get(isec);
+			DefaultMutableTreeNode sectionNode = legoPbsSectionTreeNode(section);
+			linacNode.add(sectionNode);
+			for (int icell = 0; icell < section.getLegoCellList().size(); ++icell)
+			{
+				LegoCell cell = section.getLegoCellList().get(icell);
+				DefaultMutableTreeNode cellNode = legoPbsCellTreeNode(cell);
+				sectionNode.add(cellNode);
+				for (int islot = 0; islot < cell.getLegoSlotList().size(); ++islot)
+				{
+					LegoSlot slot = cell.getLegoSlotList().get(islot);
+					DefaultMutableTreeNode slotNode = legoPbsSlotTreeNode(slot);
+					cellNode.add(slotNode);
+					for (int ibeam = 0; ibeam < slot.getLegoBeamList().size(); ++ibeam)
+					{
+						LegoBeam beam = slot.getLegoBeamList().get(ibeam);
+						DefaultMutableTreeNode beamNode = legoPbsBeamTreeNode(beam);
+						slotNode.add(beamNode);
+					}
+				}
+			}
+		}
 	}
-	public LegoAppDefaultMutableTreeNode(LegoData dataElement) throws LinacLegoException
+	public DefaultMutableTreeNode legoPbsDataTreeNode(LegoData dataElement) throws LinacLegoException
 	{
-		this();
+		DefaultMutableTreeNode fmtn = new DefaultMutableTreeNode();
 		String html = "<html>";
 		html = html + "<font color=\"0000FF\">" + "data" + "</font>";
 		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + dataElement.getId() + "\"</font>";
@@ -61,11 +71,12 @@ public class LegoAppDefaultMutableTreeNode extends DefaultMutableTreeNode
 		if (dataElement.getValue() != null)
 			html =  html + "<font color=\"000000\">" + " " + dataElement.getValue() + "</font>";
 		html = html + "</html>";
-		setUserObject(html); 
+		fmtn.setUserObject(html); 
+		return fmtn;
 	}
-	public LegoAppDefaultMutableTreeNode(LegoInfo info) throws LinacLegoException
+	public DefaultMutableTreeNode legoPbsInfoTreeNode(LegoInfo info) throws LinacLegoException
 	{
-		this();
+		DefaultMutableTreeNode fmtn = new DefaultMutableTreeNode();
 		String html = "<html>";
 		html = html + "<font color=\"0000FF\">" + "info" + "</font>";
 		if (info.getId() != null)
@@ -75,61 +86,67 @@ public class LegoAppDefaultMutableTreeNode extends DefaultMutableTreeNode
 		if (info.getValue() != null)
 			html =  html + "<font color=\"000000\">" + " " + info.getValue() + "</font>";
 		html = html + "</html>";
-		setUserObject(html); 
+		fmtn.setUserObject(html); 
+		return fmtn;
 	}
-	public LegoAppDefaultMutableTreeNode(String string) throws LinacLegoException
+	public DefaultMutableTreeNode legoPbsStringTreeNode(String string) throws LinacLegoException
 	{
-		this();
-		setUserObject(string); 
+		DefaultMutableTreeNode fmtn = new DefaultMutableTreeNode();
+		fmtn.setUserObject(string); 
+		return fmtn;
 	}
-	public LegoAppDefaultMutableTreeNode(LegoLinac linac) throws LinacLegoException
+	public DefaultMutableTreeNode legoPbsLinacTreeNode(LegoLinac linac) throws LinacLegoException
 	{
-		this();
+		DefaultMutableTreeNode fmtn = new DefaultMutableTreeNode();
 		String html = "<html>";
 		html = html + "<font color=\"0000FF\">" + "linac" + "</font>";
 		html = html + "</html>";
-		setUserObject(html); 
-		addInfoFolder(linac.getLegoInfoList());
-		addDataFolder(linac.getLegoDataList());
+		fmtn.setUserObject(html); 
+		if (linac.getLegoInfoList().size() > 0) fmtn.add(infoFolder(linac.getLegoInfoList()));
+		if (linac.getLegoDataList().size() > 0) fmtn.add(dataFolder(linac.getLegoDataList()));
+		return fmtn;
 		
 	}
-	public LegoAppDefaultMutableTreeNode(LegoSection section) throws LinacLegoException
+	public DefaultMutableTreeNode legoPbsSectionTreeNode(LegoSection section) throws LinacLegoException
 	{
-		this();
+		DefaultMutableTreeNode fmtn = new DefaultMutableTreeNode();
 		String html = "<html>";
 		html = html + "<font color=\"0000FF\">" + "section" + "</font>";
 		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + section.getId() + "\"</font>";
 		html =  html + "<font color=\"FF0000\">" + " " + "rfHarmonic" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + section.getRfHarmonic() + "\"</font>";
 		html = html + "</html>";
-		setUserObject(html); 
-		addInfoFolder(section.getLegoInfoList());
+		fmtn.setUserObject(html); 
+		if (section.getLegoInfoList().size() > 0) fmtn.add(infoFolder(section.getLegoInfoList()));
+		return fmtn;
 	}
-	public LegoAppDefaultMutableTreeNode(LegoCell cell) throws LinacLegoException
+	public DefaultMutableTreeNode legoPbsCellTreeNode(LegoCell cell) throws LinacLegoException
 	{		
-		this();
+		DefaultMutableTreeNode fmtn = new DefaultMutableTreeNode();
 		String html = "<html>";
 		html = html + "<font color=\"0000FF\">" + "cell" + "</font>";
 		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + cell.getId() + "\"</font>";
 		html = html + "</html>";
-		setUserObject(html); 
-		addInfoFolder(cell.getLegoInfoList());
+		fmtn.setUserObject(html); 
+		if (cell.getLegoInfoList().size() > 0) fmtn.add(infoFolder(cell.getLegoInfoList()));
+		return fmtn;
 		
 	}
-	public LegoAppDefaultMutableTreeNode(LegoSlot slot) throws LinacLegoException
+	public DefaultMutableTreeNode legoPbsSlotTreeNode(LegoSlot slot) throws LinacLegoException
 	{
-		this();
+		DefaultMutableTreeNode fmtn = new DefaultMutableTreeNode();
 		String html = "<html>";
 		html = html + "<font color=\"0000FF\">" + "slot" + "</font>";
 		html =  html + "<font color=\"FF0000\"> id</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + slot.getId() + "\"</font>";
 		if (slot.getTemplate() != null)
 			html =  html + "<font color=\"FF0000\">" + " " + "model" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + slot.getTemplate() + "\"</font>";
 		html = html + "</html>";
-		setUserObject(html); 
-		addInfoFolder(slot.getLegoInfoList());
+		fmtn.setUserObject(html); 
+		if (slot.getLegoInfoList().size() > 0) fmtn.add(infoFolder(slot.getLegoInfoList()));
+		return fmtn;
 	}
-	public LegoAppDefaultMutableTreeNode(LegoBeam beam) throws LinacLegoException
+	public DefaultMutableTreeNode legoPbsBeamTreeNode(LegoBeam beam) throws LinacLegoException
 	{
-		this();
+		DefaultMutableTreeNode fmtn = new DefaultMutableTreeNode();
 
 		String html = "<html>";
 		html = html + "<font color=\"0000FF\">" + "ble" + "</font>";
@@ -140,29 +157,32 @@ public class LegoAppDefaultMutableTreeNode extends DefaultMutableTreeNode
 		if (beam.getDisc() != null)
 			html =  html + "<font color=\"FF0000\">" + " " + "disc" + "</font><font color=\"000000\">=</font><font color=\"9933FF\">\"" + beam.getDisc() + "\"</font>";
 		html = html + "</html>";
-		setUserObject(html); 
-		addInfoFolder(beam.getLegoInfoList());
-		addDataFolder(beam.getLegoDataList());
+		fmtn.setUserObject(html); 
+		if (beam.getLegoInfoList().size() > 0) fmtn.add(infoFolder(beam.getLegoInfoList()));
+		if (beam.getLegoDataList().size() > 0) fmtn.add(dataFolder(beam.getLegoDataList()));
+		return fmtn;
 	}
-	private void addInfoFolder(ArrayList<LegoInfo> legoInfoList) throws LinacLegoException
+	private DefaultMutableTreeNode infoFolder(ArrayList<LegoInfo> legoInfoList) throws LinacLegoException
 	{
+		DefaultMutableTreeNode infoFolder = null;
 		if (legoInfoList.size() > 0)
 		{
-			LegoAppDefaultMutableTreeNode infoFolder = new LegoAppDefaultMutableTreeNode("info");
-			add(infoFolder);
+			infoFolder = legoPbsStringTreeNode("info");
 			for (int iinfo = 0; iinfo < legoInfoList.size(); ++iinfo)
-				infoFolder.add(new LegoAppDefaultMutableTreeNode(legoInfoList.get(iinfo)));
+				infoFolder.add(legoPbsInfoTreeNode(legoInfoList.get(iinfo)));
 		}
+		return infoFolder;
 	}
-	private void addDataFolder(ArrayList<LegoData> legoDataList) throws LinacLegoException
+	private DefaultMutableTreeNode dataFolder(ArrayList<LegoData> legoDataList) throws LinacLegoException
 	{
+		DefaultMutableTreeNode dataFolder = null;
 		if (legoDataList.size() > 0)
 		{
-			LegoAppDefaultMutableTreeNode dataFolder = new LegoAppDefaultMutableTreeNode("data");
-			add(dataFolder);
+			dataFolder = legoPbsStringTreeNode("data");
 			for (int iinfo = 0; iinfo < legoDataList.size(); ++iinfo)
-				dataFolder.add(new LegoAppDefaultMutableTreeNode(legoDataList.get(iinfo)));
+				dataFolder.add(legoPbsDataTreeNode(legoDataList.get(iinfo)));
 		}
+		return dataFolder;
 	}
 	
 }

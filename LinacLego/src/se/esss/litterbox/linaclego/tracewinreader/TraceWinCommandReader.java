@@ -36,6 +36,7 @@ public class TraceWinCommandReader
 	TraceWinCommandReader(int iline, String inputString, TraceWinReader traceWinReader)
 	{
 		this.traceWinReader = traceWinReader;
+		String comment = null;
 		inputString = inputString.trim();
 		int isc = inputString.indexOf(";");
 		if (isc == 0 ) 
@@ -44,7 +45,19 @@ public class TraceWinCommandReader
 			traceWinData = null;
 			return;
 		}
-		if (isc > 0) inputString = inputString.substring(0, isc);
+		if (isc > 0)
+		{
+			comment = inputString.substring(isc).trim();
+			if (comment.length() > 0)
+			{
+				comment = comment.substring(1).trim();
+			}
+			else
+			{
+				comment = null;
+			}
+			inputString = inputString.substring(0, isc);
+		}
 // Get rid of leading spaces and delimators
 		Scanner inputScanner = new Scanner(inputString);
 		inputScanner.useDelimiter("[, \t]");
@@ -101,16 +114,16 @@ public class TraceWinCommandReader
 					if (bleType.length() > 0) 
 					{
 						traceWinTypeFound = true;
-						if (bleType.equals("BEND")) 			traceWinBleData = new TraceWinBendData(traceWinData, this);
-						if (bleType.equals("DRIFT")) 			traceWinBleData = new TraceWinDriftData(traceWinData, this);
-						if (bleType.equals("DTL_CEL"))			traceWinBleData = new TraceWinDtlCellDataV3(traceWinData, this);
-						if (bleType.equals("EDGE"))				traceWinBleData = new TraceWinEdgeData(traceWinData, this);
-						if (bleType.equals("FIELD_MAP"))		traceWinBleData = new TraceWinFieldMapData(traceWinData, this);
-						if (bleType.equals("NCELLS"))			traceWinBleData = new TraceWinNcellsData(traceWinData, this);
-						if (bleType.equals("QUAD"))				traceWinBleData = new TraceWinQuadData(traceWinData, this);
-						if (bleType.equals("GAP"))				traceWinBleData = new TraceWinRFGapData(traceWinData, this);
-						if (bleType.equals("THIN_STEERING"))	traceWinBleData = new TraceWinThinSteerData(traceWinData, this);
-						if (bleType.equals("DIAG_POSITION"))	traceWinBleData = new TraceWinDiagPosData(traceWinData, this);
+						if (bleType.equals("BEND")) 			traceWinBleData = new TraceWinBendData(traceWinData, comment, this);
+						if (bleType.equals("DRIFT")) 			traceWinBleData = new TraceWinDriftData(traceWinData, comment, this);
+						if (bleType.equals("DTL_CEL"))			traceWinBleData = new TraceWinDtlCellDataV3(traceWinData, comment, this);
+						if (bleType.equals("EDGE"))				traceWinBleData = new TraceWinEdgeData(traceWinData, comment, this);
+						if (bleType.equals("FIELD_MAP"))		traceWinBleData = new TraceWinFieldMapData(traceWinData, comment, this);
+						if (bleType.equals("NCELLS"))			traceWinBleData = new TraceWinNcellsData(traceWinData, comment, this);
+						if (bleType.equals("QUAD"))				traceWinBleData = new TraceWinQuadData(traceWinData, comment, this);
+						if (bleType.equals("GAP"))				traceWinBleData = new TraceWinRFGapData(traceWinData, comment, this);
+						if (bleType.equals("THIN_STEERING"))	traceWinBleData = new TraceWinThinSteerData(traceWinData, comment, this);
+						if (bleType.equals("DIAG_POSITION"))	traceWinBleData = new TraceWinDiagPosData(traceWinData, comment, this);
 					}
 					if (traceWinTypeFound)
 					{

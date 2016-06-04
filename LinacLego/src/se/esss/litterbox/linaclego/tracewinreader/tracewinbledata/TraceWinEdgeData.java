@@ -20,9 +20,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinEdgeData extends TraceWinBleData
 {
 
-	public TraceWinEdgeData(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinEdgeData(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "edge";}

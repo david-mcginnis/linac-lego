@@ -22,9 +22,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinDtlCellDataV1 extends TraceWinBleData
 {
 
-	public TraceWinDtlCellDataV1(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinDtlCellDataV1(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "dtlCell";}
@@ -97,7 +97,7 @@ public class TraceWinDtlCellDataV1 extends TraceWinBleData
 		driftTubeTwd[2] = fourPlaces.format(quadLen);
 		driftTubeTwd[3] = getValue("radApermm");
 		driftTubeTwd[4] = getValue("grad1Tpm");
-		TraceWinDtlDriftTubeData traceWinDtlDriftTubeData = new TraceWinDtlDriftTubeData(driftTubeTwd, traceWinCommandReader);
+		TraceWinDtlDriftTubeData traceWinDtlDriftTubeData = new TraceWinDtlDriftTubeData(driftTubeTwd, getComment(), traceWinCommandReader);
 		createBleTag(xw, legoIdIndex, 
 				traceWinDtlDriftTubeData.getLegoIdIndexLabel(), 
 				traceWinDtlDriftTubeData.getLegoType(), 
@@ -117,7 +117,7 @@ public class TraceWinDtlCellDataV1 extends TraceWinBleData
 		rfGaptwd[7] = getValue("k2tts");		
 		rfGaptwd[8] = fourPlaces.format(gapLen);		
 		
-		TraceWinDtlRfGapData traceWinDtlRfGapData = new TraceWinDtlRfGapData(rfGaptwd, traceWinCommandReader);
+		TraceWinDtlRfGapData traceWinDtlRfGapData = new TraceWinDtlRfGapData(rfGaptwd, getComment(), traceWinCommandReader);
 		createBleTag(xw, legoIdIndex, 
 				traceWinDtlRfGapData.getLegoIdIndexLabel(), 
 				traceWinDtlRfGapData.getLegoType(), 
@@ -134,7 +134,7 @@ public class TraceWinDtlCellDataV1 extends TraceWinBleData
 			driftTubeTwd[2] = getValue("q2Lenmm");
 			driftTubeTwd[3] = getValue("radApermm");
 			driftTubeTwd[4] = getValue("grad2Tpm");;
-			traceWinDtlDriftTubeData = new TraceWinDtlDriftTubeData(driftTubeTwd, traceWinCommandReader);
+			traceWinDtlDriftTubeData = new TraceWinDtlDriftTubeData(driftTubeTwd, getComment(), traceWinCommandReader);
 			createBleTag(xw, legoIdIndex, 
 					traceWinDtlDriftTubeData.getLegoIdIndexLabel(), 
 					traceWinDtlDriftTubeData.getLegoType(), 

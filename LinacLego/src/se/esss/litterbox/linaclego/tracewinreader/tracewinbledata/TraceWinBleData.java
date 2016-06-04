@@ -27,6 +27,7 @@ public abstract class TraceWinBleData {
 	private String[] dataType = null;
 	private String[] dataValue = null;
 	private String legoIdIndexLabel = null;
+	private String comment = null;
 	TraceWinCommandReader traceWinCommandReader;
 	
 	public String getLegoType() {return legoType;}
@@ -35,6 +36,7 @@ public abstract class TraceWinBleData {
 	public String[] getDataType() {return dataType;}
 	public String[] getDataValue() {return dataValue;}
 	public String getLegoIdIndexLabel() {return legoIdIndexLabel;}
+	public String getComment() {return comment;}
 
 	public abstract String setLegoType();
 	public abstract String[] setDataName();
@@ -42,8 +44,9 @@ public abstract class TraceWinBleData {
 	public abstract String[] setDataType();
 	public abstract String[] setDataValue(String[] traceWinData);
 	public abstract String setLegoIdIndexLabel();
+	public void setComment(String comment) {this.comment = comment;}
 
-	public TraceWinBleData(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinBleData(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
 		this.traceWinCommandReader = traceWinCommandReader;
 		legoType = setLegoType();
@@ -52,6 +55,7 @@ public abstract class TraceWinBleData {
 		dataType = setDataType();
 		dataValue = setDataValue(traceWinData);
 		legoIdIndexLabel = setLegoIdIndexLabel();
+		setComment(comment);
 	}
 	String getValue(String name)
 	{
@@ -81,6 +85,12 @@ public abstract class TraceWinBleData {
 			xw.openXmlTag("ble");
 			xw.setAttribute("id", legoIdIndexLabel + legoIdIndex);
 			xw.setAttribute("type", legoType);
+			if (comment != null)
+			{
+				xw.openXmlTag("comment");
+				xw.writeCharacterData(comment);
+				xw.closeXmlTag("comment");
+			}
 			for (int ii = 0; ii < dataValue.length; ++ii)
 			{
 				xw.openXmlTag("d");

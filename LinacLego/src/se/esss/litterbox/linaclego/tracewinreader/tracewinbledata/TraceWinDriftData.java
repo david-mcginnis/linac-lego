@@ -20,9 +20,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinDriftData extends TraceWinBleData
 {
 
-	public TraceWinDriftData(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinDriftData(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "drift";}

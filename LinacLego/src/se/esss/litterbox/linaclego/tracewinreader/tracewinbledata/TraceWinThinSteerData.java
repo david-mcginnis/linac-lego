@@ -20,9 +20,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinThinSteerData extends TraceWinBleData
 {
 
-	public TraceWinThinSteerData(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinThinSteerData(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "thinSteering";}

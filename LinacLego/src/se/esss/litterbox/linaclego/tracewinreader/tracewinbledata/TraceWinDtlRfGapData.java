@@ -20,9 +20,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinDtlRfGapData extends TraceWinBleData
 {
 
-	public TraceWinDtlRfGapData(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinDtlRfGapData(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "dtlRfGap";}

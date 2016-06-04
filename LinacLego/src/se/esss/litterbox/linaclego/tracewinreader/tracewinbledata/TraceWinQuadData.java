@@ -20,9 +20,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinQuadData extends TraceWinBleData
 {
 
-	public TraceWinQuadData(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinQuadData(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "quad";}

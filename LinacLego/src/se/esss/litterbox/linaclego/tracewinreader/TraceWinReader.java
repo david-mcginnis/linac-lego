@@ -62,44 +62,7 @@ public class TraceWinReader
 			String title = new File(fileLocationPath).getName().substring(0, new File(fileLocationPath).getName().lastIndexOf("."));
 			xw = new SimpleXmlWriter("linacLego", "../dtdFiles/LinacLego.dtd");
 			xw.setAttribute("title", title);
-			xw.openXmlTag("header");
-			xw.openXmlTag("info");
 			int ilineMarker = 0;
-			int headerBeginline = -1;
-			int headerEndline = -1;
-			while (ilineMarker < outputBuffer.size())
-			{
-				line = outputBuffer.get(ilineMarker).trim();
-				int isc = line.indexOf(";>");
-				if (isc >= 0)
-				{
-					line = line.substring(isc + 2).trim();
-					if(line.toUpperCase().indexOf("HEADER_BEGIN") >= 0)
-						headerBeginline = ilineMarker;
-					if(line.toUpperCase().indexOf("HEADER_END") >= 0)
-					{
-						headerEndline = ilineMarker;
-						ilineMarker = outputBuffer.size();
-					}
-				}
-				ilineMarker = ilineMarker + 1;
-			}
-			ilineMarker = headerEndline + 1;
-			if (headerBeginline < 0) throw new LinacLegoException("No HEADER_BEGIN in Tracewin file");
-			if (headerEndline < 0) throw new LinacLegoException("No HEADER_END in Tracewin file");
-			if (headerEndline < headerBeginline) throw new LinacLegoException("No HEADER_END comes before HEADER_BEGIN in Tracewin file");
-			for (int iline = headerBeginline + 1; iline < headerEndline; ++iline)
-			{
-				line = outputBuffer.get(iline).trim();
-				int isc = line.indexOf(";");
-				if (isc >= 0 && line.length() > 1)
-				{
-					xw.openXmlTag("comment");
-					xw.writeCharacterData(line.substring(1));
-					xw.closeXmlTag("comment");
-				}
-			}
-			xw.closeXmlTag("info");
 			xw.openXmlTag("slotModels");
 			xw.setAttribute("id", title + "SlotModels");
 			xw.closeXmlTag("slotModels");
@@ -311,13 +274,65 @@ public class TraceWinReader
 					if(line.toUpperCase().indexOf("CELL_BEGIN") >= 0)
 					{
 						int nameIndex = line.toUpperCase().indexOf("CELL_BEGIN") + 10;
-						ilineMarker = readTraceWinCell(ilineMarker, outputBuffer, line.substring(nameIndex).trim());
+						String cellName = line.substring(nameIndex).trim();
+						if (cellName.equals("")) throw new LinacLegoException("No Cell Name at line: " + Integer.toString(ilineMarker + 1));
+						ilineMarker = readTraceWinCell(ilineMarker, outputBuffer, cellName);
+					}
+					if(line.toUpperCase().indexOf("INFO_BEGIN") >= 0)
+					{
+						int nameIndex = line.toUpperCase().indexOf("INFO_BEGIN") + 10;
+						String infoName = line.substring(nameIndex).trim();
+						if (infoName.equals("")) infoName = sectionName + "Info";
+						ilineMarker = readTraceWinInfo(ilineMarker, outputBuffer, infoName);
 					}
 				}
 				ilineMarker = ilineMarker + 1;
 			}
 
 			xw.closeXmlTag("section");
+		}
+		catch (SimpleXmlException e) {throw new LinacLegoException(e);}
+		return ilineMarker;
+	}
+	private int readTraceWinInfo(int ilineMarker, ArrayList<String> outputBuffer, String infoName) throws LinacLegoException
+	{
+		try
+		{
+			xw.openXmlTag("info");
+			xw.setAttribute("id", infoName);
+			ilineMarker = ilineMarker + 1;
+			while (ilineMarker < outputBuffer.size())
+			{
+				String line = outputBuffer.get(ilineMarker).trim();
+				int isc = line.indexOf(";>");
+				if (isc >= 0)
+				{
+					line = line.substring(isc + 2).trim();
+					if(line.toUpperCase().indexOf("INFO_END") >= 0)
+					{
+						xw.closeXmlTag("info");
+						return ilineMarker;
+					}
+					else 
+					{
+						throw new LinacLegoException("Did not encounter INFO_END at line: " + Integer.toString(ilineMarker + 1));
+					}
+				}
+				else
+				{
+					isc = line.indexOf(";");
+					if (isc >= 0 && line.length() > 1)
+					{
+						xw.openXmlTag("comment");
+						xw.writeCharacterData(line.substring(1));
+						xw.closeXmlTag("comment");
+					}
+				}
+				
+				ilineMarker = ilineMarker + 1;
+			}
+
+			xw.closeXmlTag("info");
 		}
 		catch (SimpleXmlException e) {throw new LinacLegoException(e);}
 		return ilineMarker;
@@ -344,7 +359,16 @@ public class TraceWinReader
 					if(line.toUpperCase().indexOf("SLOT_BEGIN") >= 0)
 					{
 						int nameIndex = line.toUpperCase().indexOf("SLOT_BEGIN") + 10;
-						ilineMarker = readTraceWinSlot(ilineMarker, outputBuffer, line.substring(nameIndex).trim());
+						String slotName = line.substring(nameIndex).trim();
+						if (slotName.equals("")) throw new LinacLegoException("No Slot Name at line: " + Integer.toString(ilineMarker + 1));
+						ilineMarker = readTraceWinSlot(ilineMarker, outputBuffer, slotName);
+					}
+					if(line.toUpperCase().indexOf("INFO_BEGIN") >= 0)
+					{
+						int nameIndex = line.toUpperCase().indexOf("INFO_BEGIN") + 10;
+						String infoName = line.substring(nameIndex).trim();
+						if (infoName.equals("")) infoName = cellName + "Info";
+						ilineMarker = readTraceWinInfo(ilineMarker, outputBuffer, infoName);
 					}
 				}
 				ilineMarker = ilineMarker + 1;
@@ -409,10 +433,10 @@ public class TraceWinReader
 	public SimpleXmlDoc getSimpleXmlDoc() {return xw.getSimpleXmlDoc();}
 	public static void main(String[] args) throws LinacLegoException 
 	{
-		String path = "/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LatticeRepository/WebContent/data/testXml/29Oct2015TraceWin/5.0_Spoke.dat";
+		String path = "/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LatticeRepository/WebContent/data/test2Xml/TraceWinData/5.0_Spoke.dat";
 		TraceWinReader twr = new TraceWinReader(path, 90, 352.21, null);
 		twr.readTraceWinFile();
-		twr.saveXmlFile("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LatticeRepository/WebContent/data/testXml/29Oct2015TraceWin/5.0_Spoke.xml");
+		twr.saveXmlFile("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LatticeRepository/WebContent/data/test2Xml/TraceWinData/5.0_Spoke.xml");
 	}
 
 }

@@ -20,9 +20,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinDiagPosData extends TraceWinBleData
 {
 
-	public TraceWinDiagPosData(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinDiagPosData(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "diagPosition";}

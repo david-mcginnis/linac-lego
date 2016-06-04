@@ -20,9 +20,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinFieldMapData extends TraceWinBleData
 {
 
-	public TraceWinFieldMapData(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinFieldMapData(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "fieldMap";}

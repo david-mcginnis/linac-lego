@@ -22,9 +22,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinDtlCellDataV2 extends TraceWinBleData
 {
 
-	public TraceWinDtlCellDataV2(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinDtlCellDataV2(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "dtlCell";}
@@ -103,7 +103,7 @@ public class TraceWinDtlCellDataV2 extends TraceWinBleData
 		driftTwd[0] = fourPlaces.format(noseConeUpLen);
 		driftTwd[1] = getValue("radApermm");
 		driftTwd[2] = "0.0";
-		traceWinDriftData = new TraceWinDriftData(driftTwd, traceWinCommandReader);
+		traceWinDriftData = new TraceWinDriftData(driftTwd, getComment(), traceWinCommandReader);
 		createBleTag(xw, legoIdIndex, 
 				traceWinDriftData.getLegoIdIndexLabel(), 
 				traceWinDriftData.getLegoType(), 
@@ -114,7 +114,7 @@ public class TraceWinDtlCellDataV2 extends TraceWinBleData
 		quadTwd[0] = fourPlaces.format(quadLen);
 		quadTwd[1] = getValue("grad1Tpm");
 		quadTwd[2] = getValue("radApermm");
-		traceWinQuadData = new TraceWinQuadData(quadTwd, traceWinCommandReader);
+		traceWinQuadData = new TraceWinQuadData(quadTwd, getComment(), traceWinCommandReader);
 		createBleTag(xw, addLeadingZeros(legoIndex + 1, 4), 
 				traceWinQuadData.getLegoIdIndexLabel(), 
 				traceWinQuadData.getLegoType(), 
@@ -123,7 +123,7 @@ public class TraceWinDtlCellDataV2 extends TraceWinBleData
 				traceWinQuadData.getDataType(), 
 				traceWinQuadData.getDataValue());
 		driftTwd[0] = fourPlaces.format(noseConeDnLen);
-		traceWinDriftData = new TraceWinDriftData(driftTwd, traceWinCommandReader);
+		traceWinDriftData = new TraceWinDriftData(driftTwd, getComment(), traceWinCommandReader);
 		createBleTag(xw, addLeadingZeros(legoIndex + 2, 4), 
 				traceWinDriftData.getLegoIdIndexLabel(), 
 				traceWinDriftData.getLegoType(), 
@@ -132,7 +132,7 @@ public class TraceWinDtlCellDataV2 extends TraceWinBleData
 				traceWinDriftData.getDataType(), 
 				traceWinDriftData.getDataValue());
 		driftTwd[0] = fourPlaces.format(gapLen / 2.0);
-		traceWinDriftData = new TraceWinDriftData(driftTwd, traceWinCommandReader);
+		traceWinDriftData = new TraceWinDriftData(driftTwd, getComment(), traceWinCommandReader);
 		createBleTag(xw, addLeadingZeros(legoIndex + 3, 4), 
 				traceWinDriftData.getLegoIdIndexLabel(), 
 				traceWinDriftData.getLegoType(), 
@@ -150,7 +150,7 @@ public class TraceWinDtlCellDataV2 extends TraceWinBleData
 		rfGapTwd[7] = getValue("k2tts");
 		rfGapTwd[8] = "0.0";
 		rfGapTwd[9] = "0.0";
-		traceWinRFGapData = new TraceWinRFGapData(rfGapTwd, traceWinCommandReader);
+		traceWinRFGapData = new TraceWinRFGapData(rfGapTwd, getComment(), traceWinCommandReader);
 		createBleTag(xw, addLeadingZeros(legoIndex + 4, 4), 
 				traceWinRFGapData.getLegoIdIndexLabel(), 
 				traceWinRFGapData.getLegoType(), 
@@ -172,7 +172,7 @@ public class TraceWinDtlCellDataV2 extends TraceWinBleData
 			driftTwd[0] = fourPlaces.format(noseCone2);
 			driftTwd[1] = getValue("radApermm");
 			driftTwd[2] = "0.0";
-			traceWinDriftData = new TraceWinDriftData(driftTwd, traceWinCommandReader);
+			traceWinDriftData = new TraceWinDriftData(driftTwd, getComment(), traceWinCommandReader);
 			createBleTag(xw, addLeadingZeros(legoIndex + 6, 4), 
 					traceWinDriftData.getLegoIdIndexLabel(), 
 					traceWinDriftData.getLegoType(), 
@@ -183,7 +183,7 @@ public class TraceWinDtlCellDataV2 extends TraceWinBleData
 			quadTwd[0] = getValue("q2Lenmm");
 			quadTwd[1] = getValue("grad2Tpm");
 			quadTwd[2] = getValue("radApermm");
-			traceWinQuadData = new TraceWinQuadData(quadTwd, traceWinCommandReader);
+			traceWinQuadData = new TraceWinQuadData(quadTwd, getComment(), traceWinCommandReader);
 			createBleTag(xw, addLeadingZeros(legoIndex + 7, 4), 
 					traceWinQuadData.getLegoIdIndexLabel(), 
 					traceWinQuadData.getLegoType(), 
@@ -192,7 +192,7 @@ public class TraceWinDtlCellDataV2 extends TraceWinBleData
 					traceWinQuadData.getDataType(), 
 					traceWinQuadData.getDataValue());
 			driftTwd[0] = "0.00";
-			traceWinDriftData = new TraceWinDriftData(driftTwd, traceWinCommandReader);
+			traceWinDriftData = new TraceWinDriftData(driftTwd, getComment(), traceWinCommandReader);
 			createBleTag(xw, addLeadingZeros(legoIndex + 8, 4), 
 					traceWinDriftData.getLegoIdIndexLabel(), 
 					traceWinDriftData.getLegoType(), 

@@ -20,9 +20,9 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class TraceWinBendData extends TraceWinBleData
 {
 
-	public TraceWinBendData(String[] traceWinData, TraceWinCommandReader traceWinCommandReader) 
+	public TraceWinBendData(String[] traceWinData, String comment, TraceWinCommandReader traceWinCommandReader) 
 	{
-		super(traceWinData, traceWinCommandReader);
+		super(traceWinData, comment, traceWinCommandReader);
 	}
 	@Override
 	public String setLegoType() {return "bend";}

@@ -33,7 +33,7 @@ public class LegoApp extends JFrameSkeleton
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
 	private static final String version = "v2.0";
-	private static final String versionDate = "May 17, 2016";
+	private static final String versionDate = "June 5, 2016";
 
 	private Lego lego;
 	private JTabbedPane mainTabbedPane; 

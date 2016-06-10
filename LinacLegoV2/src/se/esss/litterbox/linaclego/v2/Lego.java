@@ -115,7 +115,10 @@ public class Lego implements Serializable
 		beamTypeList.add(new LegoBeamPositionMonitor());
 		beamTypeList.add(new LegoBeamSizeMonitor());
 	}
-	
+	public Lego(SimpleXmlDoc sxd) throws LinacLegoException
+	{
+		this(sxd, null);
+	}
 	public Lego(SimpleXmlDoc sxd, StatusPanel statusPanel) throws LinacLegoException
 	{
 		addBeamTypes();

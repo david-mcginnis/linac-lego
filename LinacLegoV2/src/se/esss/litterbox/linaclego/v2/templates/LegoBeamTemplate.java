@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.data.LegoData;
+import se.esss.litterbox.linaclego.v2.data.LegoInfo;
 import se.esss.litterbox.linaclego.v2.data.LegoVariable;
 import se.esss.litterbox.linaclego.v2.structures.LegoSlot;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeam;
@@ -16,6 +17,7 @@ public class LegoBeamTemplate  implements Serializable
 {
 	private static final long serialVersionUID = -2226904536763451428L;
 	private ArrayList<LegoData> legoDataList = new ArrayList<LegoData>();
+	private ArrayList<LegoInfo> legoInfoList = new ArrayList<LegoInfo>();
 	private String id = null;
 	private String type = null;
 	private String disc = null;
@@ -23,6 +25,7 @@ public class LegoBeamTemplate  implements Serializable
 	private LegoSlotTemplate legoSlotTemplate;
 
 	public ArrayList<LegoData> getLegoDataList() {return legoDataList;}
+	public ArrayList<LegoInfo> getLegoInfoList() {return legoInfoList;}
 	public String getId() {return id;}
 	public String getType() {return type;}
 	public String getDisc() {return disc;}
@@ -35,6 +38,15 @@ public class LegoBeamTemplate  implements Serializable
 		try {type = beamTemplateTag.attribute("type");} catch (SimpleXmlException e) {throw new LinacLegoException(e);}
 		try {disc = beamTemplateTag.attribute("disc");} catch (SimpleXmlException e) {disc = null;}
 		try {model = beamTemplateTag.attribute("model");} catch (SimpleXmlException e) {model = null;}
+		SimpleXmlReader infoTags = beamTemplateTag.tagsByName("info");
+		if (infoTags.numChildTags() > 0)
+		{
+			for (int iinfo = 0; iinfo < infoTags.numChildTags(); ++iinfo)
+			{
+				try {legoInfoList.add(new LegoInfo(infoTags.tag(iinfo)));} 
+				catch (SimpleXmlException e) {throw new LinacLegoException(e);}
+			}
+		}
 		SimpleXmlReader dataTags = beamTemplateTag.tagsByName("d");
 		if (dataTags.numChildTags() > 0)
 		{
@@ -54,6 +66,10 @@ public class LegoBeamTemplate  implements Serializable
 			xw.setAttribute("type",type);
 			if (disc != null) xw.setAttribute("disc",disc);
 			if (model != null) xw.setAttribute("model",model);
+			if (legoInfoList.size() > 0)
+			{
+				for (int ii = 0; ii < legoInfoList.size(); ++ii) legoInfoList.get(ii).writeXml(xw);
+			}
 			if (legoDataList.size() > 0)
 			{
 				for (int ii = 0; ii < legoDataList.size(); ++ii) legoDataList.get(ii).writeXml(xw);
@@ -85,6 +101,19 @@ public class LegoBeamTemplate  implements Serializable
 		else
 		{
 			throw new LinacLegoException("No such type " + type + " found");
+		}
+		if (legoInfoList.size() > 0)
+		{
+			for (int ii = 0; ii < legoInfoList.size(); ++ii)
+			{
+				LegoInfo legoInfo = new LegoInfo(legoInfoList.get(ii));
+				if (!legoInfo.valueMatchsType())
+				{
+					String infoVal = LegoVariable.findLegoInfoById(lst.getLegoVariableList(),legoInfo.getValue()).getValue();
+					legoInfo.setValue(infoVal);
+				}
+				lb.getLegoInfoList().add(legoInfo);
+			}
 		}
 		if (legoDataList.size() > 0)
 		{

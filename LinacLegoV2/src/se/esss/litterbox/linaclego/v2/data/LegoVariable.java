@@ -62,6 +62,20 @@ public class LegoVariable  implements Serializable
 		}
 		return null;
 	}
+	public static LegoVariable findLegoInfoById(ArrayList<LegoVariable> legoVariableList, String id)
+	{
+		if (id.indexOf("#") == 0) id = id.substring(1); // takes care of string variables
+		int icount = 0; 
+		while (icount < legoVariableList.size())
+		{
+			if (id.equals(legoVariableList.get(icount).getId()))
+			{
+				return legoVariableList.get(icount);
+			}
+			icount = icount + 1;
+		}
+		return null;
+	}
 	
 
 }

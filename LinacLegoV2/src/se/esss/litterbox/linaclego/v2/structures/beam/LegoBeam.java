@@ -372,6 +372,17 @@ public abstract class LegoBeam  implements Serializable
 			}
 			if (!dataMatch) return false;
 		}
+		for (int i1 = 0; i1 < beamTemplate.getLegoInfoList().size(); ++i1)
+		{
+			int i2 = 0;
+			boolean infoMatch = false;
+			while ((i2 < legoInfoList.size()) && !infoMatch)
+			{
+				if (legoInfoList.get(i2).matchesLegoInfoTemplate(beamTemplate.getLegoInfoList().get(i1))) infoMatch = true;
+				i2 = i2 + 1;
+			}
+			if (!infoMatch) return false;
+		}
 		return matches;
 		
 	}

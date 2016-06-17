@@ -280,7 +280,8 @@ public class LegoSlot  implements Serializable
 						{
 							status = status + "Adding info tune";
 							getLego().writeStatus(status + "\t" + line);
-							legoBeamInfoList.add(new LegoInfo(null, line, "tune"));
+							legoBeamInfoList.add(new LegoInfo(Lego.addLeadingZeros(infocounter, 3), line, "tune"));
+							infocounter = infocounter + 10;
 						}
 					}
 				}
@@ -327,6 +328,15 @@ public class LegoSlot  implements Serializable
 					String value  = LegoData.findLegoDataById(legoBeamList.get(ib).getLegoDataList(), lbt.getLegoDataList().get(id).getId()).getValue();
 					String varName = lbt.getLegoDataList().get(id).getValue();
 					if (lbt.getLegoDataList().get(id).getType().equals("string")) varName = varName.substring(1);
+					LegoData.findLegoDataById(legoDataList, varName).setValue(value);					
+				}
+			}
+			for (int iinfo = 0; iinfo < lbt.getLegoInfoList().size(); ++iinfo)
+			{
+				if (!lbt.getLegoInfoList().get(iinfo).valueMatchsType()) 
+				{
+					String value  = LegoInfo.findLegoInfoById(legoBeamList.get(ib).getLegoInfoList(), lbt.getLegoInfoList().get(iinfo).getId()).getValue();
+					String varName = lbt.getLegoInfoList().get(iinfo).getValue().substring(1);
 					LegoData.findLegoDataById(legoDataList, varName).setValue(value);					
 				}
 			}

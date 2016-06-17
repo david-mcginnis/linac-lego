@@ -19,6 +19,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -451,6 +452,22 @@ public class Lego implements Serializable
 		} catch (IOException | ClassNotFoundException e) {throw new LinacLegoException(e);}
 		
 	}
+	public static Lego readSerializedLegoFromWeb(String htmlLink) throws LinacLegoException
+	{
+		try {
+			URL url = new URL(htmlLink);
+			URLConnection connection = url.openConnection();
+			InputStream file = connection.getInputStream();
+			InputStream buffer = new BufferedInputStream(file);
+			ObjectInput input = new ObjectInputStream (buffer);
+			Lego serLego = (Lego) input.readObject();
+			input.close();
+			buffer.close();
+			file.close();
+			serLego.setStatusPanel(null);
+			return serLego;
+		} catch (IOException | ClassNotFoundException e) {throw new LinacLegoException(e);}
+	}
 	public static void main(String[] args) throws LinacLegoException, MalformedURLException, SimpleXmlException 
 	{
 //		Lego lego = new Lego("test", "revNo", "revComment", "revDate", 89.0, 352.21, null);
@@ -458,10 +475,13 @@ public class Lego implements Serializable
 //		lego.getLegoLinac().triggerUpdate();
 // 		lego.writeXmlFile("5.0_SpokeV2.xml", "../dtdFiles/LinacLego.dtd", false);
 
-		Lego lego = new Lego("testFiles/5.0_SpokeV3.xml", null);
+//		Lego lego = new Lego("testFiles/5.0_SpokeV3.xml", null);
 //		Lego lego = Lego.readSerializedLego("testFiles/5.0_SpokeV3.bin");
-		lego.replaceSlotsWithTemplates();
-		lego.triggerUpdate("testFiles/5.0_SpokeV3.xml","../dtdFiles/LinacLego.dtd", false);
-		lego.createReports("testFiles");
+//		lego.replaceSlotsWithTemplates();
+//		lego.triggerUpdate("testFiles/5.0_SpokeV3.xml","../dtdFiles/LinacLego.dtd", false);
+//		lego.createReports("testFiles");
+		
+		Lego lego =  readSerializedLegoFromWeb("https://aig.esss.lu.se:8443/LinacLegoV2DataWeb/data/test/linacLego.bin");
+		lego.getLegoLinac().triggerUpdate();
 	}
 }

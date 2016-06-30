@@ -72,6 +72,16 @@ public class LegoSection  implements Serializable
 			}
 		} catch (SimpleXmlException e)  {throw new LinacLegoException(e);}
 	}
+	public LegoCell getLegoCellById(String cellId)
+	{
+		int icell = 0;
+		while (icell < legoCellList.size())
+		{
+			if (legoCellList.get(icell).getId().equals(cellId)) return legoCellList.get(icell);
+			icell =icell + 1;
+		}
+		return null;
+	}
 	public double rfFreqMHz() throws LinacLegoException
 	{
 		return getLegoLinac().beamFrequencyMHz() * rfHarmonic;

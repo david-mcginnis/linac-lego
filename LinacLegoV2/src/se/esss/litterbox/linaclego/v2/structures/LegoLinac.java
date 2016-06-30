@@ -118,6 +118,16 @@ public class LegoLinac  implements Serializable
 			
 		} catch (SimpleXmlException e)  {throw new LinacLegoException(e);}
 	}
+	public LegoSection getLegoSectionById(String sectionId)
+	{
+		int isec =0;
+		while (isec < legoSectionList.size())
+		{
+			if (legoSectionList.get(isec).getId().equals(sectionId)) return legoSectionList.get(isec);
+			isec = isec + 1;
+		}
+		return null;
+	}
 	public void writeXml(SimpleXmlWriter xw, boolean expandSlotTemplate) throws LinacLegoException
 	{
 		try 
@@ -178,6 +188,8 @@ public class LegoLinac  implements Serializable
 		getLego().writeStatus("Triggering Update");
 		getLego().writeStatus("     Calculating Survey Matrices");
 		calculateSurveyMatrices();
+		legoSlotModelList = new ArrayList<LegoModel>();
+		legoBeamModelList = new ArrayList<LegoModel>();
 		for (int isec = 0; isec < getLegoSectionList().size(); ++isec) 
 		{
 			LegoSection legoSection = getLegoSectionList().get(isec);
@@ -189,14 +201,7 @@ public class LegoLinac  implements Serializable
 				for (int islot = 0; islot < legoCell.getLegoSlotList().size(); ++islot) 
 				{
 					LegoSlot legoSlot = legoCell.getLegoSlotList().get(islot);
-					getLego().writeStatus("               Updating slot " + legoSlot.getId());
-					for (int ibeam = 0; ibeam < legoSlot.getLegoBeamList().size(); ++ibeam) 
-					{
-						LegoBeam legoBeam = legoSlot.getLegoBeamList().get(ibeam);
-						getLego().writeStatus("                    Updating beam " + legoBeam.getId());
-						legoBeam.triggerUpdate();
-						LegoModel.addLegoBeamToModelList(legoBeamModelList, legoBeam);
-					}
+					legoSlot.triggerUpdate(legoBeamModelList);
 					LegoModel.addLegoSlotToModelList(legoSlotModelList, legoSlot);
 				}
 			}

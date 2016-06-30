@@ -67,7 +67,7 @@ public class Lego implements Serializable
 	public static final DecimalFormat zeroPlaces = new DecimalFormat("###");
 	
 	private ArrayList<LegoSlotTemplate> legoSlotTemplateList = new ArrayList<LegoSlotTemplate>();
-	private ArrayList<LegoSet> legoSetlList = new ArrayList<LegoSet>();
+	private ArrayList<LegoSet> legoSetList = new ArrayList<LegoSet>();
 	private LegoLinac legoLinac = null;
 	private String title = "";
 	private String revNo = "0";
@@ -82,7 +82,7 @@ public class Lego implements Serializable
 	private LegoXmlTreeNode legoXmlTreeNode = null;
 	
 	public ArrayList<LegoSlotTemplate> getLegoSlotTempateList() {return legoSlotTemplateList;}
-	public ArrayList<LegoSet> getLegoSetlList() {return legoSetlList;}
+	public ArrayList<LegoSet> getLegoSetList() {return legoSetList;}
 	public LegoLinac getLegoLinac() {return legoLinac;}
 	public String getTitle() {return title;}
 	public String getRevNo() {return revNo;}
@@ -149,6 +149,25 @@ public class Lego implements Serializable
 				}
 			}
 			writeStatus("Finished reading slotTemplates");
+			writeStatus("Reading LegoSets");
+			legoSetList = new ArrayList<LegoSet>();
+			SimpleXmlReader legoSetsListTag = legoTag.tagsByName("legoSets");
+			if (legoSetsListTag.numChildTags() > 0)
+			{
+				for (int icol = 0; icol < legoSetsListTag.numChildTags(); ++icol)
+				{
+					SimpleXmlReader legoSetListTag = legoSetsListTag.tag(icol).tagsByName("legoSet");
+					if (legoSetListTag.numChildTags() > 0)
+					{
+						for (int itag = 0; itag < legoSetListTag.numChildTags(); ++itag)
+						{
+							legoSetList.add(new LegoSet(legoSetListTag.tag(itag)));
+							writeStatus("     Adding legoSet " + legoSetListTag.tag(itag).attribute("devName"));
+						}
+					}
+				}
+			}
+			writeStatus("Finished reading LegoSets");
 			writeStatus("Reading Linac ");
 			legoLinac = new LegoLinac(this, legoTag.tagsByName("linac").tag(0));
 			writeStatus("Finished reading Linac");
@@ -198,6 +217,7 @@ public class Lego implements Serializable
 			}
 			xw.openXmlTag("legoSets");
 			xw.setAttribute("id", title + "LegoSets");
+			for (int iset = 0; iset < legoSetList.size(); ++iset) legoSetList.get(iset).writeXml(xw);
 			xw.closeXmlTag("legoSets");
 			legoLinac.writeXml(xw, expandSlotTemplate);
 			xw.closeDocument();
@@ -436,6 +456,14 @@ public class Lego implements Serializable
 		} catch (IOException e) {throw new LinacLegoException(e);}
 		
 	}
+	public void setSettingsFromLattice() throws LinacLegoException
+	{
+		for (int iset = 0; iset < legoSetList.size(); ++iset) legoSetList.get(iset).setSettingFromLattice(legoLinac);
+	}
+	public void setLatticeFromSettings() throws LinacLegoException
+	{
+		for (int iset = 0; iset < legoSetList.size(); ++iset) legoSetList.get(iset).setLatticeFromSetting(legoLinac);;
+	}
 	public static Lego readSerializedLego(String filePath) throws LinacLegoException
 	{
 		try 
@@ -481,7 +509,11 @@ public class Lego implements Serializable
 //		lego.triggerUpdate("testFiles/5.0_SpokeV3.xml","../dtdFiles/LinacLego.dtd", false);
 //		lego.createReports("testFiles");
 		
-		Lego lego =  readSerializedLegoFromWeb("https://aig.esss.lu.se:8443/LinacLegoV2DataWeb/data/test/linacLego.bin");
-		lego.getLegoLinac().triggerUpdate();
+//		Lego lego =  readSerializedLegoFromWeb("https://aig.esss.lu.se:8443/LinacLegoV2DataWeb/data/test/linacLego.bin");
+//		lego.getLegoLinac().triggerUpdate();
+		Lego lego = new Lego("/home/dmcginnis427/Dropbox/TB18LatticeImport/5.0_Spoke.xml", null);
+		lego.triggerUpdate("/home/dmcginnis427/Dropbox/TB18LatticeImport/5.0_Spoke.xml","../dtdFiles/LinacLego.dtd", false);
+		lego.setLatticeFromSettings();
+		lego.triggerUpdate("/home/dmcginnis427/Dropbox/TB18LatticeImport/5.0_Spoke.xml","../dtdFiles/LinacLego.dtd", false);
 	}
 }

@@ -71,6 +71,16 @@ public class LegoCell  implements Serializable
 			}
 		} catch (SimpleXmlException e)  {throw new LinacLegoException(e);}
 	}
+	public LegoSlot getLegoSlotById(String slotId)
+	{
+		int islot = 0;
+		while (islot < legoSlotList.size())
+		{
+			if (legoSlotList.get(islot).getId().equals(slotId)) return legoSlotList.get(islot);
+			islot = islot + 1;
+		}
+		return null;
+	}
 	public void writeXml(SimpleXmlWriter xw, boolean expandSlotTemplate) throws LinacLegoException
 	{
 		try 

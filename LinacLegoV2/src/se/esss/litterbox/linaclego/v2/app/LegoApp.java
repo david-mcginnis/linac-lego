@@ -33,7 +33,7 @@ public class LegoApp extends JFrameSkeleton
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
 	private static final String version = "v2.1";
-	private static final String versionDate = "June 17, 2016";
+	private static final String versionDate = "June 30, 2016";
 
 	private Lego lego;
 	private JTabbedPane mainTabbedPane; 
@@ -84,6 +84,8 @@ public class LegoApp extends JFrameSkeleton
 		if (menu.equals("Actions") && menuItem.equals("Match Slot Models")) matchSlotModels();
 		if (menu.equals("Actions") && menuItem.equals("Create Reports")) createReports();
 		if (menu.equals("Actions") && menuItem.equals("Build XML Field File")) buildRFField();
+		if (menu.equals("Actions") && menuItem.equals("Update LegoSets from Lattice")) updateLegoSetsFromLattice();
+		if (menu.equals("Actions") && menuItem.equals("Update Lattice from LegoSets")) updateLatticeFromLegoSets();
 		
 	}
 
@@ -119,7 +121,7 @@ public class LegoApp extends JFrameSkeleton
 		addMenuItem("File","Exit");
 		addMenuItem("Actions","Match Slot Models");
 		addMenuItem("Actions","Create Reports");
-		addMenuItem("Actions","Update Lattice Settings from LegoSets");
+		addMenuItem("Actions","Update Lattice from LegoSets");
 		addMenuItem("Actions","Update LegoSets from Lattice");
 		addMenuItem("Actions","Build XML Field File");
 		addMenuItem("PBS Level View","Section");
@@ -132,7 +134,7 @@ public class LegoApp extends JFrameSkeleton
 		setEnabledMenuItem("File","Save LinacLego File",false);
 		setEnabledMenuItem("Actions","Match Slot Models",false);
 		setEnabledMenuItem("Actions","Create Reports",false);
-		setEnabledMenuItem("Actions","Update Lattice Settings from LegoSets",false);
+		setEnabledMenuItem("Actions","Update Lattice from LegoSets",false);
 		setEnabledMenuItem("Actions","Update LegoSets from Lattice",false);
 		setEnabledMenu("PBS Level View", false);
 		setEnabledMenuItem("Help","Help",false);
@@ -201,6 +203,8 @@ public class LegoApp extends JFrameSkeleton
 			setEnabledMenuItem("File","Save LinacLego File",true);
 			setEnabledMenuItem("Actions","Match Slot Models",true);
 			setEnabledMenuItem("Actions","Create Reports",true);
+			setEnabledMenuItem("Actions","Update Lattice from LegoSets",true);
+			setEnabledMenuItem("Actions","Update LegoSets from Lattice",true);
 		} catch (LinacLegoException e) 
 		{
 			if (printStackTrace) e.printStackTrace();
@@ -209,6 +213,8 @@ public class LegoApp extends JFrameSkeleton
 			setEnabledMenuItem("File","Save LinacLego File",false);
 			setEnabledMenuItem("Actions","Match Slot Models",false);
 			setEnabledMenuItem("Actions","Create Reports",false);
+			setEnabledMenuItem("Actions","Update Lattice from LegoSets",false);
+			setEnabledMenuItem("Actions","Update LegoSets from Lattice",false);
 		}
 	}
     private void expandPbsTreeTo(int level, JTree jtree)
@@ -313,6 +319,34 @@ public class LegoApp extends JFrameSkeleton
 			}
 		}
 		
+	}
+	private void updateLegoSetsFromLattice()
+	{
+		try 
+		{
+			lego.setSettingsFromLattice();
+			loadLinacLegoFile(openedXmlFile.getPath(), true);
+
+		} 
+		catch (LinacLegoException e) 
+		{
+			if (printStackTrace) e.printStackTrace();
+			messageDialog("Error: " + e.getMessage());
+		}
+	}
+	private void updateLatticeFromLegoSets()
+	{
+		try 
+		{
+			lego.setLatticeFromSettings();
+			loadLinacLegoFile(openedXmlFile.getPath(), true);
+
+		} 
+		catch (LinacLegoException e) 
+		{
+			if (printStackTrace) e.printStackTrace();
+			messageDialog("Error: " + e.getMessage());
+		}
 	}
 	private void matchSlotModels()
 	{

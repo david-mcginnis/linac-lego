@@ -9,6 +9,7 @@ import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.data.LegoData;
 import se.esss.litterbox.linaclego.v2.data.LegoInfo;
 import se.esss.litterbox.linaclego.v2.data.LegoLatticeFileComment;
+import se.esss.litterbox.linaclego.v2.data.LegoModel;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeam;
 import se.esss.litterbox.linaclego.v2.templates.LegoBeamTemplate;
 import se.esss.litterbox.linaclego.v2.templates.LegoSlotTemplate;
@@ -114,6 +115,16 @@ public class LegoSlot  implements Serializable
 			if (legoSlotTemplate == null) throw new LinacLegoException("Slot Template " + template + " not found");
 			legoSlotTemplate.createBeamList(this);
 		}
+	}
+	public LegoBeam getLegoBeamById(String beamId)
+	{
+		int ibeam = 0;
+		while (ibeam < legoBeamList.size())
+		{
+			if (legoBeamList.get(ibeam).getId().equals(beamId)) return legoBeamList.get(ibeam);
+			ibeam = ibeam + 1;
+		}
+		return null;
 	}
 	public void writeXml(SimpleXmlWriter xw, boolean expandSlotTemplate) throws LinacLegoException
 	{
@@ -341,6 +352,23 @@ public class LegoSlot  implements Serializable
 				}
 			}
 		}
+	}
+	public void triggerUpdate(ArrayList<LegoModel> legoBeamModelList) throws LinacLegoException
+	{
+		getLego().writeStatus("               Updating slot " + getId());
+		if (template != null)
+		{
+			legoBeamList = new ArrayList<LegoBeam>();
+			LegoSlotTemplate.findLegoTemplateById(getLego().getLegoSlotTempateList(), template).createBeamList(this);
+		}
+		for (int ibeam = 0; ibeam < getLegoBeamList().size(); ++ibeam) 
+		{
+			LegoBeam legoBeam = getLegoBeamList().get(ibeam);
+			getLego().writeStatus("                    Updating beam " + legoBeam.getId());
+			legoBeam.triggerUpdate();
+			LegoModel.addLegoBeamToModelList(legoBeamModelList, legoBeam);
+		}
+		
 	}
 	public double getLength()
 	{

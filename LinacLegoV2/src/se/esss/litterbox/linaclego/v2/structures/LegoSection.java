@@ -90,7 +90,7 @@ public class LegoSection  implements Serializable
 	{
 		return Lego.cvel / (rfFreqMHz() * 1.0e+06);
 	}
-	public void writeXml(SimpleXmlWriter xw, boolean expandSlotTemplate) throws LinacLegoException
+	public void writeXml(SimpleXmlWriter xw) throws LinacLegoException
 	{
 		try 
 		{
@@ -100,7 +100,7 @@ public class LegoSection  implements Serializable
 			if (legoInfoList.size() > 0) for (int ii = 0; ii < legoInfoList.size(); ++ii) legoInfoList.get(ii).writeXml(xw);
 			if (legoCellList.size() > 0)
 			{
-				for (int ii = 0; ii < legoCellList.size(); ++ii) legoCellList.get(ii).writeXml(xw, expandSlotTemplate);
+				for (int ii = 0; ii < legoCellList.size(); ++ii) legoCellList.get(ii).writeXml(xw);
 			}
 			xw.closeXmlTag("section");
 		} catch (SimpleXmlException e)  {throw new LinacLegoException(e);}

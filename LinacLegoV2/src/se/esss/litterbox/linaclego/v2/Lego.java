@@ -40,6 +40,7 @@ import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamQuad;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamSizeMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamThinSteering;
 import se.esss.litterbox.linaclego.v2.templates.LegoSlotTemplate;
+import se.esss.litterbox.linaclego.v2.utilities.LegoUtilities;
 import se.esss.litterbox.linaclego.v2.utilities.Zipper;
 import se.esss.litterbox.simplexml.SimpleXmlDoc;
 import se.esss.litterbox.simplexml.SimpleXmlException;
@@ -138,20 +139,25 @@ public class Lego implements Serializable
 			catch (SimpleXmlException e) {if (e.getMessage().equals("Attribute does not exist")) revDate = "01-Jan-1970";}
 			title = legoTag.attribute("title");
 	
+			SimpleXmlReader definitionsTag = legoTag.tagsByName("definitions").tag(0);
 			writeStatus("Reading slotTemplates tag...");
-			SimpleXmlReader slotTemplateListTag = legoTag.tagsByName("slotTemplate");
-			if (slotTemplateListTag.numChildTags() > 0)
+			SimpleXmlReader slotTemplatesTag = definitionsTag.tagsByName("slotTemplates");
+			for (int iststag = 0; iststag < slotTemplatesTag.numChildTags(); ++iststag)
 			{
-				for (int itag = 0; itag < slotTemplateListTag.numChildTags(); ++itag)
+				SimpleXmlReader slotTemplateListTag = slotTemplatesTag.tag(iststag).tagsByName("slotTemplate");
+				if (slotTemplateListTag.numChildTags() > 0)
 				{
-					writeStatus("     Adding SlotTemplate " + slotTemplateListTag.tag(itag).attribute("id"));
-					legoSlotTemplateList.add(new LegoSlotTemplate(this, slotTemplateListTag.tag(itag)));
+					for (int itag = 0; itag < slotTemplateListTag.numChildTags(); ++itag)
+					{
+						writeStatus("     Adding SlotTemplate " + slotTemplateListTag.tag(itag).attribute("id"));
+						legoSlotTemplateList.add(new LegoSlotTemplate(this, slotTemplateListTag.tag(itag)));
+					}
 				}
+				writeStatus("Finished reading slotTemplates");
 			}
-			writeStatus("Finished reading slotTemplates");
 			writeStatus("Reading LegoSets");
 			legoSetList = new ArrayList<LegoSet>();
-			SimpleXmlReader legoSetsListTag = legoTag.tagsByName("legoSets");
+			SimpleXmlReader legoSetsListTag = definitionsTag.tagsByName("legoSets");
 			if (legoSetsListTag.numChildTags() > 0)
 			{
 				for (int icol = 0; icol < legoSetsListTag.numChildTags(); ++icol)
@@ -202,24 +208,29 @@ public class Lego implements Serializable
 			System.out.println(statusText);
 		}
 	}
-	public void updateXmlFile(String newXmlDocPath, String dtdLink, boolean expandSlotTemplate) throws LinacLegoException
+	public void updateXmlFile(String newXmlDocPath, String dtdLink) throws LinacLegoException
 	{
 		try 
 		{
 			SimpleXmlWriter xw = new SimpleXmlWriter("linacLego", dtdLink);
 			xw.setAttribute("title", title);
-			if (!expandSlotTemplate)
+			xw.setAttribute("revNo", revNo);
+			xw.setAttribute("date", revDate);
+			xw.setAttribute("comment", revComment);
+			xw.openXmlTag("definitions");
+			xw.openXmlTag("slotTemplates");
+			xw.setAttribute("id", title + "SlotTemplates");
+			if (legoSlotTemplateList.size() > 0)
 			{
-				if (legoSlotTemplateList.size() > 0)
-				{
-					for (int ii = 0; ii < legoSlotTemplateList.size(); ++ii) legoSlotTemplateList.get(ii).writeXml(xw);
-				}
+				for (int ii = 0; ii < legoSlotTemplateList.size(); ++ii) legoSlotTemplateList.get(ii).writeXml(xw);
 			}
+			xw.closeXmlTag("slotTemplates");
 			xw.openXmlTag("legoSets");
 			xw.setAttribute("id", title + "LegoSets");
 			for (int iset = 0; iset < legoSetList.size(); ++iset) legoSetList.get(iset).writeXml(xw);
 			xw.closeXmlTag("legoSets");
-			legoLinac.writeXml(xw, expandSlotTemplate);
+			xw.closeXmlTag("definitions");
+			legoLinac.writeXml(xw);
 			xw.closeDocument();
 			simpleXmlDoc = xw.getSimpleXmlDoc();
 			simpleXmlDoc.setXmlSourceUrl(new File(newXmlDocPath).toURI().toURL());
@@ -344,10 +355,10 @@ public class Lego implements Serializable
 			}
 		}
 	}
-	public void triggerUpdate(String newXmlDocPath, String dtdLink, boolean expandSlotTemplate) throws LinacLegoException
+	public void triggerUpdate(String newXmlDocPath, String dtdLink) throws LinacLegoException
 	{
 		getLegoLinac().triggerUpdate();
-		updateXmlFile(newXmlDocPath, dtdLink, expandSlotTemplate);
+		updateXmlFile(newXmlDocPath, dtdLink);
 		legoPbsTreeNode = new LegoPbsTreeNode(this);
 		legoXmlTreeNode = LegoXmlTreeNode.buildLegoXmlTreeNodes(this);
 		
@@ -371,7 +382,8 @@ public class Lego implements Serializable
 	}
 	public void createReports(String parentDirectoryPath) throws LinacLegoException
 	{
-		File reportDirectory = new File(parentDirectoryPath + delim + "linacLegoOutput");
+		String baseName = simpleXmlDoc.getXmlDocName().substring(0, simpleXmlDoc.getXmlDocName().lastIndexOf("."));
+		File reportDirectory = new File(parentDirectoryPath + delim + baseName + "Output");
 		if (reportDirectory.exists()) 
 		{
 			File[] fileList = reportDirectory.listFiles();
@@ -383,8 +395,7 @@ public class Lego implements Serializable
 		}
 		if (reportDirectory.exists()) 
 		{
-			writeStatus("Report directory set to " + parentDirectoryPath + delim + "linacLegoOutput");
-			String baseName = simpleXmlDoc.getXmlDocName().substring(0, simpleXmlDoc.getXmlDocName().lastIndexOf("."));
+			writeStatus("Report directory set to " + parentDirectoryPath + delim + baseName + "Output");
 			try 
 			{
 				String fileName = reportDirectory.getPath() + delim +  baseName + ".dat";
@@ -410,7 +421,7 @@ public class Lego implements Serializable
 				pw = new PrintWriter(fileName);
 				getLegoLinac().printStructureTable(pw, LegoSection.TABLE_HEADER, LegoSection.TABLE_HEADER_UNITS, "section");
 				pw.close();
-				fileName = reportDirectory.getPath() + delim +  baseName + "Parsed.xml";
+				fileName = reportDirectory.getPath() + delim +  baseName + ".xml";
 				writeStatus("Printing " + fileName);
 				writeXmlFile(fileName);
 				fileName = reportDirectory.getPath() + delim +  baseName;
@@ -421,17 +432,16 @@ public class Lego implements Serializable
 				fileName = reportDirectory.getPath() + delim +  baseName + ".bin";
 				writeStatus("Printing Serialized Lego");
 				writeSerializedFile(fileName);
+				File inputDrawingDirectory = new File(parentDirectoryPath + delim + "slotTemplateDrawings");
+				File outputDrawingDirectory = new File(reportDirectory + delim + "slotTemplateDrawings");
+				LegoUtilities.copyFolder(inputDrawingDirectory, outputDrawingDirectory);
+				
 				
 				try 
 				{
-					Zipper zipper = new Zipper(reportDirectory.getParent() + delim + "linacLego.zip");
-					zipper.addFilesInDir(reportDirectory.getPath(), "xml");
-					zipper.addFilesInDir(reportDirectory.getPath(), "csv");
-					zipper.addFilesInDir(reportDirectory.getPath(), "dat");
-					zipper.addFilesInDir(reportDirectory.getPath(), "edz");
-					zipper.addFilesInDir(reportDirectory.getPath(), "bin");
-					zipper.close();
-					writeStatus("Compressed  file  created in " + reportDirectory.getParent() + delim +  "linacLego.zip");
+					Zipper zipper = new Zipper(reportDirectory.getPath());
+					zipper.zipIt(reportDirectory.getParent() + delim +  baseName + "Output.zip");
+					writeStatus("Compressed  file  created in " + reportDirectory.getParent() + delim +  baseName + "Output.zip");
 				} catch (Exception e) 
 				{
 					LinacLegoException lle = new LinacLegoException(e);
@@ -511,9 +521,9 @@ public class Lego implements Serializable
 		
 //		Lego lego =  readSerializedLegoFromWeb("https://aig.esss.lu.se:8443/LinacLegoV2DataWeb/data/test/linacLego.bin");
 //		lego.getLegoLinac().triggerUpdate();
-		Lego lego = new Lego("/home/dmcginnis427/Dropbox/TB18LatticeImport/5.0_Spoke.xml", null);
-		lego.triggerUpdate("/home/dmcginnis427/Dropbox/TB18LatticeImport/5.0_Spoke.xml","../dtdFiles/LinacLego.dtd", false);
+		Lego lego = new Lego("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LinacLegoV2DataWeb/WebContent/data/development/linacLego.xml", null);
+		lego.triggerUpdate("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LinacLegoV2DataWeb/WebContent/data/development/linacLego.xml","../dtdFiles/LinacLego.dtd");
 		lego.setLatticeFromSettings();
-		lego.triggerUpdate("/home/dmcginnis427/Dropbox/TB18LatticeImport/5.0_Spoke.xml","../dtdFiles/LinacLego.dtd", false);
+		lego.triggerUpdate("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LinacLegoV2DataWeb/WebContent/data/development/linacLego.xml","../dtdFiles/LinacLego.dtd");
 	}
 }

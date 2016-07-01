@@ -30,6 +30,7 @@ public class LegoSlot  implements Serializable
 	private String template = null;
 	private int slotListIndex = -1;
 	private LegoCell legoCell;
+	private String drawingLocation = null;
 
 	public ArrayList<LegoData> getLegoDataList() {return legoDataList;}
 	public ArrayList<LegoBeam> getLegoBeamList() {return legoBeamList;}
@@ -43,6 +44,7 @@ public class LegoSlot  implements Serializable
 	public LegoBeam getFirstBeam() {return getLegoBeamList().get(0);}
 	public LegoBeam getLastBeam() {return getLegoBeamList().get(getLegoBeamList().size() - 1);}
 	public ArrayList<LegoInfo> getLegoInfoList() {return legoInfoList;}
+	public String getDrawingLocation() {return drawingLocation;}
 	public void setInfoList(ArrayList<LegoInfo> legoInfoList) {this.legoInfoList = legoInfoList;}
 
 	public LegoSlot(LegoCell legoCell, int slotListIndex, String id)
@@ -126,13 +128,13 @@ public class LegoSlot  implements Serializable
 		}
 		return null;
 	}
-	public void writeXml(SimpleXmlWriter xw, boolean expandSlotTemplate) throws LinacLegoException
+	public void writeXml(SimpleXmlWriter xw) throws LinacLegoException
 	{
 		try 
 		{
 			xw.openXmlTag("slot");
 			xw.setAttribute("id", id);
-			if ((template != null) && !expandSlotTemplate)
+			if (template != null)
 			{
 				xw.setAttribute("template", template);
 				if (legoDataList.size() > 0)
@@ -140,7 +142,7 @@ public class LegoSlot  implements Serializable
 					for (int ii = 0; ii < legoDataList.size(); ++ii) legoDataList.get(ii).writeXml(xw);
 				}
 			}
-			if ((template == null) || expandSlotTemplate)
+			if (template == null)
 			{
 				if (legoInfoList.size() > 0) for (int ii = 0; ii < legoInfoList.size(); ++ii) legoInfoList.get(ii).writeXml(xw);
 				if (legoBeamList.size() > 0)
@@ -321,6 +323,12 @@ public class LegoSlot  implements Serializable
 	{
 		template = slotTemplate.getId();
 		legoDataList = new ArrayList<LegoData>();
+		legoInfoList = new ArrayList<LegoInfo>();
+		for (int iinfo = 0; iinfo < slotTemplate.getLegoInfoList().size(); ++iinfo)
+		{
+			legoInfoList.add(slotTemplate.getLegoInfoList().get(iinfo));
+		}
+		drawingLocation = slotTemplate.getDrawingLocation();
 		for (int idata = 0; idata < slotTemplate.getLegoVariableList().size(); ++idata)
 		{
 			legoDataList.add(new LegoData(

@@ -128,7 +128,7 @@ public class LegoLinac  implements Serializable
 		}
 		return null;
 	}
-	public void writeXml(SimpleXmlWriter xw, boolean expandSlotTemplate) throws LinacLegoException
+	public void writeXml(SimpleXmlWriter xw) throws LinacLegoException
 	{
 		try 
 		{
@@ -137,7 +137,7 @@ public class LegoLinac  implements Serializable
 			xw.openXmlTag("linacData");
 			if (legoDataList.size() > 0) for (int ii = 0; ii < legoDataList.size(); ++ii) legoDataList.get(ii).writeXml(xw);
 			xw.closeXmlTag("linacData");
-			if (legoSectionList.size() > 0) for (int ii = 0; ii < legoSectionList.size(); ++ii) legoSectionList.get(ii).writeXml(xw, expandSlotTemplate);
+			if (legoSectionList.size() > 0) for (int ii = 0; ii < legoSectionList.size(); ++ii) legoSectionList.get(ii).writeXml(xw);
 			xw.closeXmlTag("linac");
 		} catch (SimpleXmlException e)  {throw new LinacLegoException(e);}
 		

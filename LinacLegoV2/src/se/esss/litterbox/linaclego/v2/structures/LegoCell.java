@@ -81,7 +81,7 @@ public class LegoCell  implements Serializable
 		}
 		return null;
 	}
-	public void writeXml(SimpleXmlWriter xw, boolean expandSlotTemplate) throws LinacLegoException
+	public void writeXml(SimpleXmlWriter xw) throws LinacLegoException
 	{
 		try 
 		{
@@ -90,7 +90,7 @@ public class LegoCell  implements Serializable
 			if (legoInfoList.size() > 0) for (int ii = 0; ii < legoInfoList.size(); ++ii) legoInfoList.get(ii).writeXml(xw);
 			if (legoSlotList.size() > 0)
 			{
-				for (int ii = 0; ii < legoSlotList.size(); ++ii) legoSlotList.get(ii).writeXml(xw, expandSlotTemplate);
+				for (int ii = 0; ii < legoSlotList.size(); ++ii) legoSlotList.get(ii).writeXml(xw);
 			}
 			xw.closeXmlTag("cell");
 		} catch (SimpleXmlException e)  {throw new LinacLegoException(e);}

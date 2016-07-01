@@ -32,8 +32,8 @@ public class LegoApp extends JFrameSkeleton
 	private static final String frametitle = "LinacLego";
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
-	private static final String version = "v2.1";
-	private static final String versionDate = "June 30, 2016";
+	private static final String version = "v2.2";
+	private static final String versionDate = "July 1, 2016";
 
 	private Lego lego;
 	private JTabbedPane mainTabbedPane; 
@@ -194,7 +194,7 @@ public class LegoApp extends JFrameSkeleton
 	{
 		try 
 		{
-			if (triggerLegoUpdate) lego.triggerUpdate(newXmlDocPath, "../dtdFiles/LinacLego.dtd", false);
+			if (triggerLegoUpdate) lego.triggerUpdate(newXmlDocPath, "../dtdFiles/LinacLego.dtd");
 			setTitle("LinacLego " + openedXmlFile.getName());
 			xmlTree.setModel(new DefaultTreeModel(lego.getLegoXmlTreeNode()));
 			pbsTree.setModel(new DefaultTreeModel(lego.getLegoPbsTreeNode()));
@@ -246,6 +246,7 @@ public class LegoApp extends JFrameSkeleton
 			try 
 			{
 				suggestedFileName = xmlFile.getName();
+				loadLinacLegoFile(xmlFile.getPath(), true);				
 				getStatusPanel().setText("Saving "+ xmlFile.getPath());
 				lego.writeXmlFile(xmlFile.getPath());
 				String serPath = xmlFile.getPath().substring(0, xmlFile.getPath().lastIndexOf(".")) + ".bin";

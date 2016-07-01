@@ -3,75 +3,78 @@ package se.esss.litterbox.linaclego.v2.utilities;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import se.esss.litterbox.linaclego.v2.LinacLegoException;
+
 public class Zipper 
 {
-	private static final String delim = System.getProperty("file.separator");
-	ZipOutputStream zipOutputStream;
-	public Zipper(String compressedFilePath) throws IOException
+	private List<String> fileList;
+	private String sourcePath; 
+	public Zipper(String sourcePath) throws IOException
 	{
-        zipOutputStream = new ZipOutputStream(new FileOutputStream(compressedFilePath));
+        this.sourcePath = sourcePath;
+        fileList = new ArrayList<String>();
+        generateFileList(new File(sourcePath));
 	}
-	public void addFile(String filePath) throws IOException
+	public void zipIt(String zipFile) throws LinacLegoException
 	{
-		FileInputStream fileInputStream = new FileInputStream(filePath);
-		zipOutputStream.putNextEntry(new ZipEntry(new File(filePath).getName())); 
-        byte[] b = new byte[1024];
-        int count = 0;
-        while ((count = fileInputStream.read(b)) > 0)  zipOutputStream.write(b, 0, count);
-        fileInputStream.close();
-	}
-	public void addFilesInDir(String dirPath, String extension) throws IOException
-	{
-		String[] fileListPath = getDirFilePathList(dirPath, extension);
-		if (fileListPath != null)
+		byte[] buffer = new byte[1024];
+		try
 		{
-			for (int ii = 0; ii < fileListPath.length; ++ii)
-			{
-				addFile(fileListPath[ii]);
-			}
-		}
+			FileOutputStream fos = new FileOutputStream(zipFile);
+	    	ZipOutputStream zos = new ZipOutputStream(fos);
+	    	for(String file : this.fileList)
+	    	{
+	    		ZipEntry ze= new ZipEntry(file);
+	        	zos.putNextEntry(ze);
+	        	FileInputStream in = new FileInputStream(sourcePath + File.separator + file);
+	        	int len;
+	        	while ((len = in.read(buffer)) > 0) zos.write(buffer, 0, len);
+	        	in.close();
+	    	}
+	    	zos.closeEntry();
+	    	//remember close it
+	    	zos.close();
+	    } catch(IOException e){throw new LinacLegoException(e);}
 	}
-	public static String[] getDirFilePathList(String dirPath, String extension)
-	{
-		File dir = new File(dirPath);
-		String[] fileListName = dir.list(new MyFileNameFilter(extension));
-		String[] fileListPath = null;
-		if (fileListName.length > 0)
-		{
-			fileListPath = new String[fileListName.length];
-			for (int ii = 0; ii < fileListName.length; ++ii)
-			{
-				fileListPath[ii] = dirPath + delim + fileListName[ii];
-			}
-		}
-		return fileListPath;
-	}
-	private static class MyFileNameFilter implements FilenameFilter
-	{
-		String extension;
-		public MyFileNameFilter(String extension)
-		{
-			this.extension = extension;
-		}
-		@Override
-		public boolean accept(File directory, String fileName) 
-		{
-			return fileName.endsWith("." + extension);
-		}
-		
-	}
-	public void close() throws IOException
-	{
-		zipOutputStream.close();
-	}
+	    
+	    /**
+	     * Traverse a directory and get all files,
+	     * and add the file into fileList  
+	     * @param node file or directory
+	     */
+	    public void generateFileList(File node){
 
-	public static void main(String[] args) 
-	{
-	}
+	    	//add file only
+		if(node.isFile()){
+			fileList.add(generateZipEntry(node.getAbsoluteFile().toString()));
+		}
+			
+		if(node.isDirectory()){
+			String[] subNote = node.list();
+			for(String filename : subNote){
+				generateFileList(new File(node, filename));
+			}
+		}
+	 
+	    }
+
+	    /**
+	     * Format the file path for zip
+	     * @param file file path
+	     * @return Formatted file path
+	     */
+	    private String generateZipEntry(String file)
+	    {
+	    	System.out.println(file);
+	    	String zipeEntry = file.substring(sourcePath.length() + 1, file.length());
+	    	System.out.println(zipeEntry);
+	    	return zipeEntry;
+	    }
 
 }

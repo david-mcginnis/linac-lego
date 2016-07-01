@@ -511,19 +511,19 @@ public class Lego implements Serializable
 //		Lego lego = new Lego("test", "revNo", "revComment", "revDate", 89.0, 352.21, null);
 //		lego.readLatticeFile("testFiles/5.0_SpokeV2.dat", "tracewin");
 //		lego.getLegoLinac().triggerUpdate();
-// 		lego.writeXmlFile("5.0_SpokeV2.xml", "../dtdFiles/LinacLego.dtd", false);
+// 		lego.writeXmlFile("5.0_SpokeV2.xml", "https://aig.esss.lu.se:8443/LinacLegoData/data/dtdFiles/LinacLego.dtd", false);
 
 //		Lego lego = new Lego("testFiles/5.0_SpokeV3.xml", null);
 //		Lego lego = Lego.readSerializedLego("testFiles/5.0_SpokeV3.bin");
 //		lego.replaceSlotsWithTemplates();
-//		lego.triggerUpdate("testFiles/5.0_SpokeV3.xml","../dtdFiles/LinacLego.dtd", false);
+//		lego.triggerUpdate("testFiles/5.0_SpokeV3.xml","https://aig.esss.lu.se:8443/LinacLegoData/data/dtdFiles/LinacLego.dtd", false);
 //		lego.createReports("testFiles");
 		
 //		Lego lego =  readSerializedLegoFromWeb("https://aig.esss.lu.se:8443/LinacLegoV2DataWeb/data/test/linacLego.bin");
 //		lego.getLegoLinac().triggerUpdate();
 		Lego lego = new Lego("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LinacLegoV2DataWeb/WebContent/data/development/linacLego.xml", null);
-		lego.triggerUpdate("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LinacLegoV2DataWeb/WebContent/data/development/linacLego.xml","../dtdFiles/LinacLego.dtd");
+		lego.triggerUpdate("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LinacLegoV2DataWeb/WebContent/data/development/linacLego.xml","https://aig.esss.lu.se:8443/LinacLegoData/data/dtdFiles/LinacLego.dtd");
 		lego.setLatticeFromSettings();
-		lego.triggerUpdate("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LinacLegoV2DataWeb/WebContent/data/development/linacLego.xml","../dtdFiles/LinacLego.dtd");
+		lego.triggerUpdate("/home/dmcginnis427/Dropbox/gitRepositories/lattice-repository/LinacLegoV2DataWeb/WebContent/data/development/linacLego.xml","https://aig.esss.lu.se:8443/LinacLegoData/data/dtdFiles/LinacLego.dtd");
 	}
 }

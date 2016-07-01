@@ -194,7 +194,7 @@ public class LegoApp extends JFrameSkeleton
 	{
 		try 
 		{
-			if (triggerLegoUpdate) lego.triggerUpdate(newXmlDocPath, "../dtdFiles/LinacLego.dtd");
+			if (triggerLegoUpdate) lego.triggerUpdate(newXmlDocPath, "https://aig.esss.lu.se:8443/LinacLegoData/data/dtdFiles/LinacLego.dtd");
 			setTitle("LinacLego " + openedXmlFile.getName());
 			xmlTree.setModel(new DefaultTreeModel(lego.getLegoXmlTreeNode()));
 			pbsTree.setModel(new DefaultTreeModel(lego.getLegoPbsTreeNode()));

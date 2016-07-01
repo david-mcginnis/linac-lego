@@ -106,7 +106,7 @@ public class RfFieldProfileBuilder  implements Serializable
 		try {
 			PrintWriter pw = new PrintWriter(xmlFilePath);
 			pw.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
-			pw.println("<!DOCTYPE fieldProfile SYSTEM \"FieldProfile.dtd\" >");
+			pw.println("<!DOCTYPE fieldProfile SYSTEM \"https://aig.esss.lu.se:8443/LinacLegoData/data/dtdFiles/FieldProfile.dtd\" >");
 			pw.println(
 					"<fieldProfile title=\"" 
 							+ title 

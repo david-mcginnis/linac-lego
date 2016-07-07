@@ -71,9 +71,7 @@ public class Zipper
 	     */
 	    private String generateZipEntry(String file)
 	    {
-	    	System.out.println(file);
 	    	String zipeEntry = file.substring(sourcePath.length() + 1, file.length());
-	    	System.out.println(zipeEntry);
 	    	return zipeEntry;
 	    }
 

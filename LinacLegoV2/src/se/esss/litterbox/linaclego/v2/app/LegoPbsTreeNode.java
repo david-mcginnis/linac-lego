@@ -1,9 +1,11 @@
-package se.esss.litterbox.linaclego.v2;
+package se.esss.litterbox.linaclego.v2.app;
 
 import java.util.ArrayList;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import se.esss.litterbox.linaclego.v2.Lego;
+import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.data.LegoData;
 import se.esss.litterbox.linaclego.v2.data.LegoInfo;
 import se.esss.litterbox.linaclego.v2.structures.LegoCell;

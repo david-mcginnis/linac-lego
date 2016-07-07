@@ -1,4 +1,4 @@
-package se.esss.litterbox.linaclego.v2;
+package se.esss.litterbox.linaclego.v2.app;
 
 import java.util.ArrayList;
 
@@ -7,6 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import se.esss.litterbox.linaclego.v2.Lego;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 

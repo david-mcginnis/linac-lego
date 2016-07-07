@@ -32,8 +32,8 @@ public class LegoApp extends JFrameSkeleton
 	private static final String frametitle = "LinacLego";
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
-	private static final String version = "v2.2";
-	private static final String versionDate = "July 1, 2016";
+	private static final String version = "v2.3";
+	private static final String versionDate = "July 7, 2016";
 
 	private Lego lego;
 	private JTabbedPane mainTabbedPane; 
@@ -167,7 +167,7 @@ public class LegoApp extends JFrameSkeleton
 				boolean triggerLegoUpdate = true;
 				if (extension.equals("xml"))
 				{
-					lego = new Lego(openedXmlFile, getStatusPanel());
+					lego = new Lego(openedXmlFile, getStatusPanel(), true);
 				}
 				else
 				{
@@ -194,10 +194,13 @@ public class LegoApp extends JFrameSkeleton
 	{
 		try 
 		{
-			if (triggerLegoUpdate) lego.triggerUpdate(newXmlDocPath, "https://aig.esss.lu.se:8443/LinacLegoData/data/dtdFiles/LinacLego.dtd");
+			if (triggerLegoUpdate) lego.triggerUpdate(newXmlDocPath);
+
 			setTitle("LinacLego " + openedXmlFile.getName());
-			xmlTree.setModel(new DefaultTreeModel(lego.getLegoXmlTreeNode()));
-			pbsTree.setModel(new DefaultTreeModel(lego.getLegoPbsTreeNode()));
+//			pbsTree.setModel(new DefaultTreeModel(LegoXmlTreeNode.buildLegoXmlTreeNodes(lego)));
+//			xmlTree.setModel(new DefaultTreeModel(new LegoPbsTreeNode(lego)));
+			xmlTree.setModel(new DefaultTreeModel(LegoXmlTreeNode.buildLegoXmlTreeNodes(lego)));
+			pbsTree.setModel(new DefaultTreeModel(new LegoPbsTreeNode(lego)));
 			expandPbsTreeTo(3, pbsTree);
 			setEnabledMenu("PBS Level View", true);
 			setEnabledMenuItem("File","Save LinacLego File",true);
@@ -284,7 +287,7 @@ public class LegoApp extends JFrameSkeleton
 				if (ekinMeVString != null) ekinMeV = Double.parseDouble(ekinMeVString);
 				String beamFreqMHzString = JOptionPane.showInputDialog("Enter Bunch Frequency in MHz: ");
 				if (beamFreqMHzString != null) beamFreqMHz = Double.parseDouble(beamFreqMHzString);
-		 		lego = new Lego(traceWinFile.getName(), "1.0", "revComment", new Date().toString(), ekinMeV, beamFreqMHz, getStatusPanel());
+		 		lego = new Lego(traceWinFile.getName(), "1.0", "revComment", new Date().toString(), ekinMeV, beamFreqMHz, getStatusPanel(), true);
 				lego.readLatticeFile(traceWinFile.getPath(), "tracewin");
 				loadLinacLegoFile(xmlFilePath, true);				
 			} catch (LinacLegoException e)

@@ -115,6 +115,7 @@ public class LegoSlot  implements Serializable
 			}
 			LegoSlotTemplate legoSlotTemplate =  LegoSlotTemplate.findLegoTemplateById(getLego().getLegoSlotTempateList(), template);
 			if (legoSlotTemplate == null) throw new LinacLegoException("Slot Template " + template + " not found");
+			drawingLocation = legoSlotTemplate.getDrawingLocation();
 			legoSlotTemplate.createBeamList(this);
 		}
 	}
@@ -328,7 +329,6 @@ public class LegoSlot  implements Serializable
 		{
 			legoInfoList.add(slotTemplate.getLegoInfoList().get(iinfo));
 		}
-		drawingLocation = slotTemplate.getDrawingLocation();
 		for (int idata = 0; idata < slotTemplate.getLegoVariableList().size(); ++idata)
 		{
 			legoDataList.add(new LegoData(

@@ -25,12 +25,14 @@ public class GskelTabLayoutScrollPanel extends ScrollPanel
 	private GskelTabLayoutPanel gskelTabLayoutPanel;
 	private GskelVerticalPanel gskelVerticalPanel;
 	private GskelSetupApp setupApp;
+	private int tabValue = -1;
 
 	public GskelTabLayoutPanel getGskelTabLayoutPanel() {return gskelTabLayoutPanel;}
 	public int getPanelWidth() {return panelWidth;}
 	public int getPanelHeight() {return panelHeight;}
 	public GskelVerticalPanel getGskelVerticalPanel() {return gskelVerticalPanel;}
 	public GskelSetupApp getSetupApp() {return setupApp;}
+	public int getTabValue() {return tabValue;}
 
 	public GskelTabLayoutScrollPanel(String tabTitle, GskelVerticalPanel gskelVerticalPanel, GskelSetupApp setupApp)
 	{
@@ -39,7 +41,7 @@ public class GskelTabLayoutScrollPanel extends ScrollPanel
 		this.setupApp = setupApp;
 		setAlwaysShowScrollBars(true);
 		add(gskelVerticalPanel);
-		getSetupApp().getGskelTabLayoutPanel().addGskelTabLayoutScrollPanel(this, tabTitle);
+		tabValue = getSetupApp().getGskelTabLayoutPanel().addGskelTabLayoutScrollPanel(this, tabTitle);
 		reSize();
 		Window.addResizeHandler(new GskelTabLayoutScrollPanelResizeHandler());
 	}

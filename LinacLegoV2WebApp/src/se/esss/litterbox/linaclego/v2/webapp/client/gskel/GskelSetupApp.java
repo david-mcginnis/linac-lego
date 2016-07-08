@@ -23,6 +23,7 @@ public class GskelSetupApp
 	private GskelTabLayoutPanel gskelTabLayoutPanel;
 	private GskelOptionDialog optionDialog;
 	private GskelMessageDialog messageDialog;
+	private GskelFrameDialog frameDialog;
 
 	private int statusTextAreaHeight = 150;
 	private int gskelTabLayoutPanelHeightBarHeightPx = 30;
@@ -39,6 +40,7 @@ public class GskelSetupApp
 	public GskelStatusTextArea getStatusTextArea() {return statusTextArea;}
 	public GskelOptionDialog getOptionDialog() {return optionDialog;}
 	public GskelMessageDialog getMessageDialog() {return messageDialog;}
+	public GskelFrameDialog getFrameDialog() {return frameDialog;}
 	public GskelTabLayoutPanel getGskelTabLayoutPanel() {return gskelTabLayoutPanel;}
 	public int getGskelTabLayoutPanelHeightBarHeightPx() {return gskelTabLayoutPanelHeightBarHeightPx;}
 	public int getStatusTextAreaHeight() {return statusTextAreaHeight;}
@@ -59,6 +61,7 @@ public class GskelSetupApp
 
         optionDialog =  new GskelOptionDialog();
         messageDialog =  new GskelMessageDialog();
+        frameDialog = new GskelFrameDialog(this);
 	    VerticalPanel logoPanel = new VerticalPanel();
 		logoPanel.setWidth(logoPanelWidth + "px");
 		logoPanel.add(logoImage);

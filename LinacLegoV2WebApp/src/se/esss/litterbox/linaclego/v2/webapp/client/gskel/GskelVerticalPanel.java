@@ -10,23 +10,25 @@ public abstract class GskelVerticalPanel extends VerticalPanel implements GSkelT
 {
 	private GskelSetupApp setupApp;
 	private GskelTabLayoutScrollPanel gskelTabLayoutScrollPanel;
-	private int tabIndex;
+	private String tabStyle = null;
 
-	public int getTabIndex() {return tabIndex;}
 	public GskelSetupApp getSetupApp() {return setupApp;}
 	public GskelTabLayoutScrollPanel getGskelTabLayoutScrollPanel() {return gskelTabLayoutScrollPanel;}
+	public String getTabStyle() {return tabStyle;}
+	public int getTabValue() {return getGskelTabLayoutScrollPanel().getTabValue();}
 
-	public void setTabIndex(int tabIndex) {this.tabIndex = tabIndex;}
-
-	public GskelVerticalPanel(String tabTitle, GskelSetupApp setupApp)
+	public GskelVerticalPanel(String tabTitle, String tabStyle, GskelSetupApp setupApp)
 	{
 		super();
 		this.setupApp = setupApp;
+		this.tabStyle = tabStyle;
 		setWidth("100%");
 		setHeight("100%");
 
 		
 		gskelTabLayoutScrollPanel = new GskelTabLayoutScrollPanel(tabTitle, this,  setupApp);
+		if (tabStyle != null)
+			setupApp.getGskelTabLayoutPanel().getTabWidget(getTabValue()).setStyleName(tabStyle);
 		getStatusTextArea().addStatus("Adding " + tabTitle);
 	}
 	public GskelMessageDialog getMessageDialog() {return getSetupApp().getMessageDialog();}

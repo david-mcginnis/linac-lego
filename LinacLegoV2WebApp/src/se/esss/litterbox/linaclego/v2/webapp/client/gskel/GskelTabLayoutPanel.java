@@ -56,11 +56,11 @@ public class GskelTabLayoutPanel extends TabLayoutPanel
 	    getTabWidget(itab).setVisible(showTab);
 	    getTabWidget(itab).getParent().setVisible(showTab);
 	}
-	public void addGskelTabLayoutScrollPanel(GskelTabLayoutScrollPanel gskelTabLayoutScrollPanel, String tabTitle)
+	public int addGskelTabLayoutScrollPanel(GskelTabLayoutScrollPanel gskelTabLayoutScrollPanel, String tabTitle)
 	{
 		gskelVerticalPanelList.add(gskelTabLayoutScrollPanel.getGskelVerticalPanel());
-		gskelTabLayoutScrollPanel.getGskelVerticalPanel().setTabIndex(gskelVerticalPanelList.size() - 1);
 		add(gskelTabLayoutScrollPanel,tabTitle);
+		return gskelVerticalPanelList.size() - 1;
 	}
 	class GskelTabLayoutPanelSelectionHandler implements SelectionHandler<Integer>
 	{

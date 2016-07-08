@@ -2,7 +2,7 @@
 /gwt-unitCache
 /war/WEB-INF/deploy
 /war/WEB-INF/classes
-/war/linaclegowebapp
+/war/linaclegov2webapp/*
 /war/WEB-INF/lib/appengine*.jar
 /war/WEB-INF/lib/datanucleus*.jar
 /war/WEB-INF/lib/geronimo*.jar
@@ -12,3 +12,6 @@
 /LinacLegoWebApp.war
 /doc/
 /.settings
+/LinacLegoData.war
+/LinacLegoV2WebApp.war
+/.gwt/.gwt-log

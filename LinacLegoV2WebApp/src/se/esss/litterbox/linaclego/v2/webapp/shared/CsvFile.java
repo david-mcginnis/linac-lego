@@ -61,12 +61,32 @@ public class CsvFile implements Serializable
 			if (getLine(irow).numCells() > numOfCols) numOfCols = getLine(irow).numCells();
 		colWidth = new int[numOfCols];
 		for (int icol = 0; icol < numOfCols; ++icol)
-			colWidth[icol] = lineList.get(0).getCell(icol).length();
+		{ 
+// # signals it is an invisible link column
+			if (lineList.get(0).getCell(icol).indexOf("#") == 0)
+			{
+				colWidth[icol] = 0;
+			}
+			else
+			{
+				colWidth[icol] = lineList.get(0).getCell(icol).length();
+			}
+		}
 		for (int irow = 1; irow < numOfRows(); ++ irow)
 		{
 			for (int icol = 0; icol < numOfCols; ++icol)
-				if (colWidth[icol] < lineList.get(irow).getCell(icol).length())
-					colWidth[icol] = lineList.get(irow).getCell(icol).length();
+			{
+				// # signals it is an invisible link column
+				if (lineList.get(irow).getCell(icol).indexOf("#") == 0)
+				{
+					colWidth[icol] = 0;
+				}
+				else
+				{
+					if (colWidth[icol] < lineList.get(irow).getCell(icol).length())
+						colWidth[icol] = lineList.get(irow).getCell(icol).length();
+				}
+			}
 		}
 		tableWidth = 0;
 		for (int icol = 0; icol < numOfCols; ++icol) tableWidth = tableWidth + colWidth[icol];

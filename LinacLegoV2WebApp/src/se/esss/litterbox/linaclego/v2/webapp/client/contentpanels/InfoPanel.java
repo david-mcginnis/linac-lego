@@ -23,7 +23,6 @@ public class InfoPanel extends GskelVerticalPanel
 	private String previousSource = "Master";
 	private Label sourceViewLabel = new Label("Loading Master Source...");
 	CaptionPanel latticeVersionCaptionPanel;
-	private CaptionPanel drawingListCaptionPanel;
 	InlineHTML latticeVersionInlineHTML;
 	CaptionPanel sourceTypeCaptionPanel;
 	private EntryPointApp entryPointApp;
@@ -101,7 +100,6 @@ public class InfoPanel extends GskelVerticalPanel
 		sourceTypeCaptionPanel.add(sourceTypeVPanel);
 		
 		
-		drawingListCaptionPanel = new CaptionPanel("Drawing Index");
 
 		VerticalPanel vp1 = new VerticalPanel();
 		vp1.add(versionCaptionPanel);
@@ -115,15 +113,10 @@ public class InfoPanel extends GskelVerticalPanel
 		HorizontalPanel hp1 = new HorizontalPanel();
 		hp1.add(vp1);
 		hp1.add(vp2);
-		hp1.add(drawingListCaptionPanel);
 		add(hp1);
 		
 	}
-/*	public void setDrawingListCaptionPanelWidget(DrawingListPanel drawingListPanel )
-	{
-		drawingListCaptionPanel.setContentWidget(drawingListPanel);;
-	}
-*/	public void setLinks(String downloadXmlLink, String helpLink, String linacLegoAppLink)
+	public void setLinks(String downloadXmlLink, String helpLink, String linacLegoAppLink)
 	{
 		downloadXmlClickHandler.setLink(downloadXmlLink);
 		helpClickHandler.setLink(helpLink);

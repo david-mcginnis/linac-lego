@@ -3,6 +3,7 @@ package se.esss.litterbox.linaclego.v2.webapp.client;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import se.esss.litterbox.linaclego.v2.webapp.client.contentpanels.CsvLinkFilePanel;
 import se.esss.litterbox.linaclego.v2.webapp.client.contentpanels.InfoPanel;
 import se.esss.litterbox.linaclego.v2.webapp.client.contentpanels.PbsLayoutPanel;
 import se.esss.litterbox.linaclego.v2.webapp.client.gskel.GskelCsvFilePanel;
@@ -29,9 +30,9 @@ public class EntryPointApp implements EntryPoint
 	private GskelTreePanel xmlTreePanel;
 	private GskelCsvFilePanel sectionCsvFilePanel;
 	private GskelCsvFilePanel cellCsvFilePanel;
-	private GskelCsvFilePanel slotCsvFilePanel;
+	private CsvLinkFilePanel slotCsvFilePanel;
 	private GskelCsvFilePanel beamCsvFilePanel;
-	private GskelCsvFilePanel slotPartsCsvFilePanel;
+	private CsvLinkFilePanel slotPartsCsvFilePanel;
 	private GskelCsvFilePanel beamPartsCsvFilePanel;
 
 	public void onModuleLoad() 
@@ -51,9 +52,9 @@ public class EntryPointApp implements EntryPoint
 		xmlTreePanel = new GskelTreePanel("XML Tree", null, setupApp);
 		sectionCsvFilePanel = new GskelCsvFilePanel("Section Data", 2, "csvFilePanelHeader", setupApp);
 		cellCsvFilePanel = new GskelCsvFilePanel("Cell Data", 2, "csvFilePanelHeader", setupApp);
-		slotCsvFilePanel = new GskelCsvFilePanel("Slot Data", 2, "csvFilePanelHeader", setupApp);
+		slotCsvFilePanel = new CsvLinkFilePanel("Slot Data", 2, "csvFilePanelHeader", setupApp);
 		beamCsvFilePanel = new GskelCsvFilePanel("Beam Data", 2, "csvFilePanelHeader", setupApp);
-		slotPartsCsvFilePanel = new GskelCsvFilePanel("Slot Parts", 1, "partsFilePanelHeader", setupApp);
+		slotPartsCsvFilePanel = new CsvLinkFilePanel("Slot Parts", 1, "partsFilePanelHeader", setupApp);
 		beamPartsCsvFilePanel = new GskelCsvFilePanel("Beam Parts", 1, "partsFilePanelHeader", setupApp);
 		setLinks(linacLegoMasterLink);
 		loadDataPanels();
@@ -65,9 +66,9 @@ public class EntryPointApp implements EntryPoint
 		setupApp.getEntryPointAppService().getTextTrees(linacLegoDataLink, new TextTreesAsyncCallback(this));
 		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSectionData.csv", new LoadCsvFileCallback(this, sectionCsvFilePanel));
 		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoCellData.csv", new LoadCsvFileCallback(this, cellCsvFilePanel));
-		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSlotData.csv", new LoadCsvFileCallback(this, slotCsvFilePanel));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSlotData.csv", new LoadCsvLinkFileCallback(this, slotCsvFilePanel));
 		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoBeamData.csv", new LoadCsvFileCallback(this, beamCsvFilePanel));
-		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSlotParts.csv", new LoadCsvFileCallback(this, slotPartsCsvFilePanel));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSlotParts.csv", new LoadCsvLinkFileCallback(this, slotPartsCsvFilePanel));
 		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoBleParts.csv", new LoadCsvFileCallback(this, beamPartsCsvFilePanel));
 	}
 	public void setLinks(String linacLegoDataLink)
@@ -137,6 +138,30 @@ public class EntryPointApp implements EntryPoint
 		public void onSuccess(CsvFile result) 
 		{
 			gskelCsvFilePanel.setCsvFile(result);
+		}
+	}
+	public static class LoadCsvLinkFileCallback implements AsyncCallback<CsvFile>
+	{
+		EntryPointApp entryPointApp;
+		CsvLinkFilePanel csvLinkFilePanel;
+		LoadCsvLinkFileCallback(EntryPointApp entryPointApp, CsvLinkFilePanel csvLinkFilePanel)
+		{
+			this.entryPointApp = entryPointApp;
+			this.csvLinkFilePanel = csvLinkFilePanel;
+		}
+		@Override
+		public void onFailure(Throwable caught) 
+		{
+			entryPointApp.setupApp.getStatusTextArea().addStatus("Server Failure: " + caught.getMessage());
+			entryPointApp.setupApp.getMessageDialog().setImageUrl("images/dagnabbit.jpg");
+			entryPointApp.setupApp.getMessageDialog().setMessage("Error", "Failed to load Xml View data from server.", true);
+			entryPointApp.infoPanel.getChangeSourceSelectButtonl().setVisible(true);
+		}
+		@Override
+		public void onSuccess(CsvFile result) 
+		{
+			csvLinkFilePanel.setLinacLegoDataLink(entryPointApp.linacLegoDataLink);
+			csvLinkFilePanel.setCsvFile(result);
 		}
 	}
 

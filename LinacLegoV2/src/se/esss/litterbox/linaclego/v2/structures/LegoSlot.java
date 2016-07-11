@@ -20,8 +20,8 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public class LegoSlot  implements Serializable
 {
 	private static final long serialVersionUID = -2766328744732348452L;
-	public static final String TABLE_HEADER       = "Section,Cell,Slot,Model,eVout,v/c,Length,Xend,Yend,Zend,Xsur,Ysur,Zsur";
-	public static final String TABLE_HEADER_UNITS = "       ,    ,    ,     ,(MeV),   ,  (m) , (m), (m), (m), (m), (m), (m)";
+	public static final String TABLE_HEADER       = "Section,Cell,Slot,Model,#drawing,eVout,v/c,Length,Xend,Yend,Zend,Xsur,Ysur,Zsur";
+	public static final String TABLE_HEADER_UNITS = "       ,    ,    ,     ,#       ,(MeV),   ,  (m) , (m), (m), (m), (m), (m), (m)";
 
 	private ArrayList<LegoData> legoDataList = new ArrayList<LegoData>();
 	private ArrayList<LegoBeam> legoBeamList = new ArrayList<LegoBeam>();
@@ -399,14 +399,8 @@ public class LegoSlot  implements Serializable
 		pw.print(getLegoSection().getId());
 		pw.print("," + getLegoCell().getId());
 		pw.print("," + getId());
-		if (!(template == null))
-		{
-			pw.print(" ," + template);
-		}
-		else
-		{
-			pw.print(" ," + "");
-		}
+		pw.print(" ," + template);
+		pw.print(" ,#" + drawingLocation);
 		pw.print(" ," + Lego.sixPlaces.format((geteVout() / 1.0e6)));
 		pw.print(" ," + Lego.sixPlaces.format(LegoBeam.beta(geteVout())));
 		pw.print(" ," + Lego.sixPlaces.format(getLength()));

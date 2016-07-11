@@ -174,7 +174,7 @@ public class LegoModel  implements Serializable
 	{
 		if (structureType.equals("slot"))
 		{
-			String rowString = "slot" + "," + modelName;
+			String rowString = "slot" + "," + modelName + ",#" + slotList.get(0).getDrawingLocation();
 			ArrayList<LegoSection> legoSectionList = slotList.get(0).getLegoLinac().getLegoSectionList();
 			for (int isection = 0; isection < legoSectionList.size(); ++isection)
 			{

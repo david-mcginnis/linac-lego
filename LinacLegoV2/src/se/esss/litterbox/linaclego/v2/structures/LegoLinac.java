@@ -265,7 +265,7 @@ public class LegoLinac  implements Serializable
 	{
 		PrintWriter pwSlots = new PrintWriter(fileName + "SlotParts.csv");
 		PrintWriter pwBles = new PrintWriter(fileName + "BleParts.csv");
-		pwSlots.print("type" +"," + "model");
+		pwSlots.print("type" +"," + "model,#drawing");
 		pwBles.print("type" +"," + "model");
 		for (int isection = 0; isection < legoSectionList.size(); ++isection)
 		{

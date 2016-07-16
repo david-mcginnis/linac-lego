@@ -34,14 +34,15 @@ public class EntryPointApp implements EntryPoint
 	private GskelCsvFilePanel beamCsvFilePanel;
 	private CsvLinkFilePanel slotPartsCsvFilePanel;
 	private GskelCsvFilePanel beamPartsCsvFilePanel;
+	private GskelCsvFilePanel legoSetsCsvFilePanel;
 
 	public void onModuleLoad() 
 	{
 		System.out.println("test");
 		setupApp = new GskelSetupApp();
 		setupApp.setDebug(false);
-		setupApp.setVersionDate("July 6, 2016 16:04");
-		setupApp.setVersion("v2.1");
+		setupApp.setVersionDate("July 16, 2016 08:28");
+		setupApp.setVersion("v2.2");
 		setupApp.setAuthor("Dave McGinnis david.mcginnis@esss.se");
 		setupApp.setLogoImage("images/essLogo.png");
 		setupApp.setLogoTitle("LinacLego Parameter  Book");
@@ -56,6 +57,7 @@ public class EntryPointApp implements EntryPoint
 		beamCsvFilePanel = new GskelCsvFilePanel("Beam Data", 2, "csvFilePanelHeader", setupApp);
 		slotPartsCsvFilePanel = new CsvLinkFilePanel("Slot Parts", 1, "partsFilePanelHeader", setupApp);
 		beamPartsCsvFilePanel = new GskelCsvFilePanel("Beam Parts", 1, "partsFilePanelHeader", setupApp);
+		legoSetsCsvFilePanel = new GskelCsvFilePanel("LegoSets", 1, "csvFilePanelHeader", setupApp);
 		setLinks(linacLegoMasterLink);
 		loadDataPanels();
 	}
@@ -70,6 +72,7 @@ public class EntryPointApp implements EntryPoint
 		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoBeamData.csv", new LoadCsvFileCallback(this, beamCsvFilePanel));
 		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSlotParts.csv", new LoadCsvLinkFileCallback(this, slotPartsCsvFilePanel));
 		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoBleParts.csv", new LoadCsvFileCallback(this, beamPartsCsvFilePanel));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSets.csv", new LoadCsvFileCallback(this, legoSetsCsvFilePanel));
 	}
 	public void setLinks(String linacLegoDataLink)
 	{
@@ -84,6 +87,7 @@ public class EntryPointApp implements EntryPoint
 		beamCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoBeamData.csv");
 		slotPartsCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoSlotParts.csv");
 		beamPartsCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoBleParts.csv");
+		legoSetsCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoSets.csv");
 	}
 	public static class TextTreesAsyncCallback implements AsyncCallback<HtmlTextTree[]>
 	{

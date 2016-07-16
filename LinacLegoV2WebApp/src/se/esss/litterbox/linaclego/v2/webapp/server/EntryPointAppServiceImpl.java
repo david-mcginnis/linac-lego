@@ -26,6 +26,7 @@ public class EntryPointAppServiceImpl extends RemoteServiceServlet implements En
 		try 
 		{
 			Lego lego = new Lego(new URL(linacLegoDataLink + "/linacLego.xml"), null, false);
+			lego.setLatticeFromSettings(new URL(linacLegoDataLink + "/linacLegoSets.xml"));
 			lego.triggerUpdate(linacLegoDataLink);
 			HtmlTextTree[] trees = new HtmlTextTree[2];
 			trees[0] = EntryPointAppServiceImplStaticMethods.createPbsViewHtmlTextTree(lego, linacLegoDataLink);

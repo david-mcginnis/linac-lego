@@ -162,9 +162,6 @@ public class LegoPbsHtmlTextTree
 		htmlTextTree.setTag("beam");
 		htmlTextTree.addAttribute("id", beam.getId(), 15);
 		htmlTextTree.addAttribute("address", beam.getAddress(), 25);
-		String devName = "none";
-		if (beam.deviceName() != null) devName = beam.deviceName();
-		htmlTextTree.addAttribute("name",  devName, 25);
 		String modelName = "none";
 		if (beam.getModel() != null) modelName = beam.getModel();
 		htmlTextTree.addAttribute("model", modelName, 25);

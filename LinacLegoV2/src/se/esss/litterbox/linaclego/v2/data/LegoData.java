@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import se.esss.litterbox.linaclego.v2.LinacLegoException;
+import se.esss.litterbox.linaclego.v2.data.legosets.LegoSet;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 import se.esss.litterbox.simplexml.SimpleXmlWriter;

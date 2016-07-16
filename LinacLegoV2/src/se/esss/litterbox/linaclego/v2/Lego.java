@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import se.esss.litterbox.jframeskeleton.StatusPanel;
 import se.esss.litterbox.linaclego.v2.data.LegoInfo;
 import se.esss.litterbox.linaclego.v2.data.LegoLatticeFileComment;
-import se.esss.litterbox.linaclego.v2.data.LegoSet;
+import se.esss.litterbox.linaclego.v2.data.legosets.LegoSets;
 import se.esss.litterbox.linaclego.v2.structures.LegoCell;
 import se.esss.litterbox.linaclego.v2.structures.LegoLinac;
 import se.esss.litterbox.linaclego.v2.structures.LegoSection;
@@ -68,7 +68,6 @@ public class Lego implements Serializable
 	public static final DecimalFormat zeroPlaces = new DecimalFormat("###");
 	
 	private ArrayList<LegoSlotTemplate> legoSlotTemplateList = new ArrayList<LegoSlotTemplate>();
-	private ArrayList<LegoSet> legoSetList = new ArrayList<LegoSet>();
 	private LegoLinac legoLinac = null;
 	private String title = "";
 	private String revNo = "0";
@@ -83,7 +82,6 @@ public class Lego implements Serializable
 	
 	public boolean isEchoStatus() {return echoStatus;}
 	public ArrayList<LegoSlotTemplate> getLegoSlotTempateList() {return legoSlotTemplateList;}
-	public ArrayList<LegoSet> getLegoSetList() {return legoSetList;}
 	public LegoLinac getLegoLinac() {return legoLinac;}
 	public String getTitle() {return title;}
 	public String getRevNo() {return revNo;}
@@ -152,25 +150,6 @@ public class Lego implements Serializable
 				}
 				writeStatus("Finished reading slotTemplates");
 			}
-			writeStatus("Reading LegoSets");
-			legoSetList = new ArrayList<LegoSet>();
-			SimpleXmlReader legoSetsListTag = definitionsTag.tagsByName("legoSets");
-			if (legoSetsListTag.numChildTags() > 0)
-			{
-				for (int icol = 0; icol < legoSetsListTag.numChildTags(); ++icol)
-				{
-					SimpleXmlReader legoSetListTag = legoSetsListTag.tag(icol).tagsByName("legoSet");
-					if (legoSetListTag.numChildTags() > 0)
-					{
-						for (int itag = 0; itag < legoSetListTag.numChildTags(); ++itag)
-						{
-							legoSetList.add(new LegoSet(legoSetListTag.tag(itag)));
-							writeStatus("     Adding legoSet " + legoSetListTag.tag(itag).attribute("devName"));
-						}
-					}
-				}
-			}
-			writeStatus("Finished reading LegoSets");
 			writeStatus("Reading Linac ");
 			legoLinac = new LegoLinac(this, legoTag.tagsByName("linac").tag(0));
 			writeStatus("Finished reading Linac");
@@ -223,10 +202,6 @@ public class Lego implements Serializable
 				for (int ii = 0; ii < legoSlotTemplateList.size(); ++ii) legoSlotTemplateList.get(ii).writeXml(xw);
 			}
 			xw.closeXmlTag("slotTemplates");
-			xw.openXmlTag("legoSets");
-			xw.setAttribute("id", title + "LegoSets");
-			for (int iset = 0; iset < legoSetList.size(); ++iset) legoSetList.get(iset).writeXml(xw);
-			xw.closeXmlTag("legoSets");
 			xw.closeXmlTag("definitions");
 			legoLinac.writeXml(xw);
 			xw.closeDocument();
@@ -376,9 +351,17 @@ public class Lego implements Serializable
 		} catch (FileNotFoundException | LinacLegoException e) {throw new LinacLegoException(e);}
 		
 	}
+	public String getBaseName()
+	{
+		return 	simpleXmlDoc.getXmlDocName().substring(0, simpleXmlDoc.getXmlDocName().lastIndexOf("."));
+	}
+	public String getReportDirectoryPath(String parentDirectoryPath)
+	{
+		return parentDirectoryPath + delim + getBaseName() + "Output";
+	}
 	public void createReports(String parentDirectoryPath) throws LinacLegoException 
 	{
-		String baseName = simpleXmlDoc.getXmlDocName().substring(0, simpleXmlDoc.getXmlDocName().lastIndexOf("."));
+		String baseName = getBaseName();
 		File reportDirectory = new File(parentDirectoryPath + delim + baseName + "Output");
 		if (reportDirectory.exists()) 
 		{
@@ -430,8 +413,11 @@ public class Lego implements Serializable
 				writeSerializedFile(fileName);
 				LegoUtilities.copyFolder(new File(parentDirectoryPath + delim + "slotTemplateDrawings"), new File(reportDirectory + delim + "slotTemplateDrawings"));
 				LegoUtilities.copyFolder(new File(parentDirectoryPath + delim + "dtdFiles"), new File(reportDirectory + delim + "dtdFiles"));
-				
-				
+				writeStatus("Printing " + baseName + "Sets.xml");
+				setSettingsFromLattice(parentDirectoryPath + delim + baseName + "Sets.xml", reportDirectory + delim + baseName + "Sets.xml");
+				writeStatus("Printing " + baseName + "Sets.csv");
+				LegoSets legoSets = new LegoSets(reportDirectory + delim + baseName + "Sets.xml");
+				legoSets.printLegoSetsCsvFile(reportDirectory + delim + baseName + "Sets.csv");
 				try 
 				{
 					Zipper zipper = new Zipper(reportDirectory.getPath());
@@ -443,7 +429,7 @@ public class Lego implements Serializable
 					writeStatus(lle.getRootCause());
 					throw lle;
 				}
-			} catch (FileNotFoundException e) { throw new LinacLegoException(e);}
+			} catch (FileNotFoundException | MalformedURLException e) { throw new LinacLegoException(e);}
 			
 		}
 	}
@@ -462,13 +448,29 @@ public class Lego implements Serializable
 		} catch (IOException e) {throw new LinacLegoException(e);}
 		
 	}
-	public void setSettingsFromLattice() throws LinacLegoException
+	public void setSettingsFromLattice(String sourceFilePath, String destFilePath) throws LinacLegoException
 	{
-		for (int iset = 0; iset < legoSetList.size(); ++iset) legoSetList.get(iset).setSettingFromLattice(legoLinac);
+		try 
+		{
+			writeStatus("Opening LegoSet file: " + sourceFilePath);
+			LegoSets legoSets = new LegoSets(sourceFilePath);
+			writeStatus("Updating LegoSets from lattice to " + sourceFilePath);
+			legoSets.setSettingFromLattice(legoLinac);
+			writeStatus("Writing new settings to " + destFilePath);
+			legoSets.writeLegoSetsFile(destFilePath);
+		} catch (MalformedURLException e) {throw new LinacLegoException(e);}
 	}
-	public void setLatticeFromSettings() throws LinacLegoException
+	public void setLatticeFromSettings(URL fileURL) throws LinacLegoException
 	{
-		for (int iset = 0; iset < legoSetList.size(); ++iset) legoSetList.get(iset).setLatticeFromSetting(legoLinac);;
+		writeStatus("Opening LegoSet file: " + fileURL);
+		LegoSets legoSets = new LegoSets(fileURL);
+		writeStatus("Updating lattice from LegoSets file" + fileURL);
+		legoSets.setLatticeFromSetting(legoLinac);
+	}
+	public void setLatticeFromSettings(String filePath) throws LinacLegoException
+	{
+		try {setLatticeFromSettings(new File(filePath).toURI().toURL());} 
+		catch (MalformedURLException e) {throw new LinacLegoException(e);}
 	}
 	public static Lego readSerializedLego(String filePath) throws LinacLegoException
 	{
@@ -506,7 +508,8 @@ public class Lego implements Serializable
 	{
 
 		
-		Lego lego = new Lego("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoWithIncludes.xml", null, true);
-		lego.triggerUpdate("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoWithIncludes.xml");
+		Lego lego = new Lego("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLego.xml", null, true);
+		lego.setLatticeFromSettings("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoSets.xml");
+		lego.triggerUpdate("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLego.xml");
 	}
 }

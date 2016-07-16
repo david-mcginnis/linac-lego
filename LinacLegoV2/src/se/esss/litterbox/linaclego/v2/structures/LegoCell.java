@@ -71,7 +71,7 @@ public class LegoCell  implements Serializable
 			}
 		} catch (SimpleXmlException e)  {throw new LinacLegoException(e);}
 	}
-	public LegoSlot getLegoSlotById(String slotId)
+	public LegoSlot getLegoSlotById(String slotId) throws LinacLegoException
 	{
 		int islot = 0;
 		while (islot < legoSlotList.size())
@@ -79,7 +79,7 @@ public class LegoCell  implements Serializable
 			if (legoSlotList.get(islot).getId().equals(slotId)) return legoSlotList.get(islot);
 			islot = islot + 1;
 		}
-		return null;
+		throw new LinacLegoException("Slot " + slotId + "does not exist.");
 	}
 	public void writeXml(SimpleXmlWriter xw) throws LinacLegoException
 	{

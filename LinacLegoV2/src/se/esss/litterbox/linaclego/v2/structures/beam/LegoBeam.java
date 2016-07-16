@@ -21,8 +21,8 @@ import se.esss.litterbox.simplexml.SimpleXmlWriter;
 public abstract class LegoBeam  implements Serializable
 {
 	private static final long serialVersionUID = -623912672912900885L;
-	public static final String TABLE_HEADER       = "Section,Cell,Slot,Beam,Type,Model,Disc,Name,eVout,v/c,Length,Xend,Yend,Zend,Xsur,Ysur,Zsur,Volts,Phase,Grad,Bend";
-	public static final String TABLE_HEADER_UNITS = "       ,    ,    ,    ,    ,     ,    ,    ,(MeV),   , (m)  , (m), (m), (m), (m), (m), (m), MV  , deg , T/m, deg";
+	public static final String TABLE_HEADER       = "Section,Cell,Slot,Beam,Type,Model,Disc,Address,eVout,v/c,Length,Xend,Yend,Zend,Xsur,Ysur,Zsur,Volts,Phase,Grad,Bend";
+	public static final String TABLE_HEADER_UNITS = "       ,    ,    ,    ,    ,     ,    ,       ,(MeV),   , (m)  , (m), (m), (m), (m), (m), (m), MV  , deg , T/m, deg";
 
 	private ArrayList<LegoData> legoDataList = new ArrayList<LegoData>();
 	private ArrayList<LegoInfo> legoInfoList = new ArrayList<LegoInfo>();
@@ -279,17 +279,6 @@ public abstract class LegoBeam  implements Serializable
 	{
 		return getLegoSlot().getAddress() + "-" + getId();
 	}
-	public String deviceName() 
-	{
-		String name = "";
-		if ( getDisc() == null) return name;
-		name = getLegoSection().getId()
-				+ "-" + getLegoCell().getId()
-				+       getLegoSlot().getId()
-				+ ":" + getDisc()
-				+ "-" + getId();
-		return name;
-	}
 	public void printLatticeCommand(PrintWriter pw, String latticeType) throws LinacLegoException
 	{
 		if (legoInfoList.size() > 0) 
@@ -324,7 +313,7 @@ public abstract class LegoBeam  implements Serializable
 		if (  getModel() == null ) pw.print(" ," + "");
 		if (getDisc() != null) pw.print(" ," + getDisc());
 		if (getDisc() == null) pw.print(" ," + "");
-		pw.print(" ," + deviceName());
+		pw.print(" ," + getAddress());
 		pw.print(" ," + Lego.sixPlaces.format((geteVout() / 1.0e6)));
 		pw.print(" ," + Lego.sixPlaces.format(beta(geteVout())));
 		pw.print(" ," + Lego.sixPlaces.format(getLength()));

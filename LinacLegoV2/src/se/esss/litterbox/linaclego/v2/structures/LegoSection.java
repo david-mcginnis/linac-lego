@@ -72,7 +72,7 @@ public class LegoSection  implements Serializable
 			}
 		} catch (SimpleXmlException e)  {throw new LinacLegoException(e);}
 	}
-	public LegoCell getLegoCellById(String cellId)
+	public LegoCell getLegoCellById(String cellId) throws LinacLegoException
 	{
 		int icell = 0;
 		while (icell < legoCellList.size())
@@ -80,7 +80,7 @@ public class LegoSection  implements Serializable
 			if (legoCellList.get(icell).getId().equals(cellId)) return legoCellList.get(icell);
 			icell =icell + 1;
 		}
-		return null;
+		throw new LinacLegoException("Cell " + cellId + "does not exist.");
 	}
 	public double rfFreqMHz() throws LinacLegoException
 	{

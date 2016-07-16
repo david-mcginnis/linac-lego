@@ -118,7 +118,7 @@ public class LegoLinac  implements Serializable
 			
 		} catch (SimpleXmlException e)  {throw new LinacLegoException(e);}
 	}
-	public LegoSection getLegoSectionById(String sectionId)
+	public LegoSection getLegoSectionById(String sectionId) throws LinacLegoException
 	{
 		int isec =0;
 		while (isec < legoSectionList.size())
@@ -126,7 +126,7 @@ public class LegoLinac  implements Serializable
 			if (legoSectionList.get(isec).getId().equals(sectionId)) return legoSectionList.get(isec);
 			isec = isec + 1;
 		}
-		return null;
+		throw new LinacLegoException("Section " + sectionId + "does not exist.");
 	}
 	public void writeXml(SimpleXmlWriter xw) throws LinacLegoException
 	{

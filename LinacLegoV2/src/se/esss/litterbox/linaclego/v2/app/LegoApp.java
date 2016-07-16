@@ -32,8 +32,8 @@ public class LegoApp extends JFrameSkeleton
 	private static final String frametitle = "LinacLego";
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
-	private static final String version = "v2.3";
-	private static final String versionDate = "July 7, 2016";
+	private static final String version = "v2.4";
+	private static final String versionDate = "July 16, 2016";
 
 	private Lego lego;
 	private JTabbedPane mainTabbedPane; 
@@ -246,6 +246,8 @@ public class LegoApp extends JFrameSkeleton
 		File xmlFile = this.saveFileDialog(xmlExtensions, "Save LinacLego File", suggestedFileName);
 		if (xmlFile != null)
 		{
+			if (!this.overwriteFileDialog(xmlFile)) return;
+
 			try 
 			{
 				suggestedFileName = xmlFile.getName();
@@ -314,6 +316,7 @@ public class LegoApp extends JFrameSkeleton
 			try {
 				RfFieldProfileBuilder fpb = RfFieldProfileBuilder.readTraceWinFieldProfile(storedEnergy, traceWinFile.getPath());
 				String xmlFieldFilePath = traceWinFile.getPath().substring(0, traceWinFile.getPath().lastIndexOf(".")) + ".xml";
+				if (!this.overwriteFileDialog(xmlFieldFilePath)) return;
 				getStatusPanel().setText("Writing RfFieldProfileBuilder " + xmlFieldFilePath);
 				fpb.writeXmlFile(xmlFieldFilePath);
 			} catch (LinacLegoException e) 
@@ -328,9 +331,13 @@ public class LegoApp extends JFrameSkeleton
 	{
 		try 
 		{
-			lego.setSettingsFromLattice();
-			loadLinacLegoFile(openedXmlFile.getPath(), true);
-
+			String[] extensions = {"xml"};
+			File legoSetsSourceFile  = openFileDialog(extensions, "Choose LinacLegoSets SOURCE file");
+			if (legoSetsSourceFile == null) return;
+			File legoSetsDestFile  = openFileDialog(extensions, "Choose LinacLegoSets DESTINATION file");
+			if (legoSetsDestFile == null) return;
+			if (!this.overwriteFileDialog(legoSetsDestFile)) return;
+			lego.setSettingsFromLattice(legoSetsSourceFile.getPath(), legoSetsDestFile.getPath());
 		} 
 		catch (LinacLegoException e) 
 		{
@@ -342,8 +349,13 @@ public class LegoApp extends JFrameSkeleton
 	{
 		try 
 		{
-			lego.setLatticeFromSettings();
-			loadLinacLegoFile(openedXmlFile.getPath(), true);
+			String[] extensions = {"xml"};
+			File legoSetsFile  = openFileDialog(extensions, "Choose LinacLegoSets file");
+			if (legoSetsFile != null)
+			{
+				lego.setLatticeFromSettings(legoSetsFile.getPath());;
+				loadLinacLegoFile(openedXmlFile.getPath(), true);
+			}
 
 		} 
 		catch (LinacLegoException e) 
@@ -371,16 +383,14 @@ public class LegoApp extends JFrameSkeleton
 	{
 		if (lego != null)
 		{
-			File reportDirectoryParent  = chooseDirectoryDialog("Select Parent Directory...");
-			if (reportDirectoryParent != null)
+			String reportDirectoryPath = lego.getReportDirectoryPath(openedXmlFile.getParent());
+			if (!this.overwriteFileDialog(reportDirectoryPath)) return;
+			try {lego.createReports(openedXmlFile.getParent());} 
+			catch (LinacLegoException e) 
 			{
-				try {lego.createReports(reportDirectoryParent.getPath());} 
-				catch (LinacLegoException e) 
-				{
-					if (printStackTrace) e.printStackTrace();
-					messageDialog("Error: " + e.getMessage());
-				}
-			} 
+				if (printStackTrace) e.printStackTrace();
+				messageDialog("Error: " + e.getMessage());
+			}
 		}
 	}
 	public static void main(String[] args) 

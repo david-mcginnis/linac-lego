@@ -38,7 +38,6 @@ public class EntryPointApp implements EntryPoint
 
 	public void onModuleLoad() 
 	{
-		System.out.println("test");
 		setupApp = new GskelSetupApp();
 		setupApp.setDebug(false);
 		setupApp.setVersionDate("July 16, 2016 08:28");

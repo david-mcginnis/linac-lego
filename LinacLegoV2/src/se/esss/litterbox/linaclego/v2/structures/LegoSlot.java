@@ -221,15 +221,18 @@ public class LegoSlot  implements Serializable
 				{
 					status = status + "Adding info comment";
 					getLego().writeStatus(status + "\t" + line);
-					LegoInfo legoInfo = new LegoInfo(Lego.addLeadingZeros(infocounter, 3), line.substring(1), "comment");
+					LegoInfo legoInfo = new LegoInfo(Lego.addLeadingZeros(infocounter, 3), line.substring(1).trim(), "comment");
 					infocounter = infocounter + 10;
 					legoBeamInfoList.add(legoInfo);
 				}
 			}
+			int isclego = line.indexOf(";lego");
 			int isc = line.indexOf(";");
-			if (isc != 0 ) 
+			if (isc != 0 || (isclego == 0) )
 			{
 				LegoLatticeFileComment llfc = null;
+				String delims = "[ ,\t]+";
+				String[] splitResponse = null;
 				if (isc > 0)
 				{
 					if (LegoLatticeFileComment.isLegoLatticeFileComment(line.substring(isc).trim()))
@@ -239,8 +242,20 @@ public class LegoSlot  implements Serializable
 					}
 					line = line.substring(0, isc);
 				}
-				String delims = "[ ,\t]+";
-				String[] splitResponse = line.split(delims);
+				if (isclego != 0)
+				{
+					splitResponse = line.split(delims);
+					
+				}
+				else
+				{
+					llfc = new LegoLatticeFileComment(line.substring(isc).trim());
+					if (!llfc.getKeyword().equals("beam")) llfc = null;
+					if (llfc.attributeExists("data"))
+					{
+						splitResponse = llfc.getAttribute("data").split(delims);
+					}
+				}
 				if (splitResponse.length > 0)
 				{
 					String latticeKeyWord = splitResponse[0];

@@ -1,26 +1,27 @@
 package se.esss.litterbox.linaclego.v2.structures.beam;
 
-import se.esss.litterbox.linaclego.v2.Lego;
 import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.structures.LegoSlot;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 
-public class LegoBeamPositionMonitor extends LegoBeam 
+public class LegoBeamLossMonitor extends LegoBeam 
 {
 	private static final long serialVersionUID = -8717805986390419636L;
 	String data = "";
-	double xpos = 0.0;
-	double ypos = 0.0;
+	double xloc = 0.0;
+	double yloc = 0.0;
+	double zloc = 0.0;
+	double loss = 0.0;
 	
-	public LegoBeamPositionMonitor() throws LinacLegoException 
+	public LegoBeamLossMonitor() throws LinacLegoException 
 	{
 		super();
 	}
-	public LegoBeamPositionMonitor(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException 
+	public LegoBeamLossMonitor(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException 
 	{
 		super(legoSlot, beamListIndex, id, disc, model);
 	}
-	public LegoBeamPositionMonitor(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
+	public LegoBeamLossMonitor(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
 	{
 		super(legoSlot, beamListIndex, beamTag);
 	}
@@ -40,15 +41,19 @@ public class LegoBeamPositionMonitor extends LegoBeam
 	public void addDataElements() throws LinacLegoException 
 	{
 		addDataElement("data", "", "string", "unit");
-		addDataElement("xpos", "0.0", "double", "mm");
-		addDataElement("ypos", "0.0", "double", "mm");
+		addDataElement("xloc", "0.0", "double", "mm");
+		addDataElement("yloc", "0.0", "double", "mm");
+		addDataElement("zloc", "0.0", "double", "mm");
+		addDataElement("loss", "0.0", "double", "Sv/s");
 	}
 	@Override
 	protected void calcParameters() throws LinacLegoException 
 	{
 		data = getDataValue("data");
-		xpos = Double.parseDouble(getDataValue("xpos"));
-		ypos = Double.parseDouble(getDataValue("ypos"));
+		xloc = Double.parseDouble(getDataValue("xloc"));
+		yloc = Double.parseDouble(getDataValue("yloc"));
+		zloc = Double.parseDouble(getDataValue("zloc"));
+		loss = Double.parseDouble(getDataValue("loss"));
 	}
 	@Override
 	protected String latticeCommand(String latticeType) throws LinacLegoException 
@@ -56,8 +61,8 @@ public class LegoBeamPositionMonitor extends LegoBeam
 		String latticeCommand = "";
 		if (latticeType.equalsIgnoreCase("tracewin"))
 		{
-			latticeCommand = "DIAG_POSITION";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("data");
+			latticeCommand = ";lego <beam ";
+			latticeCommand = latticeCommand + "disc=\"" + getDisc() + "\" id=\"" + getId() + "\" data=\"DIAG_LOSS " +  getDataValue("xloc") + " " + getDataValue("yloc") + " " + getDataValue("zloc") + "\">";
 		}
 		return latticeCommand;
 	}
@@ -70,11 +75,11 @@ public class LegoBeamPositionMonitor extends LegoBeam
 	@Override
 	protected double reportDipoleBendDegrees() throws LinacLegoException {return 0;}
 	@Override
-	protected void setType() {type = "beamPosition";}
+	protected void setType() {type = "beamLoss";}
 	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "DIAG_POSITION";
+		if (latticeType.equalsIgnoreCase("tracewin")) return "DIAG_LOSS";
 		return null;
 	}
 	@Override
@@ -88,12 +93,12 @@ public class LegoBeamPositionMonitor extends LegoBeam
 		}
 	}
 	@Override
-	public String getPreferredIdLabelHeader() {return "BPM-";}
+	public String getPreferredIdLabelHeader() {return "BLM-";}
 	@Override
 	public String getPreferredDiscipline() {return "PBI";}
 	@Override
-	public double characteristicValue() {return Math.sqrt(xpos * xpos + ypos * ypos);}
+	public double characteristicValue() {return loss;}
 	@Override
-	public String characteristicValueUnit() {return "mm";}
+	public String characteristicValueUnit() {return "Sv/s";}
 
 }

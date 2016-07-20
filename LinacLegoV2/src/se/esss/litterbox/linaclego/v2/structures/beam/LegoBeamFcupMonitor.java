@@ -5,22 +5,21 @@ import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.structures.LegoSlot;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 
-public class LegoBeamPositionMonitor extends LegoBeam 
+public class LegoBeamFcupMonitor extends LegoBeam 
 {
 	private static final long serialVersionUID = -8717805986390419636L;
 	String data = "";
-	double xpos = 0.0;
-	double ypos = 0.0;
+	double charge = 0.0;
 	
-	public LegoBeamPositionMonitor() throws LinacLegoException 
+	public LegoBeamFcupMonitor() throws LinacLegoException 
 	{
 		super();
 	}
-	public LegoBeamPositionMonitor(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException 
+	public LegoBeamFcupMonitor(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException 
 	{
 		super(legoSlot, beamListIndex, id, disc, model);
 	}
-	public LegoBeamPositionMonitor(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
+	public LegoBeamFcupMonitor(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
 	{
 		super(legoSlot, beamListIndex, beamTag);
 	}
@@ -40,15 +39,13 @@ public class LegoBeamPositionMonitor extends LegoBeam
 	public void addDataElements() throws LinacLegoException 
 	{
 		addDataElement("data", "", "string", "unit");
-		addDataElement("xpos", "0.0", "double", "mm");
-		addDataElement("ypos", "0.0", "double", "mm");
+		addDataElement("charge", "0.0", "double", "C");
 	}
 	@Override
 	protected void calcParameters() throws LinacLegoException 
 	{
 		data = getDataValue("data");
-		xpos = Double.parseDouble(getDataValue("xpos"));
-		ypos = Double.parseDouble(getDataValue("ypos"));
+		charge = Double.parseDouble(getDataValue("charge"));
 	}
 	@Override
 	protected String latticeCommand(String latticeType) throws LinacLegoException 
@@ -58,6 +55,8 @@ public class LegoBeamPositionMonitor extends LegoBeam
 		{
 			latticeCommand = "DIAG_POSITION";
 			latticeCommand = latticeCommand + Lego.space + getDataValue("data");
+			latticeCommand = ";lego <beam ";
+			latticeCommand = latticeCommand + "disc=\"" + getDisc() + "\" id=\"" + getId() + "\" data=\"DIAG_FC " +  data + "\">";
 		}
 		return latticeCommand;
 	}
@@ -70,11 +69,11 @@ public class LegoBeamPositionMonitor extends LegoBeam
 	@Override
 	protected double reportDipoleBendDegrees() throws LinacLegoException {return 0;}
 	@Override
-	protected void setType() {type = "beamPosition";}
+	protected void setType() {type = "fcup";}
 	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "DIAG_POSITION";
+		if (latticeType.equalsIgnoreCase("tracewin")) return "DIAG_FC";
 		return null;
 	}
 	@Override
@@ -88,12 +87,12 @@ public class LegoBeamPositionMonitor extends LegoBeam
 		}
 	}
 	@Override
-	public String getPreferredIdLabelHeader() {return "BPM-";}
+	public String getPreferredIdLabelHeader() {return "FC-";}
 	@Override
 	public String getPreferredDiscipline() {return "PBI";}
 	@Override
-	public double characteristicValue() {return Math.sqrt(xpos * xpos + ypos * ypos);}
+	public double characteristicValue() {return charge;}
 	@Override
-	public String characteristicValueUnit() {return "mm";}
+	public String characteristicValueUnit() {return "C";}
 
 }

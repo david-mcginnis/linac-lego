@@ -33,7 +33,9 @@ import se.esss.litterbox.linaclego.v2.structures.LegoSection;
 import se.esss.litterbox.linaclego.v2.structures.LegoSlot;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeam;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamDrift;
+import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamFcupMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamFieldMap;
+import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamLossMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamMarker;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamPositionMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamQuad;
@@ -114,6 +116,8 @@ public class Lego implements Serializable
 		beamTypeList.add(new LegoBeamMarker());
 		beamTypeList.add(new LegoBeamPositionMonitor());
 		beamTypeList.add(new LegoBeamSizeMonitor());
+		beamTypeList.add(new LegoBeamLossMonitor());
+		beamTypeList.add(new LegoBeamFcupMonitor());
 	}
 	public Lego(SimpleXmlDoc sxd, StatusPanel statusPanel, boolean echoStatus) throws LinacLegoException
 	{

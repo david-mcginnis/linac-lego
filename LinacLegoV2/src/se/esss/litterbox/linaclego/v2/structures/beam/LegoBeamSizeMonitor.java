@@ -9,6 +9,10 @@ public class LegoBeamSizeMonitor extends LegoBeam
 {
 	private static final long serialVersionUID = 176550111628919801L;
 	String data = "";
+	double xpos;
+	double xwidth;
+	double ypos;
+	double ywidth;
 	public LegoBeamSizeMonitor() throws LinacLegoException 
 	{
 		super();
@@ -37,11 +41,19 @@ public class LegoBeamSizeMonitor extends LegoBeam
 	public void addDataElements() throws LinacLegoException 
 	{
 		addDataElement("data", "", "string", "unit");
+		addDataElement("xpos", "0.0", "double", "mm");
+		addDataElement("ypos", "0.0", "double", "mm");
+		addDataElement("xwidth", "0.0", "double", "mm");
+		addDataElement("ywidth", "0.0", "double", "mm");
 	}
 	@Override
 	protected void calcParameters() throws LinacLegoException 
 	{
 		data = getDataValue("data");
+		xpos = Double.parseDouble(getDataValue("xpos"));
+		ypos = Double.parseDouble(getDataValue("ypos"));
+		xwidth = Double.parseDouble(getDataValue("xwidth"));
+		ywidth = Double.parseDouble(getDataValue("ywidth"));
 	}
 	@Override
 	protected String latticeCommand(String latticeType) throws LinacLegoException 

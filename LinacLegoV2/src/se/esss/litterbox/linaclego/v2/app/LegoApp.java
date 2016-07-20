@@ -76,6 +76,7 @@ public class LegoApp extends JFrameSkeleton
 		if (menu.equals("File") && menuItem.equals("Open LinacLego File")) openLinacLegoFile();
 		if (menu.equals("File") && menuItem.equals("Save LinacLego File")) saveLinacLegoFile();
 		if (menu.equals("File") && menuItem.equals("Open TraceWin File")) openTraceWinFile();
+		if (menu.equals("File") && menuItem.equals("Save TraceWin File")) saveTraceWinFile();
 		if (menu.equals("File") && menuItem.equals("Exit")) this.quitProgram();
 		if (menu.equals("PBS Level View") && menuItem.equals("Section")) expandPbsTreeTo(1, pbsTree);
 		if (menu.equals("PBS Level View") && menuItem.equals("Cell")) expandPbsTreeTo(2, pbsTree);
@@ -118,6 +119,7 @@ public class LegoApp extends JFrameSkeleton
 		addMenuItem("File","Open LinacLego File");
 		addMenuItem("File","Save LinacLego File");
 		addMenuItem("File","Open TraceWin File");
+		addMenuItem("File","Save TraceWin File");
 		addMenuItem("File","Exit");
 		addMenuItem("Actions","Match Slot Models");
 		addMenuItem("Actions","Create Reports");
@@ -132,6 +134,7 @@ public class LegoApp extends JFrameSkeleton
 		addMenuItem("Help","About");
 		
 		setEnabledMenuItem("File","Save LinacLego File",false);
+		setEnabledMenuItem("File","Save TraceWin File",false);
 		setEnabledMenuItem("Actions","Match Slot Models",false);
 		setEnabledMenuItem("Actions","Create Reports",false);
 		setEnabledMenuItem("Actions","Update Lattice from LegoSets",false);
@@ -204,6 +207,7 @@ public class LegoApp extends JFrameSkeleton
 			expandPbsTreeTo(3, pbsTree);
 			setEnabledMenu("PBS Level View", true);
 			setEnabledMenuItem("File","Save LinacLego File",true);
+			setEnabledMenuItem("File","Save TraceWin File",true);
 			setEnabledMenuItem("Actions","Match Slot Models",true);
 			setEnabledMenuItem("Actions","Create Reports",true);
 			setEnabledMenuItem("Actions","Update Lattice from LegoSets",true);
@@ -214,6 +218,7 @@ public class LegoApp extends JFrameSkeleton
 			messageDialog("Error: " + e.getMessage());
 			setEnabledMenu("PBS Level View", false);
 			setEnabledMenuItem("File","Save LinacLego File",false);
+			setEnabledMenuItem("File","Save TraceWin File",false);
 			setEnabledMenuItem("Actions","Match Slot Models",false);
 			setEnabledMenuItem("Actions","Create Reports",false);
 			setEnabledMenuItem("Actions","Update Lattice from LegoSets",false);
@@ -265,6 +270,24 @@ public class LegoApp extends JFrameSkeleton
 						StandardWatchEventKinds.ENTRY_DELETE);	// Register the directory
 				this.setTitle("LinacLego " + openedXmlFile.getName());
 			} catch (LinacLegoException | IOException e) 
+			{
+				if (printStackTrace) e.printStackTrace();
+				messageDialog("Error: " + e.getMessage());
+			}
+		}
+	}
+	private void saveTraceWinFile()
+	{
+		String[] datExtensions = {"dat"};
+		File datFile = this.saveFileDialog(datExtensions, "Save TraceWin File", suggestedFileName.substring(0,suggestedFileName.lastIndexOf(".")) + ".dat");
+		if (datFile != null)
+		{
+			if (!this.overwriteFileDialog(datFile)) return;
+
+			try 
+			{
+				lego.writeLatticeFile(datFile.getPath(), "tracewin");
+			} catch (LinacLegoException e) 
 			{
 				if (printStackTrace) e.printStackTrace();
 				messageDialog("Error: " + e.getMessage());

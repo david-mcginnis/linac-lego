@@ -171,7 +171,7 @@ public class LegoCell  implements Serializable
 				{
 					status = status + "Adding info comment";
 					getLego().writeStatus(status + "\t" + line);
-					LegoInfo legoInfo = new LegoInfo(Lego.addLeadingZeros(infocounter, 3), line.substring(1), "comment");
+					LegoInfo legoInfo = new LegoInfo(Lego.addLeadingZeros(infocounter, 3), line.substring(1).trim(), "comment");
 					infocounter = infocounter + 10;
 					legoSlotInfoList.add(legoInfo);
 				}

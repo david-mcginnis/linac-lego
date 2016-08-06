@@ -327,10 +327,18 @@ public class LegoSlot  implements Serializable
 	}
 	public boolean matchesSlotTemplate(LegoSlotTemplate slotTemplate) throws LinacLegoException
 	{
-		if (legoBeamList.size() != slotTemplate.getLegoBeamTemplateList().size()) return false;
+		if (legoBeamList.size() != slotTemplate.getLegoBeamTemplateList().size())
+		{
+			getLego().writeStatus("               Beam List size = " + legoBeamList.size() + " Template List size = " + slotTemplate.getLegoBeamTemplateList().size());
+			return false;
+		}
 		for (int ibeam = 0; ibeam < legoBeamList.size(); ++ ibeam)
 		{
-			if (!legoBeamList.get(ibeam).matchesTemplate( slotTemplate.getLegoBeamTemplateList().get(ibeam))) return false;
+			if (!legoBeamList.get(ibeam).matchesTemplate( slotTemplate.getLegoBeamTemplateList().get(ibeam))) 
+			{
+				getLego().writeStatus("               Mismatch at " + legoBeamList.get(ibeam).getId() + " with Template " + slotTemplate.getLegoBeamTemplateList().get(ibeam).getId());
+				return false;
+			}
 			
 		}
 		return true;

@@ -312,6 +312,7 @@ public class Lego implements Serializable
 						boolean templateMatched = false;
 						while ((itemplate < legoSlotTemplateList.size()) && (!templateMatched))
 						{
+							writeStatus("          Comparing Template " + legoSlotTemplateList.get(itemplate).getId());
 							templateMatched = legoSlot.matchesSlotTemplate(legoSlotTemplateList.get(itemplate));
 							if (!templateMatched) 
 							{
@@ -319,7 +320,7 @@ public class Lego implements Serializable
 							}
 							else
 							{
-								writeStatus("          Slot " + legoSlot.getAddress() + " matches template " + legoSlotTemplateList.get(itemplate).getId());
+								writeStatus("               Slot " + legoSlot.getAddress() + " matches template " + legoSlotTemplateList.get(itemplate).getId());
 								legoSlot.convertToTemplateType(legoSlotTemplateList.get(itemplate));
 							}
 						}

@@ -62,9 +62,10 @@ public class HtmlTextTree implements Serializable
 		if (dataFolder != null) return true;
 		return false;
 	}
-	public void setTag(String tagName) 
+	public void setTag(String tagName, int stringLength) 
 	{
 		tag = textSpan(tagName, tagStyle);
+		tag = tag + padSpaceEnd(tagName, stringLength);
 	}
 	public int numChildren() {return htmlTextTreeArrayList.size();}
 	public void addAttribute(Attribute attribute)
@@ -118,6 +119,15 @@ public class HtmlTextTree implements Serializable
 		}
 		html = html + "</html>";
 		return html;
+	}
+	private String padSpaceEnd(String refString, int stringLength)
+	{
+		String spanHtml = "<span class=\"" + attributeStyle.getAttWhiteSpaceStyle() + "\">";
+		int numSpace = stringLength - refString.length();
+		String padString = "";
+		if (numSpace <= 0) return spanHtml + "</span>";
+		for (int ii = 0; ii < numSpace; ++ii) padString = padString + "_";
+		return spanHtml + padString + "</span>";
 	}
 
 

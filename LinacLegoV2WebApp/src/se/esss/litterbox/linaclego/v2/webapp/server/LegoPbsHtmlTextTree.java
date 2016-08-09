@@ -37,7 +37,7 @@ public class LegoPbsHtmlTextTree
 		htmlTextTree.setAttWhiteSpaceStyle(attWhiteSpaceStyle);
 		
 		htmlTextTree.setIconImageLocation("images/lego.jpg");
-		htmlTextTree.setTag("linacLego");
+		htmlTextTree.setTag("linacLego", 9);
 		htmlTextTree.addAttribute("title", lego.getTitle(), 1);
 		htmlTextTree.addAttribute("revNo", lego.getRevNo(), 1);
 		htmlTextTree.addAttribute("rev Date", lego.getRevDate(), 1);
@@ -53,7 +53,7 @@ public class LegoPbsHtmlTextTree
 		this();
 		inheritStyles(parentLinacLegoPbsHtmlTextTree);
 		htmlTextTree.setIconImageLocation(null);
-		htmlTextTree.setTag("data");
+		htmlTextTree.setTag("data", 4);
 		htmlTextTree.addAttribute("id", dataElement.getId(), 15);
 		if (dataElement.getType() != null)
 		{
@@ -73,7 +73,7 @@ public class LegoPbsHtmlTextTree
 		this();
 		inheritStyles(parentLinacLegoPbsHtmlTextTree);
 		htmlTextTree.setIconImageLocation("images/linac.jpg");
-		htmlTextTree.setTag("linac");
+		htmlTextTree.setTag("linac", 5);
 		htmlTextTree.addAttribute("id", linac.getLego().getTitle(), 25);
 		htmlTextTree.addAttribute("address", linac.getLego().getTitle(), 25);
 		htmlTextTree.addAttribute("energy", threePlaces.format(linac.getLastSection().getLastCell().getLastSlot().getLastBeam().geteVout() / 1.0e+06)  + " MeV", 1);
@@ -86,7 +86,7 @@ public class LegoPbsHtmlTextTree
 		HtmlTextTree dataFolderHtmlTextTree = new HtmlTextTree();
 		dataFolderHtmlTextTree.inheritStyles(getHtmlTextTree());
 		dataFolderHtmlTextTree.setIconImageLocation("images/data.png");
-		dataFolderHtmlTextTree.setTag("data");
+		dataFolderHtmlTextTree.setTag("data", 4);
 		htmlTextTree.setDataFolder(dataFolderHtmlTextTree);
 
 		for (int idata = 0; idata < dataElementList.size(); ++idata)
@@ -101,7 +101,7 @@ public class LegoPbsHtmlTextTree
 		this();
 		inheritStyles(parentLinacLegoPbsHtmlTextTree);
 		htmlTextTree.setIconImageLocation("images/section.jpg");
-		htmlTextTree.setTag("section");
+		htmlTextTree.setTag("section", 7);
 		htmlTextTree.addAttribute("id", section.getId(), 15);
 		htmlTextTree.addAttribute("address", section.getAddress(), 25);
 		htmlTextTree.addAttribute("rfHarmonic", Integer.toString(section.getRfHarmonic()), 1);
@@ -115,7 +115,7 @@ public class LegoPbsHtmlTextTree
 		this();
 		inheritStyles(parentLinacLegoPbsHtmlTextTree);
 		htmlTextTree.setIconImageLocation("images/cell.jpg");
-		htmlTextTree.setTag("cell");
+		htmlTextTree.setTag("cell", 4);
 		htmlTextTree.addAttribute("id", cell.getId(), 15);
 		htmlTextTree.addAttribute("address", cell.getAddress(), 25);
 		htmlTextTree.addAttribute("energy", threePlaces.format(cell.geteVout() / 1.0e+06) + "MeV", 11);
@@ -128,7 +128,7 @@ public class LegoPbsHtmlTextTree
 		this();
 		inheritStyles(parentLinacLegoPbsHtmlTextTree);
 		htmlTextTree.setIconImageLocation("images/slots.jpg");
-		htmlTextTree.setTag("slot");
+		htmlTextTree.setTag("slot", 4);
 		htmlTextTree.addAttribute("id", slot.getId(), 15);
 		htmlTextTree.addAttribute("address", slot.getAddress(), 25);
 		String slotModelId = slot.getTemplate();
@@ -157,9 +157,10 @@ public class LegoPbsHtmlTextTree
 		if (beam.getType().equals("marker")) htmlTextTree.setIconImageLocation("images/greenMarker.png");
 		if (beam.getType().equals("beamPosition")) htmlTextTree.setIconImageLocation("images/bpm.jpg");
 		if (beam.getType().equals("beamSize")) htmlTextTree.setIconImageLocation("images/wsc.jpg");
+		if (beam.getType().equals("beamLoss")) htmlTextTree.setIconImageLocation("images/blm.jpg");
+		if (beam.getType().equals("fcup")) htmlTextTree.setIconImageLocation("images/fcup.jpg");
 		
-		
-		htmlTextTree.setTag("beam");
+		htmlTextTree.setTag(beam.getType(), 12);
 		htmlTextTree.addAttribute("id", beam.getId(), 15);
 		htmlTextTree.addAttribute("address", beam.getAddress(), 25);
 		String modelName = "none";

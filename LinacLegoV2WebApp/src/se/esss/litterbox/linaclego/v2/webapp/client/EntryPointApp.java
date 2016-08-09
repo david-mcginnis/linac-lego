@@ -20,9 +20,10 @@ public class EntryPointApp implements EntryPoint
 {
 	private GskelSetupApp setupApp;
 	
-	public final String latticeDataWeb = "https://aig.esss.lu.se:8443/LinacLegoData/data";
-	public final String linacLegoMasterLink      = latticeDataWeb + "/development/linacLegoOutput";
-	public final String linacLegoDevelopmentLink = latticeDataWeb + "/development/linacLegoOutput";
+//	public final String latticeDataWeb = "https://dl.dropboxusercontent.com/u/41799517/LinacLegoData/data";
+//	public final String latticeDataWeb = "http://localhost:8080/LinacLegoData/data";
+	public final String linacLegoMasterLink      = "https://aig.esss.lu.se:8443/LinacLegoData";
+	public final String linacLegoDevelopmentLink = "https://dl.dropboxusercontent.com/u/41799517/lattice-repository/LinacLegoData/WebContent";
 	private String linacLegoDataLink = linacLegoMasterLink;
 	private InfoPanel infoPanel;
 	private PbsLayoutPanel pbsLayoutPanel;
@@ -40,7 +41,7 @@ public class EntryPointApp implements EntryPoint
 	{
 		setupApp = new GskelSetupApp();
 		setupApp.setDebug(false);
-		setupApp.setVersionDate("July 16, 2016 08:28");
+		setupApp.setVersionDate("August 8, 2016 12:41");
 		setupApp.setVersion("v2.2");
 		setupApp.setAuthor("Dave McGinnis david.mcginnis@esss.se");
 		setupApp.setLogoImage("images/essLogo.png");
@@ -64,29 +65,29 @@ public class EntryPointApp implements EntryPoint
 	{
 		setupApp.getMessageDialog().setImageUrl("images/Scarecrow.jpg");
 		setupApp.getMessageDialog().setMessage("Wait", "Loading data from the server...", false);
-		setupApp.getEntryPointAppService().getTextTrees(linacLegoDataLink, new TextTreesAsyncCallback(this));
-		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSectionData.csv", new LoadCsvFileCallback(this, sectionCsvFilePanel));
-		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoCellData.csv", new LoadCsvFileCallback(this, cellCsvFilePanel));
-		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSlotData.csv", new LoadCsvLinkFileCallback(this, slotCsvFilePanel));
-		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoBeamData.csv", new LoadCsvFileCallback(this, beamCsvFilePanel));
-		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSlotParts.csv", new LoadCsvLinkFileCallback(this, slotPartsCsvFilePanel));
-		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoBleParts.csv", new LoadCsvFileCallback(this, beamPartsCsvFilePanel));
-		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoSets.csv", new LoadCsvFileCallback(this, legoSetsCsvFilePanel));
+		setupApp.getEntryPointAppService().getTextTrees(linacLegoDataLink + "/linacLegoOutput", new TextTreesAsyncCallback(this));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoOutput/linacLegoSectionData.csv", new LoadCsvFileCallback(this, sectionCsvFilePanel));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoOutput/linacLegoCellData.csv", new LoadCsvFileCallback(this, cellCsvFilePanel));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoOutput/linacLegoSlotData.csv", new LoadCsvLinkFileCallback(this, slotCsvFilePanel));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoOutput/linacLegoBeamData.csv", new LoadCsvFileCallback(this, beamCsvFilePanel));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoOutput/linacLegoSlotParts.csv", new LoadCsvLinkFileCallback(this, slotPartsCsvFilePanel));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoOutput/linacLegoBleParts.csv", new LoadCsvFileCallback(this, beamPartsCsvFilePanel));
+		setupApp.getEntryPointAppService().getCsvFile(linacLegoDataLink + "/linacLegoOutput/linacLegoSets.csv", new LoadCsvFileCallback(this, legoSetsCsvFilePanel));
 	}
 	public void setLinks(String linacLegoDataLink)
 	{
 		this.linacLegoDataLink = linacLegoDataLink;
 		infoPanel.setLinks(
-				linacLegoDataLink + "/linacLegoOutput.zip", 
-				latticeDataWeb + "/doc/LinacLegoManual.pdf", 
-				latticeDataWeb + "/dist/se.esss.litterbox.linaclego.v2.legoapp.jar");
-		sectionCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoSectionData.csv");
-		cellCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoCellData.csv");
-		slotCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoSlotData.csv");
-		beamCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoBeamData.csv");
-		slotPartsCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoSlotParts.csv");
-		beamPartsCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoBleParts.csv");
-		legoSetsCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoSets.csv");
+				linacLegoDataLink + "/linacLegoOutput/linacLegoOutput.zip", 
+				linacLegoDataLink + "/doc/LinacLegoManual.pdf", 
+				linacLegoDataLink + "/dist/se.esss.litterbox.linaclego.v2.legoapp.jar");
+		sectionCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoOutput/linacLegoSectionData.csv");
+		cellCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoOutput/linacLegoCellData.csv");
+		slotCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoOutput/linacLegoSlotData.csv");
+		beamCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoOutput/linacLegoBeamData.csv");
+		slotPartsCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoOutput/linacLegoSlotParts.csv");
+		beamPartsCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoOutput/linacLegoBleParts.csv");
+		legoSetsCsvFilePanel.setSourceFileLink(linacLegoDataLink + "/linacLegoOutput/linacLegoSets.csv");
 	}
 	public static class TextTreesAsyncCallback implements AsyncCallback<HtmlTextTree[]>
 	{
@@ -163,7 +164,7 @@ public class EntryPointApp implements EntryPoint
 		@Override
 		public void onSuccess(CsvFile result) 
 		{
-			csvLinkFilePanel.setLinacLegoDataLink(entryPointApp.linacLegoDataLink);
+			csvLinkFilePanel.setLinacLegoDataLink(entryPointApp.linacLegoDataLink+ "/linacLegoOutput");
 			csvLinkFilePanel.setCsvFile(result);
 		}
 	}

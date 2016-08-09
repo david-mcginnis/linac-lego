@@ -214,10 +214,11 @@ public class PbsLevelPanel extends VerticalPanel
 			expandButton.setVisible(false);
 			collapseButton.setVisible(false);
 		}
-		Grid attributePanel = new Grid(textTree.numAttributes(), 1);
+		Grid attributePanel = new Grid(textTree.numAttributes() + 1, 1);
+		attributePanel.setWidget(0, 0, new InlineHTML(textTree.getTag()));
 		for (int ia = 0; ia < textTree.numAttributes(); ++ia)
 		{
-			attributePanel.setWidget(ia, 0, new InlineHTML(textTree.getAttribute(ia).getInlineHtmlString(false, false)));
+			attributePanel.setWidget(ia + 1, 0, new InlineHTML(textTree.getAttribute(ia).getInlineHtmlString(false, false)));
 		}
 		
 		Grid idPanel = new Grid(1, 1);

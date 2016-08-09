@@ -12,6 +12,6 @@
 /LinacLegoWebApp.war
 /doc/
 /.settings
-/LinacLegoData.war
 /LinacLegoV2WebApp.war
 /.gwt/.gwt-log
+/.gwt/

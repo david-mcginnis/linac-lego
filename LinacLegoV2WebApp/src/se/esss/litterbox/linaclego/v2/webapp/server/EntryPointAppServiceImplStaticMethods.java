@@ -63,7 +63,7 @@ public class EntryPointAppServiceImplStaticMethods
 	{
 
 		SimpleXmlReader sxr = new SimpleXmlReader(xmlNode);
-		htmlTextTree.setTag(sxr.tagName());
+		htmlTextTree.setTag(sxr.tagName(), sxr.tagName().length());
 		
 		String id = "";
 		try {id = sxr.attribute("id");} catch (SimpleXmlException e) {}

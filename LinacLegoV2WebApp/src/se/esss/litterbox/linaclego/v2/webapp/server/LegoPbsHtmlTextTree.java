@@ -159,6 +159,7 @@ public class LegoPbsHtmlTextTree
 		if (beam.getType().equals("beamSize")) htmlTextTree.setIconImageLocation("images/wsc.jpg");
 		if (beam.getType().equals("beamLoss")) htmlTextTree.setIconImageLocation("images/blm.jpg");
 		if (beam.getType().equals("fcup")) htmlTextTree.setIconImageLocation("images/fcup.jpg");
+		if (beam.getType().equals("beamCurrent")) htmlTextTree.setIconImageLocation("images/bcm.jpg");
 		
 		htmlTextTree.setTag(beam.getType(), 12);
 		htmlTextTree.addAttribute("id", beam.getId(), 15);

@@ -32,8 +32,8 @@ public class LegoApp extends JFrameSkeleton
 	private static final String frametitle = "LinacLego";
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
-	private static final String version = "v2.6";
-	private static final String versionDate = "August 6, 2016";
+	private static final String version = "v2.7";
+	private static final String versionDate = "August 16, 2016";
 
 	private Lego lego;
 	private JTabbedPane mainTabbedPane; 

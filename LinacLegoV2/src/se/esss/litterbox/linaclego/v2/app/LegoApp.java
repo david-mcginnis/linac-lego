@@ -19,6 +19,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import se.esss.litterbox.jframeskeleton.JFrameSkeleton;
+import se.esss.litterbox.jframeskeleton.StatusPanel;
 import se.esss.litterbox.linaclego.v2.Lego;
 import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.utilities.RfFieldProfileBuilder;
@@ -32,13 +33,14 @@ public class LegoApp extends JFrameSkeleton
 	private static final String frametitle = "LinacLego";
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
-	private static final String version = "v2.7";
-	private static final String versionDate = "August 16, 2016";
+	private static final String version = "v2.8";
+	private static final String versionDate = "August 19, 2016";
 
 	private Lego lego;
 	private JTabbedPane mainTabbedPane; 
 	private JScrollPane pbsTreeView;
 	private JScrollPane xmlTreeView;
+	private StatusPanel matchLogStatusPanel;
 	private JTree pbsTree;
 	private JTree xmlTree;
 	private String suggestedFileName = "linacLego.xml";
@@ -106,10 +108,14 @@ public class LegoApp extends JFrameSkeleton
 
         pbsTreeView = new JScrollPane(pbsTree);
         pbsTreeView.setPreferredSize(new Dimension(800,600));
+        
+        matchLogStatusPanel = new StatusPanel(20, "Slot Match Log");
+        matchLogStatusPanel.setInsertAtTop(false);
 
 		mainTabbedPane = new JTabbedPane();
 		mainTabbedPane.addTab("xml Tree", xmlTreeView);
 		mainTabbedPane.addTab("pbs Tree", pbsTreeView);
+		mainTabbedPane.addTab("Mathing Log", matchLogStatusPanel.getScrollPane());
 		getMainPane().add(mainTabbedPane);
 	}
 
@@ -393,7 +399,10 @@ public class LegoApp extends JFrameSkeleton
 		{
 			try 
 			{
+				matchLogStatusPanel.clearStatus();
+				lego.setStatusPanel(matchLogStatusPanel);
 				lego.replaceSlotsWithTemplates();
+				lego.setStatusPanel(getStatusPanel());
 				loadLinacLegoFile(openedXmlFile.getPath(), true);
 			} catch (LinacLegoException e) 
 			{

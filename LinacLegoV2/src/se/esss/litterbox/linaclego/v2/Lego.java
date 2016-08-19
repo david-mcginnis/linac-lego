@@ -96,6 +96,9 @@ public class Lego implements Serializable
 	public File getlatticeFileOutputLocation() {return latticeFileOutputLocation;}
 	public void setStatusPanel(StatusPanel statusPanel) {this.statusPanel = statusPanel;}
 	public void setEchoStatus(boolean echoStatus) {this.echoStatus = echoStatus;}
+	public void setRevNo(String revNo) {this.revNo = revNo;}
+	public void setRevComment(String revComment) {this.revComment = revComment;}
+	public void setRevDate(String revDate) {this.revDate = revDate;}
 	
 	public Lego(String title, String revNo, String revComment, String revDate, double ekinMeV, double beamFrequencyMHz, StatusPanel statusPanel, boolean echoStatus) throws LinacLegoException
 	{

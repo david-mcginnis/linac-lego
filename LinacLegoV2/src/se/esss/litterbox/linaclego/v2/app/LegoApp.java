@@ -33,7 +33,7 @@ public class LegoApp extends JFrameSkeleton
 	private static final String frametitle = "LinacLego";
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
-	private static final String version = "v2.8";
+	private static final String version = "v2.9";
 	private static final String versionDate = "August 19, 2016";
 
 	private Lego lego;
@@ -253,6 +253,7 @@ public class LegoApp extends JFrameSkeleton
     }
 	private void saveLinacLegoFile()
 	{
+		if (!changeDocInfo(false)) return;
 		String[] xmlExtensions = {"xml"};
 		File xmlFile = this.saveFileDialog(xmlExtensions, "Save LinacLego File", suggestedFileName);
 		if (xmlFile != null)
@@ -415,6 +416,7 @@ public class LegoApp extends JFrameSkeleton
 	{
 		if (lego != null)
 		{
+			if (!changeDocInfo(true)) return;
 			String reportDirectoryPath = lego.getReportDirectoryPath(openedXmlFile.getParent());
 			if (!this.overwriteFileDialog(reportDirectoryPath)) return;
 			try {lego.createReports(openedXmlFile.getParent());} 
@@ -424,6 +426,35 @@ public class LegoApp extends JFrameSkeleton
 				messageDialog("Error: " + e.getMessage());
 			}
 		}
+	}
+	private boolean changeDocInfo(boolean triggerUpdate) 
+	{
+		String oldRevNo = lego.getRevNo();
+		if (lego == null) return false;
+		String revNo = (String)JOptionPane.showInputDialog(this, "Enter the new revision number", "LinacLego Revision No.", JOptionPane.QUESTION_MESSAGE,null,null,lego.getRevNo());
+		if (revNo == null) return false;
+		lego.setRevNo(revNo);
+		String revComment = (String)JOptionPane.showInputDialog(this, "Enter the new revision comment", "LinacLego Revision Comment.", JOptionPane.QUESTION_MESSAGE,null,null,lego.getRevComment());
+		if (revComment == null)
+		{
+			lego.setRevNo(oldRevNo);
+			return false;
+		}
+		lego.setRevComment(revComment);
+		lego.setRevDate(new Date().toString());
+		if (triggerUpdate)
+		{
+			try
+			{
+				lego.updateXmlFile(openedXmlFile.getPath());
+				
+			} catch (LinacLegoException e) 
+			{
+				if (printStackTrace) e.printStackTrace();
+				messageDialog("Error: " + e.getMessage());
+			}
+		}
+		return true;
 	}
 	public static void main(String[] args) 
 	{

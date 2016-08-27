@@ -23,6 +23,8 @@ public abstract class LegoBeam  implements Serializable
 	private static final long serialVersionUID = -623912672912900885L;
 	public static final String TABLE_HEADER       = "Section,Cell,Slot,Beam,Type,Model,Disc,Address,eVout,v/c,Length,Xend,Yend,Zend,Xsur,Ysur,Zsur,Volts,Phase,Grad,Bend";
 	public static final String TABLE_HEADER_UNITS = "       ,    ,    ,    ,    ,     ,    ,       ,(MeV),   , (m)  , (m), (m), (m), (m), (m), (m), MV  , deg , T/m, deg";
+	public static final double PI = Math.PI;
+	public static final double degToRad = PI / 180.0;
 
 	private ArrayList<LegoData> legoDataList = new ArrayList<LegoData>();
 	private ArrayList<LegoInfo> legoInfoList = new ArrayList<LegoInfo>();

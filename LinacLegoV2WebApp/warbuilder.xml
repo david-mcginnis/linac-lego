@@ -3,7 +3,7 @@
 	<target name="default" depends="buildwar,deploy"></target>
  
 	<target name="buildwar">
-		<war basedir="war" destfile="LinacLegoV2WebApp.war" webxml="war/WEB-INF/web.xml">
+		<war basedir="war" destfile="LinacLegoWebApp.war" webxml="war/WEB-INF/web.xml">
 			<exclude name="WEB-INF/**" />
 			<webinf dir="war/WEB-INF/">
 				<include name="**/*.jar" />
@@ -13,7 +13,7 @@
 	</target>
  
 	<target name="deploy">
-		<copy file="LinacLegoV2WebApp.war" todir="." />
+		<copy file="LinacLegoWebApp.war" todir="." />
 	</target>
  
 </project>

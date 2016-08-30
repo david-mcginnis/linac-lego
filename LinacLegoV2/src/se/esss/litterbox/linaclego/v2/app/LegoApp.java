@@ -33,8 +33,8 @@ public class LegoApp extends JFrameSkeleton
 	private static final String frametitle = "LinacLego";
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
-	private static final String version = "v2.10";
-	private static final String versionDate = "August 27, 2016";
+	private static final String version = "v2.11";
+	private static final String versionDate = "August 29, 2016";
 
 	private Lego lego;
 	private JTabbedPane mainTabbedPane; 
@@ -48,6 +48,7 @@ public class LegoApp extends JFrameSkeleton
 	private WatchService watchService = null;
 	private LegoAppWatchKeyRunnable watchKeyRunnable = null;
 	private Thread watchKeyThread = null;
+	private String latticeFileType = "tracewin";
 	
 	protected WatchService getWatchService() {return watchService;}
 	protected File getOpenedXmlFile() {return openedXmlFile;}
@@ -77,8 +78,8 @@ public class LegoApp extends JFrameSkeleton
 		if (menu.equals("Help") && menuItem.equals("About")) about();
 		if (menu.equals("File") && menuItem.equals("Open LinacLego File")) openLinacLegoFile();
 		if (menu.equals("File") && menuItem.equals("Save LinacLego File")) saveLinacLegoFile();
-		if (menu.equals("File") && menuItem.equals("Open TraceWin File")) openTraceWinFile();
-		if (menu.equals("File") && menuItem.equals("Save TraceWin File")) saveTraceWinFile();
+		if (menu.equals("File") && menuItem.equals("Open Lattice File")) openLatticeFile();
+		if (menu.equals("File") && menuItem.equals("Save Lattice File")) saveLatticeFile();
 		if (menu.equals("File") && menuItem.equals("Exit")) this.quitProgram();
 		if (menu.equals("PBS Level View") && menuItem.equals("Section")) expandPbsTreeTo(1, pbsTree);
 		if (menu.equals("PBS Level View") && menuItem.equals("Cell")) expandPbsTreeTo(2, pbsTree);
@@ -124,8 +125,8 @@ public class LegoApp extends JFrameSkeleton
 	{
 		addMenuItem("File","Open LinacLego File");
 		addMenuItem("File","Save LinacLego File");
-		addMenuItem("File","Open TraceWin File");
-		addMenuItem("File","Save TraceWin File");
+		addMenuItem("File","Open Lattice File");
+		addMenuItem("File","Save Lattice File");
 		addMenuItem("File","Exit");
 		addMenuItem("Actions","Match Slot Models");
 		addMenuItem("Actions","Create Reports");
@@ -140,7 +141,7 @@ public class LegoApp extends JFrameSkeleton
 		addMenuItem("Help","About");
 		
 		setEnabledMenuItem("File","Save LinacLego File",false);
-		setEnabledMenuItem("File","Save TraceWin File",false);
+		setEnabledMenuItem("File","Save Lattice File",false);
 		setEnabledMenuItem("Actions","Match Slot Models",false);
 		setEnabledMenuItem("Actions","Create Reports",false);
 		setEnabledMenuItem("Actions","Update Lattice from LegoSets",false);
@@ -213,7 +214,7 @@ public class LegoApp extends JFrameSkeleton
 			expandPbsTreeTo(3, pbsTree);
 			setEnabledMenu("PBS Level View", true);
 			setEnabledMenuItem("File","Save LinacLego File",true);
-			setEnabledMenuItem("File","Save TraceWin File",true);
+			setEnabledMenuItem("File","Save Lattice File",true);
 			setEnabledMenuItem("Actions","Match Slot Models",true);
 			setEnabledMenuItem("Actions","Create Reports",true);
 			setEnabledMenuItem("Actions","Update Lattice from LegoSets",true);
@@ -224,7 +225,7 @@ public class LegoApp extends JFrameSkeleton
 			messageDialog("Error: " + e.getMessage());
 			setEnabledMenu("PBS Level View", false);
 			setEnabledMenuItem("File","Save LinacLego File",false);
-			setEnabledMenuItem("File","Save TraceWin File",false);
+			setEnabledMenuItem("File","Save Lattice File",false);
 			setEnabledMenuItem("Actions","Match Slot Models",false);
 			setEnabledMenuItem("Actions","Create Reports",false);
 			setEnabledMenuItem("Actions","Update Lattice from LegoSets",false);
@@ -283,17 +284,20 @@ public class LegoApp extends JFrameSkeleton
 			}
 		}
 	}
-	private void saveTraceWinFile()
+	private void saveLatticeFile()
 	{
+		String latticeFileTypeNew = (String)JOptionPane.showInputDialog(this, "Enter lattice file type", "Lattice File type", JOptionPane.QUESTION_MESSAGE,null,null,latticeFileType);
+		if (latticeFileTypeNew == null ) return;
+		latticeFileType = latticeFileTypeNew;
 		String[] datExtensions = {"dat"};
-		File datFile = this.saveFileDialog(datExtensions, "Save TraceWin File", suggestedFileName.substring(0,suggestedFileName.lastIndexOf(".")) + ".dat");
+		File datFile = this.saveFileDialog(datExtensions, "Save " + latticeFileType + " File", suggestedFileName.substring(0,suggestedFileName.lastIndexOf(".")) + ".dat");
 		if (datFile != null)
 		{
 			if (!this.overwriteFileDialog(datFile)) return;
 
 			try 
 			{
-				lego.writeLatticeFile(datFile.getPath(), "tracewin");
+				lego.writeLatticeFile(datFile.getPath(), latticeFileType);
 			} catch (LinacLegoException e) 
 			{
 				if (printStackTrace) e.printStackTrace();
@@ -301,13 +305,16 @@ public class LegoApp extends JFrameSkeleton
 			}
 		}
 	}
-	private void openTraceWinFile()
+	private void openLatticeFile()
 	{
+		String latticeFileTypeNew = (String)JOptionPane.showInputDialog(this, "Enter lattice file type", "Lattice File type", JOptionPane.QUESTION_MESSAGE,null,null,latticeFileType);
+		if (latticeFileTypeNew == null ) return;
+		latticeFileType = latticeFileTypeNew;
 		String[] extensions = {"dat"};
-		File traceWinFile  = openFileDialog(extensions, "Open TraceWin File");
-		if (traceWinFile != null)
+		File latticeFile  = openFileDialog(extensions, "Open " + latticeFileType + " File");
+		if (latticeFile != null)
 		{
-			String xmlFilePath = traceWinFile.getPath().substring(0, traceWinFile.getPath().lastIndexOf(".")) + ".xml";
+			String xmlFilePath = latticeFile.getPath().substring(0, latticeFile.getPath().lastIndexOf(".")) + ".xml";
 			suggestedFileName = new File(xmlFilePath).getName();
 			openedXmlFile = new File(xmlFilePath);
 			
@@ -319,8 +326,8 @@ public class LegoApp extends JFrameSkeleton
 				if (ekinMeVString != null) ekinMeV = Double.parseDouble(ekinMeVString);
 				String beamFreqMHzString = JOptionPane.showInputDialog("Enter Bunch Frequency in MHz: ");
 				if (beamFreqMHzString != null) beamFreqMHz = Double.parseDouble(beamFreqMHzString);
-		 		lego = new Lego(traceWinFile.getName(), "1.0", "revComment", new Date().toString(), ekinMeV, beamFreqMHz, getStatusPanel(), true);
-				lego.readLatticeFile(traceWinFile.getPath(), "tracewin");
+		 		lego = new Lego(latticeFile.getName(), "1.0", "revComment", new Date().toString(), ekinMeV, beamFreqMHz, getStatusPanel(), true);
+				lego.readLatticeFile(latticeFile.getPath(), latticeFileType);
 				loadLinacLegoFile(xmlFilePath, true);				
 			} catch (LinacLegoException e)
 			{

@@ -46,17 +46,20 @@ public class LegoBeamQuad extends LegoBeam
 		addDataElement("r", "0.0", "double","mm");
 	}
 	@Override
-	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		if (latticeType.equalsIgnoreCase("tracewin"))
-		{
-			latticeCommand = "QUAD";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("l");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("g");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("r");
-		}
+		latticeCommand = getDefaultLatticeFileKeyWord();
+		latticeCommand = latticeCommand + Lego.space + getDataValue("l");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("g");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("r");
 		return latticeCommand;
+	}
+	@Override
+	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	{
+		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
+		return defaultLatticeCommand();
 	}
 	@Override
 	protected double reportEnergyChange() throws LinacLegoException {return 0;}
@@ -76,10 +79,12 @@ public class LegoBeamQuad extends LegoBeam
 	@Override
 	protected void setType() {type = "quad";}
 	@Override
+	public String getDefaultLatticeFileKeyWord() {return "QUAD";}
+	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "QUAD";
-		return null;
+		if (latticeType.equalsIgnoreCase("tracewin")) return  getDefaultLatticeFileKeyWord();
+		return getDefaultLatticeFileKeyWord();
 	}
 	@Override
 	public void addLatticeData(String latticeType, String[] sdata) 

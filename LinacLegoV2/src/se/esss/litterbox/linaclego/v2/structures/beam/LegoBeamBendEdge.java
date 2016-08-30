@@ -62,20 +62,24 @@ public class LegoBeamBendEdge extends LegoBeam
 		HVflag = Integer.parseInt(getDataValue("HVflag"));
 	}
 	@Override
-	protected String latticeCommand(String latticeType) throws LinacLegoException {
+	protected String defaultLatticeCommand() throws LinacLegoException 
+	{
 		String latticeCommand = "";
-		if (latticeType.equalsIgnoreCase("tracewin"))
-		{
-			latticeCommand = "EDGE";
-			latticeCommand = latticeCommand + Lego.space + Double.toString(poleFaceAngleDeg);
-			latticeCommand = latticeCommand + Lego.space + Double.toString(radOfCurvmm);
-			latticeCommand = latticeCommand + Lego.space + Double.toString(gapmm);
-			latticeCommand = latticeCommand + Lego.space + Double.toString(K1);
-			latticeCommand = latticeCommand + Lego.space + Double.toString(K2);
-			latticeCommand = latticeCommand + Lego.space + Double.toString(aperRadmm);
-			latticeCommand = latticeCommand + Lego.space + Integer.toString(HVflag);
-		}
+		latticeCommand = getDefaultLatticeFileKeyWord();
+		latticeCommand = latticeCommand + Lego.space + Double.toString(poleFaceAngleDeg);
+		latticeCommand = latticeCommand + Lego.space + Double.toString(radOfCurvmm);
+		latticeCommand = latticeCommand + Lego.space + Double.toString(gapmm);
+		latticeCommand = latticeCommand + Lego.space + Double.toString(K1);
+		latticeCommand = latticeCommand + Lego.space + Double.toString(K2);
+		latticeCommand = latticeCommand + Lego.space + Double.toString(aperRadmm);
+		latticeCommand = latticeCommand + Lego.space + Integer.toString(HVflag);
 		return latticeCommand;
+	}
+	@Override
+	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	{
+		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
+		return defaultLatticeCommand();
 	}
 	@Override
 	protected double reportEnergyChange() throws LinacLegoException {return 0;}
@@ -88,10 +92,12 @@ public class LegoBeamBendEdge extends LegoBeam
 	@Override
 	protected void setType() {type = "edge";}
 	@Override
+	public String getDefaultLatticeFileKeyWord() {return "EDGE";}
+	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "EDGE";
-		return null;
+		if (latticeType.equalsIgnoreCase("tracewin")) return  getDefaultLatticeFileKeyWord();
+		return getDefaultLatticeFileKeyWord();
 	}
 	@Override
 	public void addLatticeData(String latticeType, String[] sdata) 

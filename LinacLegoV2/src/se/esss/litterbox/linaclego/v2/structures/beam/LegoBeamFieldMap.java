@@ -62,24 +62,28 @@ public class LegoBeamFieldMap extends LegoBeam
 		addDataElement("scaleFactor", "1.0", "double", "unit");
 	}
 	@Override
-	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		if (latticeType.equalsIgnoreCase("tracewin"))
-		{
-			latticeCommand = "FIELD_MAP 100";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("lengthmm");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("rfpdeg");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("radiusmm");
-			latticeCommand = latticeCommand + Lego.space + "0";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("xelmax");
-			latticeCommand = latticeCommand + Lego.space + "0";
-			latticeCommand = latticeCommand + Lego.space + "0";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("file").split("\\.")[0];
-			String traceWinFieldProfilePath = getlatticeFileOutputLocation().getParent() + Lego.delim + getDataValue("file").split("\\.")[0] + ".edz";
-			fieldProfileBuilder.writeTraceWinFile(new File(traceWinFieldProfilePath));
-		}
+		latticeCommand = getDefaultLatticeFileKeyWord();
+		latticeCommand = latticeCommand + " 100";
+		latticeCommand = latticeCommand + Lego.space + getDataValue("lengthmm");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("rfpdeg");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("radiusmm");
+		latticeCommand = latticeCommand + Lego.space + "0";
+		latticeCommand = latticeCommand + Lego.space + getDataValue("xelmax");
+		latticeCommand = latticeCommand + Lego.space + "0";
+		latticeCommand = latticeCommand + Lego.space + "0";
+		latticeCommand = latticeCommand + Lego.space + getDataValue("file").split("\\.")[0];
+		String traceWinFieldProfilePath = getlatticeFileOutputLocation().getParent() + Lego.delim + getDataValue("file").split("\\.")[0] + ".edz";
+		fieldProfileBuilder.writeTraceWinFile(new File(traceWinFieldProfilePath));
 		return latticeCommand;
+	}
+	@Override
+	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	{
+		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
+		return defaultLatticeCommand();
 	}
 	@Override
 	protected double reportEnergyChange() throws LinacLegoException 
@@ -150,10 +154,12 @@ public class LegoBeamFieldMap extends LegoBeam
 	@Override
 	protected void setType() {type = "fieldMap";}
 	@Override
+	public String getDefaultLatticeFileKeyWord() {return "FIELD_MAP";}
+	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "FIELD_MAP";
-		return null;
+		if (latticeType.equalsIgnoreCase("tracewin")) return  getDefaultLatticeFileKeyWord();
+		return getDefaultLatticeFileKeyWord();
 	}
 	@Override
 	public void addLatticeData(String latticeType, String[] sdata) 

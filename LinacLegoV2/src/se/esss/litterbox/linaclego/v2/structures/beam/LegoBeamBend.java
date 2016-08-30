@@ -92,19 +92,22 @@ public class LegoBeamBend extends LegoBeam
 		k2out = Double.parseDouble(getDataValue("K2out"));
 	}
 	@Override
-	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		if (latticeType.equalsIgnoreCase("tracewin"))
-		{
-			latticeCommand = "BEND";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("bendAngleDeg");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("radOfCurvmm");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("aperRadmm");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("fieldIndex");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("HVflag");
-		}
+		latticeCommand = getDefaultLatticeFileKeyWord();
+		latticeCommand = latticeCommand + Lego.space + getDataValue("bendAngleDeg");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("radOfCurvmm");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("aperRadmm");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("fieldIndex");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("HVflag");
 		return latticeCommand;
+	}
+	@Override
+	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	{
+		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
+		return defaultLatticeCommand();
 	}
 	@Override
 	protected double reportEnergyChange() throws LinacLegoException  {return 0;}
@@ -117,10 +120,12 @@ public class LegoBeamBend extends LegoBeam
 	@Override
 	protected void setType() {type = "bend";}
 	@Override
+	public String getDefaultLatticeFileKeyWord() { return "BEND";}
+	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "BEND";
-		return null;
+		if (latticeType.equalsIgnoreCase("tracewin")) return  getDefaultLatticeFileKeyWord();
+		return getDefaultLatticeFileKeyWord();
 	}
 	@Override
 	public void addLatticeData(String latticeType, String[] sdata) 

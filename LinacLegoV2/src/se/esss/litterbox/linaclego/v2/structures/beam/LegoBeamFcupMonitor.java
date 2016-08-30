@@ -1,6 +1,5 @@
 package se.esss.litterbox.linaclego.v2.structures.beam;
 
-import se.esss.litterbox.linaclego.v2.Lego;
 import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.structures.LegoSlot;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
@@ -48,17 +47,18 @@ public class LegoBeamFcupMonitor extends LegoBeam
 		charge = Double.parseDouble(getDataValue("charge"));
 	}
 	@Override
-	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		if (latticeType.equalsIgnoreCase("tracewin"))
-		{
-			latticeCommand = "DIAG_POSITION";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("data");
-			latticeCommand = ";lego <beam ";
-			latticeCommand = latticeCommand + "disc=\"" + getDisc() + "\" id=\"" + getId() + "\" data=\"DIAG_FC " +  data + "\">";
-		}
+		latticeCommand = ";lego <beam ";
+		latticeCommand = latticeCommand + "disc=\"" + getDisc() + "\" id=\"" + getId() + "\" data=\"" + getDefaultLatticeFileKeyWord() + " " +  data + "\">";
 		return latticeCommand;
+	}
+	@Override
+	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	{
+		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
+		return defaultLatticeCommand();
 	}
 	@Override
 	protected double reportEnergyChange() throws LinacLegoException {return 0;}
@@ -71,10 +71,12 @@ public class LegoBeamFcupMonitor extends LegoBeam
 	@Override
 	protected void setType() {type = "fcup";}
 	@Override
+	public String getDefaultLatticeFileKeyWord() {return "DIAG_FC";}
+	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "DIAG_FC";
-		return null;
+		if (latticeType.equalsIgnoreCase("tracewin")) return  getDefaultLatticeFileKeyWord();
+		return getDefaultLatticeFileKeyWord();
 	}
 	@Override
 	public void addLatticeData(String latticeType, String[] sdata) 

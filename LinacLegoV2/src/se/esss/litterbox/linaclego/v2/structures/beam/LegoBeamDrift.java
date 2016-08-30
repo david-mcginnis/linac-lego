@@ -47,17 +47,20 @@ public class LegoBeamDrift extends LegoBeam
 		lengthmm = Double.parseDouble(getDataValue("l"));
 	}
 	@Override
-	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		if (latticeType.equalsIgnoreCase("tracewin"))
-		{
-			latticeCommand = "DRIFT";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("l");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("r");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
-		}
+		latticeCommand = getDefaultLatticeFileKeyWord();
+		latticeCommand = latticeCommand + Lego.space + getDataValue("l");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("r");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
 		return latticeCommand;
+	}
+	@Override
+	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	{
+		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
+		return defaultLatticeCommand();
 	}
 	@Override
 	protected double reportEnergyChange() throws LinacLegoException {return 0;}
@@ -70,10 +73,12 @@ public class LegoBeamDrift extends LegoBeam
 	@Override
 	protected void setType() {type = "drift";}
 	@Override
+	public String getDefaultLatticeFileKeyWord() {return "DRIFT";}
+	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "DRIFT";
-		return null;
+		if (latticeType.equalsIgnoreCase("tracewin")) return  getDefaultLatticeFileKeyWord();
+		return getDefaultLatticeFileKeyWord();
 	}
 	@Override
 	public void addLatticeData(String latticeType, String[] sdata) 

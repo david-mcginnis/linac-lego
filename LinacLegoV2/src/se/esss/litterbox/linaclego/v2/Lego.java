@@ -36,12 +36,14 @@ import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamBend;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamBendEdge;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamCurrentMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamDrift;
+import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamDtlCell;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamFcupMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamFieldMap;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamLossMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamMarker;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamPositionMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamQuad;
+import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamRfGap;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamSizeMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamThinSteering;
 import se.esss.litterbox.linaclego.v2.templates.LegoSlotTemplate;
@@ -127,6 +129,8 @@ public class Lego implements Serializable
 		beamTypeList.add(new LegoBeamCurrentMonitor());
 		beamTypeList.add(new LegoBeamBend());
 		beamTypeList.add(new LegoBeamBendEdge());
+		beamTypeList.add(new LegoBeamDtlCell());
+		beamTypeList.add(new LegoBeamRfGap());
 	}
 	public Lego(SimpleXmlDoc sxd, StatusPanel statusPanel, boolean echoStatus) throws LinacLegoException
 	{

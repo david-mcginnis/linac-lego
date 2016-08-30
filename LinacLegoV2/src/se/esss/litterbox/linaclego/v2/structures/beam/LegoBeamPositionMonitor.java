@@ -51,15 +51,18 @@ public class LegoBeamPositionMonitor extends LegoBeam
 		ypos = Double.parseDouble(getDataValue("ypos"));
 	}
 	@Override
-	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		if (latticeType.equalsIgnoreCase("tracewin"))
-		{
-			latticeCommand = "DIAG_POSITION";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("data");
-		}
+		latticeCommand = getDefaultLatticeFileKeyWord();
+		latticeCommand = latticeCommand + Lego.space + getDataValue("data");
 		return latticeCommand;
+	}
+	@Override
+	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	{
+		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
+		return defaultLatticeCommand();
 	}
 	@Override
 	protected double reportEnergyChange() throws LinacLegoException {return 0;}
@@ -72,10 +75,12 @@ public class LegoBeamPositionMonitor extends LegoBeam
 	@Override
 	protected void setType() {type = "beamPosition";}
 	@Override
+	public String getDefaultLatticeFileKeyWord() {return "DIAG_POSITION";}
+	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "DIAG_POSITION";
-		return null;
+		if (latticeType.equalsIgnoreCase("tracewin")) return  getDefaultLatticeFileKeyWord();
+		return getDefaultLatticeFileKeyWord();
 	}
 	@Override
 	public void addLatticeData(String latticeType, String[] sdata) 

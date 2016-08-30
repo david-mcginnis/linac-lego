@@ -77,12 +77,14 @@ public abstract class LegoBeam  implements Serializable
 	public abstract void addDataElements() throws LinacLegoException;
 	protected abstract void calcParameters() throws LinacLegoException;
 	protected abstract String latticeCommand(String latticeType) throws LinacLegoException;
+	protected abstract String defaultLatticeCommand() throws LinacLegoException;
 	protected abstract double reportEnergyChange() throws LinacLegoException;
 	protected abstract double reportSynchronousPhaseDegrees() throws LinacLegoException;
 	protected abstract double reportQuadGradientTpm() throws LinacLegoException;
 	protected abstract double reportDipoleBendDegrees() throws LinacLegoException;
 	protected abstract void setType();
 	public abstract String getLatticeFileKeyWord(String latticeType);
+	protected abstract String getDefaultLatticeFileKeyWord();
 	public abstract void addLatticeData(String latticeType, String[] sdata);
 	public abstract String getPreferredIdLabelHeader();
 	public abstract String getPreferredDiscipline();

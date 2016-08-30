@@ -50,15 +50,18 @@ public class LegoBeamThinSteering extends LegoBeam
 	@Override
 	protected String latticeCommand(String latticeType) throws LinacLegoException 
 	{
+		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
+		return defaultLatticeCommand();
+	}
+	@Override
+	protected String defaultLatticeCommand() throws LinacLegoException 
+	{
 		String latticeCommand = "";
-		if (latticeType.equalsIgnoreCase("tracewin"))
-		{
-			latticeCommand = "THIN_STEERING";
-			latticeCommand = latticeCommand + Lego.space + getDataValue("xkick");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("ykick");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("r");
-			latticeCommand = latticeCommand + Lego.space + getDataValue("kickType");
-		}
+		latticeCommand = getDefaultLatticeFileKeyWord();
+		latticeCommand = latticeCommand + Lego.space + getDataValue("xkick");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("ykick");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("r");
+		latticeCommand = latticeCommand + Lego.space + getDataValue("kickType");
 		return latticeCommand;
 	}
 	@Override
@@ -81,10 +84,12 @@ public class LegoBeamThinSteering extends LegoBeam
 	@Override
 	protected void setType() {type = "thinSteering";}
 	@Override
+	public String getDefaultLatticeFileKeyWord() {return "THIN_STEERING";}
+	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return "THIN_STEERING";
-		return null;
+		if (latticeType.equalsIgnoreCase("tracewin")) return  getDefaultLatticeFileKeyWord();
+		return getDefaultLatticeFileKeyWord();
 	}
 	@Override
 	public void addLatticeData(String latticeType, String[] sdata) 

@@ -5,24 +5,25 @@ import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.structures.LegoSlot;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 
-public class LegoBeamCurrentMonitor extends LegoBeam 
+public class LegoBeamEmitMonitor extends LegoBeam 
 {
-	private static final long serialVersionUID = -8717805986390419636L;
+	private static final long serialVersionUID = 176550111628919801L;
 	String data = "";
-	double current = 0.0;
+	double xemit;
+	double yemit;
 
 	double lenUp = 0.0;
 	double lenDn = 0.0;
-		
-	public LegoBeamCurrentMonitor() throws LinacLegoException 
+	
+	public LegoBeamEmitMonitor() throws LinacLegoException 
 	{
 		super();
 	}
-	public LegoBeamCurrentMonitor(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException 
+	public LegoBeamEmitMonitor(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException 
 	{
 		super(legoSlot, beamListIndex, id, disc, model);
 	}
-	public LegoBeamCurrentMonitor(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
+	public LegoBeamEmitMonitor(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
 	{
 		super(legoSlot, beamListIndex, beamTag);
 	}
@@ -43,7 +44,8 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 	public void addDataElements() throws LinacLegoException 
 	{
 		addDataElement("data", "", "string", "unit");
-		addDataElement("current", "0.0", "double", "mA");
+		addDataElement("xemit", "0.0", "double", "mm-mrad");
+		addDataElement("yemit", "0.0", "double", "mm-mrad");
 
 		addDataElement("lenUp", "0.0", "double", "mm");
 		addDataElement("lenDn", "0.0", "double", "mm");
@@ -54,7 +56,8 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 	protected void calcParameters() throws LinacLegoException 
 	{
 		data = getDataValue("data");
-		current = Double.parseDouble(getDataValue("current"));
+		xemit = Double.parseDouble(getDataValue("xemit"));
+		yemit = Double.parseDouble(getDataValue("yemit"));
 
 		lenUp = Double.parseDouble(getDataValue("lenUp"));
 		lenDn = Double.parseDouble(getDataValue("lenDn"));
@@ -100,9 +103,9 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 	@Override
 	protected double reportDipoleBendDegrees() throws LinacLegoException {return 0;}
 	@Override
-	protected void setType() {type = "beamCurrent";}
+	protected void setType() {type = "beamEmit";}
 	@Override
-	public String getDefaultLatticeFileKeyWord() {return "DIAG_CURRENT";}
+	public String getDefaultLatticeFileKeyWord() {return "DIAG_EMIT";}
 	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
@@ -120,12 +123,12 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 		}
 	}
 	@Override
-	public String getPreferredIdLabelHeader() {return "BCM-";}
+	public String getPreferredIdLabelHeader() {return "EMIT-";}
 	@Override
 	public String getPreferredDiscipline() {return "PBI";}
 	@Override
-	public double characteristicValue() {return Math.abs(current);}
+	public double characteristicValue() {return 0.0;}
 	@Override
-	public String characteristicValueUnit() {return "mA";}
+	public String characteristicValueUnit() {return "";}
 
 }

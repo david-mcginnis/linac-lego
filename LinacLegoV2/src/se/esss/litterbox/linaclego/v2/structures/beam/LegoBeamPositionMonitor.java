@@ -11,6 +11,9 @@ public class LegoBeamPositionMonitor extends LegoBeam
 	String data = "";
 	double xpos = 0.0;
 	double ypos = 0.0;
+
+	double lenUp = 0.0;
+	double lenDn = 0.0;
 	
 	public LegoBeamPositionMonitor() throws LinacLegoException 
 	{
@@ -28,6 +31,7 @@ public class LegoBeamPositionMonitor extends LegoBeam
 	protected double[] getLocalTranslationVector() throws LinacLegoException 
 	{
 		double[] localInputVec = {0.0, 0.0, 0.0};
+		localInputVec[2] = (lenUp + lenDn) * 0.001;
 		return localInputVec;
 	}
 	@Override
@@ -42,6 +46,11 @@ public class LegoBeamPositionMonitor extends LegoBeam
 		addDataElement("data", "", "string", "unit");
 		addDataElement("xpos", "0.0", "double", "mm");
 		addDataElement("ypos", "0.0", "double", "mm");
+
+		addDataElement("lenUp", "0.0", "double", "mm");
+		addDataElement("lenDn", "0.0", "double", "mm");
+		addDataElement("r", "0.0", "double", "mm");
+		addDataElement("ry", "0.0", "double", "mm");
 	}
 	@Override
 	protected void calcParameters() throws LinacLegoException 
@@ -49,13 +58,34 @@ public class LegoBeamPositionMonitor extends LegoBeam
 		data = getDataValue("data");
 		xpos = Double.parseDouble(getDataValue("xpos"));
 		ypos = Double.parseDouble(getDataValue("ypos"));
+
+		lenUp = Double.parseDouble(getDataValue("lenUp"));
+		lenDn = Double.parseDouble(getDataValue("lenDn"));
 	}
 	@Override
 	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		latticeCommand = getDefaultLatticeFileKeyWord();
+		if (lenUp > 0.00000001)
+		{
+			latticeCommand = latticeCommand + "DRIFT";
+			latticeCommand = latticeCommand + Lego.space + getDataValue("lenUp");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("r");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
+			latticeCommand = latticeCommand + "\n                  ";
+		}
+		
+		latticeCommand = latticeCommand + getDefaultLatticeFileKeyWord();
 		latticeCommand = latticeCommand + Lego.space + getDataValue("data");
+
+		if (lenDn > 0.00000001)
+		{
+			latticeCommand = latticeCommand + "\n                  ";
+			latticeCommand = latticeCommand + "DRIFT";
+			latticeCommand = latticeCommand + Lego.space + getDataValue("lenDn");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("r");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
+		}
 		return latticeCommand;
 	}
 	@Override

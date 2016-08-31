@@ -148,7 +148,7 @@ public class LegoPbsHtmlTextTree
 		htmlTextTree.setIconImageLocation("");
 		if (beam.getType().equals("quad")) htmlTextTree.setIconImageLocation("images/quad.jpg");
 		if (beam.getType().equals("drift")) htmlTextTree.setIconImageLocation("images/drift.png");
-		if (beam.getType().equals("rfGap")) htmlTextTree.setIconImageLocation("images/buncher.jpg");
+		if (beam.getType().equals("rfgap")) htmlTextTree.setIconImageLocation("images/buncher.jpg");
 		if (beam.getType().equals("fieldMap")) htmlTextTree.setIconImageLocation("images/elliptical.jpg");
 		if (beam.getType().equals("bend")) htmlTextTree.setIconImageLocation("images/bend.jpg");
 		if (beam.getType().equals("thinSteering")) htmlTextTree.setIconImageLocation("images/triangle.jpg");

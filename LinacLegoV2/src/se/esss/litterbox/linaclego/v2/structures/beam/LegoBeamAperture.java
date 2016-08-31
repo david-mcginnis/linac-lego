@@ -5,26 +5,27 @@ import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.structures.LegoSlot;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 
-public class LegoBeamCurrentMonitor extends LegoBeam 
+public class LegoBeamAperture extends LegoBeam
 {
-	private static final long serialVersionUID = -8717805986390419636L;
-	String data = "";
-	double current = 0.0;
+	private static final long serialVersionUID = 5963629376297469167L;
+	double dx;
+	double dy;
+	int apertype;
 
 	double lenUp = 0.0;
 	double lenDn = 0.0;
-		
-	public LegoBeamCurrentMonitor() throws LinacLegoException 
+	
+	public LegoBeamAperture() throws LinacLegoException   
 	{
 		super();
 	}
-	public LegoBeamCurrentMonitor(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException 
-	{
-		super(legoSlot, beamListIndex, id, disc, model);
-	}
-	public LegoBeamCurrentMonitor(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
+	public LegoBeamAperture(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
 	{
 		super(legoSlot, beamListIndex, beamTag);
+	}
+	public LegoBeamAperture(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException
+	{
+		super(legoSlot, beamListIndex, id, disc, model);
 	}
 	@Override
 	protected double[] getLocalTranslationVector() throws LinacLegoException 
@@ -42,8 +43,9 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 	@Override
 	public void addDataElements() throws LinacLegoException 
 	{
-		addDataElement("data", "", "string", "unit");
-		addDataElement("current", "0.0", "double", "mA");
+		addDataElement("dx", "0.0", "double", "mm");
+		addDataElement("dy", "0.0", "double", "mm");
+		addDataElement("apertype", "0", "int", "unit");
 
 		addDataElement("lenUp", "0.0", "double", "mm");
 		addDataElement("lenDn", "0.0", "double", "mm");
@@ -53,11 +55,18 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 	@Override
 	protected void calcParameters() throws LinacLegoException 
 	{
-		data = getDataValue("data");
-		current = Double.parseDouble(getDataValue("current"));
+		dx = Double.parseDouble(getDataValue("dx"));
+		dy = Double.parseDouble(getDataValue("dy"));
+		apertype = Integer.parseInt(getDataValue("apertype"));
 
 		lenUp = Double.parseDouble(getDataValue("lenUp"));
 		lenDn = Double.parseDouble(getDataValue("lenDn"));
+	}
+	@Override
+	protected String latticeCommand(String latticeType) throws LinacLegoException 
+	{
+		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
+		return defaultLatticeCommand();
 	}
 	@Override
 	protected String defaultLatticeCommand() throws LinacLegoException 
@@ -73,7 +82,9 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 		}
 		
 		latticeCommand = latticeCommand + getDefaultLatticeFileKeyWord();
-		latticeCommand = latticeCommand + Lego.space + getDataValue("data");
+		latticeCommand = latticeCommand + Lego.space + Double.toString(dx);
+		latticeCommand = latticeCommand + Lego.space + Double.toString(dy);
+		latticeCommand = latticeCommand + Lego.space + Integer.toString(apertype);
 
 		if (lenDn > 0.00000001)
 		{
@@ -86,12 +97,6 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 		return latticeCommand;
 	}
 	@Override
-	protected String latticeCommand(String latticeType) throws LinacLegoException 
-	{
-		if (latticeType.equalsIgnoreCase("tracewin")) return defaultLatticeCommand();
-		return defaultLatticeCommand();
-	}
-	@Override
 	protected double reportEnergyChange() throws LinacLegoException {return 0;}
 	@Override
 	protected double reportSynchronousPhaseDegrees() throws LinacLegoException {return 0;}
@@ -100,9 +105,7 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 	@Override
 	protected double reportDipoleBendDegrees() throws LinacLegoException {return 0;}
 	@Override
-	protected void setType() {type = "beamCurrent";}
-	@Override
-	public String getDefaultLatticeFileKeyWord() {return "DIAG_CURRENT";}
+	protected void setType() {type="aperture";}
 	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{
@@ -110,22 +113,24 @@ public class LegoBeamCurrentMonitor extends LegoBeam
 		return getDefaultLatticeFileKeyWord();
 	}
 	@Override
+	public String getDefaultLatticeFileKeyWord() {return "APERTURE";}
+	@Override
 	public void addLatticeData(String latticeType, String[] sdata) 
 	{
 		if (latticeType.equalsIgnoreCase("tracewin"))
 		{
-			data = "";
-			for (int ii = 0; ii < sdata.length; ++ii) data = data + " " + sdata[ii];
-			setDataValue("data", data.trim());
+			setDataValue("dx", sdata[0]);
+			setDataValue("dy", sdata[1]);
+			setDataValue("apertype", sdata[2]);
 		}
 	}
 	@Override
-	public String getPreferredIdLabelHeader() {return "BCM-";}
+	public String getPreferredIdLabelHeader() {return "APR-";}
 	@Override
-	public String getPreferredDiscipline() {return "PBI";}
+	public String getPreferredDiscipline() {return "VAC";}
 	@Override
-	public double characteristicValue() {return Math.abs(current);}
+	public double characteristicValue() {return Math.sqrt(dx * dy);}
 	@Override
-	public String characteristicValueUnit() {return "mA";}
+	public String characteristicValueUnit() {return "mm^2";}
 
 }

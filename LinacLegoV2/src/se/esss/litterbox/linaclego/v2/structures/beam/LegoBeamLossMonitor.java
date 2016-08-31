@@ -1,5 +1,6 @@
 package se.esss.litterbox.linaclego.v2.structures.beam;
 
+import se.esss.litterbox.linaclego.v2.Lego;
 import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.structures.LegoSlot;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
@@ -12,6 +13,9 @@ public class LegoBeamLossMonitor extends LegoBeam
 	double yloc = 0.0;
 	double zloc = 0.0;
 	double loss = 0.0;
+
+	double lenUp = 0.0;
+	double lenDn = 0.0;
 	
 	public LegoBeamLossMonitor() throws LinacLegoException 
 	{
@@ -29,6 +33,7 @@ public class LegoBeamLossMonitor extends LegoBeam
 	protected double[] getLocalTranslationVector() throws LinacLegoException 
 	{
 		double[] localInputVec = {0.0, 0.0, 0.0};
+		localInputVec[2] = (lenUp + lenDn) * 0.001;
 		return localInputVec;
 	}
 	@Override
@@ -45,6 +50,11 @@ public class LegoBeamLossMonitor extends LegoBeam
 		addDataElement("yloc", "0.0", "double", "mm");
 		addDataElement("zloc", "0.0", "double", "mm");
 		addDataElement("loss", "0.0", "double", "Sv/s");
+
+		addDataElement("lenUp", "0.0", "double", "mm");
+		addDataElement("lenDn", "0.0", "double", "mm");
+		addDataElement("r", "0.0", "double", "mm");
+		addDataElement("ry", "0.0", "double", "mm");
 	}
 	@Override
 	protected void calcParameters() throws LinacLegoException 
@@ -54,13 +64,34 @@ public class LegoBeamLossMonitor extends LegoBeam
 		yloc = Double.parseDouble(getDataValue("yloc"));
 		zloc = Double.parseDouble(getDataValue("zloc"));
 		loss = Double.parseDouble(getDataValue("loss"));
+
+		lenUp = Double.parseDouble(getDataValue("lenUp"));
+		lenDn = Double.parseDouble(getDataValue("lenDn"));
 	}
 	@Override
 	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		latticeCommand = ";lego <beam ";
+		if (lenUp > 0.00000001)
+		{
+			latticeCommand = latticeCommand + "DRIFT";
+			latticeCommand = latticeCommand + Lego.space + getDataValue("lenUp");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("r");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
+			latticeCommand = latticeCommand + "\n                  ";
+		}
+		
+		latticeCommand = latticeCommand + ";lego <beam ";
 		latticeCommand = latticeCommand + "disc=\"" + getDisc() + "\" id=\"" + getId() + "\" data=\"" + getDefaultLatticeFileKeyWord() + " " +  getDataValue("xloc") + " " + getDataValue("yloc") + " " + getDataValue("zloc") + "\">";
+
+		if (lenDn > 0.00000001)
+		{
+			latticeCommand = latticeCommand + "\n                  ";
+			latticeCommand = latticeCommand + "DRIFT";
+			latticeCommand = latticeCommand + Lego.space + getDataValue("lenDn");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("r");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
+		}
 		return latticeCommand;
 	}
 	@Override

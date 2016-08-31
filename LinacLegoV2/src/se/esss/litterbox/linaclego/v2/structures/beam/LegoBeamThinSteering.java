@@ -15,6 +15,9 @@ public class LegoBeamThinSteering extends LegoBeam
 	@SuppressWarnings("unused")
 	private int kickType;
 
+	double lenUp = 0.0;
+	double lenDn = 0.0;
+	
 	public LegoBeamThinSteering() throws LinacLegoException 
 	{
 		super();
@@ -31,6 +34,7 @@ public class LegoBeamThinSteering extends LegoBeam
 	protected double[] getLocalTranslationVector() throws LinacLegoException 
 	{
 		double[] localInputVec = {0.0, 0.0, 0.0};
+		localInputVec[2] = (lenUp + lenDn) * 0.001;
 		return localInputVec;
 	}
 	@Override
@@ -46,6 +50,11 @@ public class LegoBeamThinSteering extends LegoBeam
 		addDataElement("ykick", "0.0", "double","Tm");
 		addDataElement("r", "0.0", "double", "mm");
 		addDataElement("kickType", "0", "int", "unit");
+
+		addDataElement("lenUp", "0.0", "double", "mm");
+		addDataElement("lenDn", "0.0", "double", "mm");
+		addDataElement("r", "0.0", "double", "mm");
+		addDataElement("ry", "0.0", "double", "mm");
 	}
 	@Override
 	protected String latticeCommand(String latticeType) throws LinacLegoException 
@@ -57,11 +66,29 @@ public class LegoBeamThinSteering extends LegoBeam
 	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		latticeCommand = getDefaultLatticeFileKeyWord();
+		if (lenUp > 0.00000001)
+		{
+			latticeCommand = latticeCommand + "DRIFT";
+			latticeCommand = latticeCommand + Lego.space + getDataValue("lenUp");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("r");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
+			latticeCommand = latticeCommand + "\n                  ";
+		}
+		
+		latticeCommand = latticeCommand + getDefaultLatticeFileKeyWord();
 		latticeCommand = latticeCommand + Lego.space + getDataValue("xkick");
 		latticeCommand = latticeCommand + Lego.space + getDataValue("ykick");
 		latticeCommand = latticeCommand + Lego.space + getDataValue("r");
 		latticeCommand = latticeCommand + Lego.space + getDataValue("kickType");
+
+		if (lenDn > 0.00000001)
+		{
+			latticeCommand = latticeCommand + "\n                  ";
+			latticeCommand = latticeCommand + "DRIFT";
+			latticeCommand = latticeCommand + Lego.space + getDataValue("lenDn");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("r");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
+		}
 		return latticeCommand;
 	}
 	@Override
@@ -80,6 +107,8 @@ public class LegoBeamThinSteering extends LegoBeam
 		radius = Double.parseDouble(getDataValue("r"));
 		kickType = Integer.parseInt(getDataValue("kickType"));
 		
+		lenUp = Double.parseDouble(getDataValue("lenUp"));
+		lenDn = Double.parseDouble(getDataValue("lenDn"));
 	}
 	@Override
 	protected void setType() {type = "thinSteering";}

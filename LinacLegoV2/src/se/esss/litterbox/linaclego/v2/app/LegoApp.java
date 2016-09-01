@@ -116,7 +116,7 @@ public class LegoApp extends JFrameSkeleton
 		mainTabbedPane = new JTabbedPane();
 		mainTabbedPane.addTab("xml Tree", xmlTreeView);
 		mainTabbedPane.addTab("pbs Tree", pbsTreeView);
-		mainTabbedPane.addTab("Mathing Log", matchLogStatusPanel.getScrollPane());
+		mainTabbedPane.addTab("Matching Log", matchLogStatusPanel.getScrollPane());
 		getMainPane().add(mainTabbedPane);
 	}
 

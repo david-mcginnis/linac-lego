@@ -1,8 +1,10 @@
 package se.esss.litterbox.linaclego.v2.utilities;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,7 +53,15 @@ public class LegoUtilities
 			} catch (IOException e) {throw new LinacLegoException(e);}
 	    }
 	}
-
+	public static void appendTextToFile(String filePath, String text) throws LinacLegoException 
+	{
+		try 
+		{
+			BufferedWriter output = new BufferedWriter(new FileWriter(filePath, true));
+			output.append(text);
+			output.close();
+		} catch (IOException e) {throw new LinacLegoException(e);}
+	}
 	public static void main(String[] args) 
 	{
 		// TODO Auto-generated method stub

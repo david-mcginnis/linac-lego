@@ -53,7 +53,6 @@ public class LegoBeamThinSteering extends LegoBeam
 
 		addDataElement("lenUp", "0.0", "double", "mm");
 		addDataElement("lenDn", "0.0", "double", "mm");
-		addDataElement("r", "0.0", "double", "mm");
 		addDataElement("ry", "0.0", "double", "mm");
 	}
 	@Override

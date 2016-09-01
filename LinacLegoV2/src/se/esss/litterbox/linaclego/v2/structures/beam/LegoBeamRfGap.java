@@ -21,6 +21,9 @@ public class LegoBeamRfGap extends LegoBeam
 	private double energyGain = 0.0;
 	private double synchPhase = 0.0;
 
+	double lenUp = 0.0;
+	double lenDn = 0.0;
+	
 	public LegoBeamRfGap() throws LinacLegoException   
 	{
 		super();
@@ -37,6 +40,7 @@ public class LegoBeamRfGap extends LegoBeam
 	protected double[] getLocalTranslationVector() throws LinacLegoException 
 	{
 		double[] localInputVec = {0.0, 0.0, 0.0};
+		localInputVec[2] = (lenUp + lenDn) * 0.001;
 		return localInputVec;
 	}
 	@Override
@@ -58,6 +62,11 @@ public class LegoBeamRfGap extends LegoBeam
 		addDataElement("k2tts", "0.0", "double", "unit");
 		addDataElement("voltMult", "1.0", "double", "unit");
 		addDataElement("phaseOffDeg", "0.0", "double", "deg");
+
+		addDataElement("lenUp", "0.0", "double", "mm");
+		addDataElement("lenDn", "0.0", "double", "mm");
+		addDataElement("ry", "0.0", "double", "mm");
+
 	}
 	@Override
 	protected void calcParameters() throws LinacLegoException 
@@ -72,6 +81,9 @@ public class LegoBeamRfGap extends LegoBeam
 		k2tts = Double.parseDouble(getDataValue("k2tts"));
 		voltMult = Double.parseDouble(getDataValue("voltMult"));
 		phaseOffDeg = Double.parseDouble(getDataValue("phaseOffDeg"));
+		
+		lenUp = Double.parseDouble(getDataValue("lenUp"));
+		lenDn = Double.parseDouble(getDataValue("lenDn"));
 
 		double beta;
 		double volts;
@@ -103,6 +115,15 @@ public class LegoBeamRfGap extends LegoBeam
 	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
+		if (lenUp > 0.00000001)
+		{
+			latticeCommand = latticeCommand + "DRIFT";
+			latticeCommand = latticeCommand + Lego.space + getDataValue("lenUp");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("radApermm");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
+			latticeCommand = latticeCommand + "\n                  ";
+		}
+		
 		latticeCommand = latticeCommand + "GAP";
 		latticeCommand = latticeCommand + Lego.space + Double.toString(voltsT * voltMult);
 		latticeCommand = latticeCommand + Lego.space + Double.toString(rfPhaseDeg + phaseOffDeg);
@@ -114,6 +135,15 @@ public class LegoBeamRfGap extends LegoBeam
 		latticeCommand = latticeCommand + Lego.space + Double.toString(k2tts);
 		latticeCommand = latticeCommand + Lego.space + "0";
 		latticeCommand = latticeCommand + Lego.space + "0";
+
+		if (lenDn > 0.00000001)
+		{
+			latticeCommand = latticeCommand + "\n                  ";
+			latticeCommand = latticeCommand + "DRIFT";
+			latticeCommand = latticeCommand + Lego.space + getDataValue("lenDn");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("radApermm");
+			latticeCommand = latticeCommand + Lego.space + getDataValue("ry");
+		}
 		return latticeCommand;
 	}
 	@Override

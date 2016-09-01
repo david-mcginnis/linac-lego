@@ -42,8 +42,8 @@ public class EntryPointApp implements EntryPoint
 	{
 		setupApp = new GskelSetupApp();
 		setupApp.setDebug(false);
-		setupApp.setVersionDate("August 25, 2016 16:52");
-		setupApp.setVersion("v2.2");
+		setupApp.setVersionDate("August 31, 2016 21:31");
+		setupApp.setVersion("v2.3");
 		setupApp.setAuthor("Dave McGinnis david.mcginnis@esss.se");
 		setupApp.setLogoImage("images/essLogo.png");
 		setupApp.setLogoTitle("LinacLego Parameter  Book");

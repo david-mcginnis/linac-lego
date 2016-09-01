@@ -161,6 +161,9 @@ public class LegoPbsHtmlTextTree
 		if (beam.getType().equals("fcup")) htmlTextTree.setIconImageLocation("images/fcup.jpg");
 		if (beam.getType().equals("beamCurrent")) htmlTextTree.setIconImageLocation("images/bcm.jpg");
 		if (beam.getType().equals("edge")) htmlTextTree.setIconImageLocation("images/triangle.jpg");
+		if (beam.getType().equals("magSteer")) htmlTextTree.setIconImageLocation("images/triangle.jpg");
+		if (beam.getType().equals("aperture")) htmlTextTree.setIconImageLocation("images/col.jpg");
+		if (beam.getType().equals("beamEmit")) htmlTextTree.setIconImageLocation("images/slit.jpg");
 		
 		htmlTextTree.setTag(beam.getType(), 12);
 		htmlTextTree.addAttribute("id", beam.getId(), 15);

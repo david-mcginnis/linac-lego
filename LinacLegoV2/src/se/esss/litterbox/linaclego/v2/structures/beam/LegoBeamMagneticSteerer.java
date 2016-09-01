@@ -84,7 +84,7 @@ public class LegoBeamMagneticSteerer extends LegoBeam
 	@Override
 	protected double reportDipoleBendDegrees() throws LinacLegoException {return 0;}
 	@Override
-	protected void setType() {type = "magneticSteerer";}
+	protected void setType() {type = "magSteer";}
 	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{

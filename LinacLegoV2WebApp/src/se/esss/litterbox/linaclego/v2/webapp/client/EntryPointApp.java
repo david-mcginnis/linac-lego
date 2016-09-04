@@ -22,9 +22,9 @@ public class EntryPointApp implements EntryPoint
 	
 //	public final String latticeDataWeb = "https://dl.dropboxusercontent.com/u/41799517/LinacLegoData/data";
 //	public final String latticeDataWeb = "http://localhost:8080/LinacLegoData/data";
-	public final String linacLegoMasterLink      = "https://aig.esss.lu.se:8443/LinacLegoData";
+//	public final String linacLegoMasterLink      = "https://aig.esss.lu.se:8443/LinacLegoData";
 	public final String linacLegoDevelopmentLink = "https://dl.dropboxusercontent.com/u/41799517/lattice-repository/LinacLegoData/WebContent";
-//	public final String linacLegoMasterLink      = linacLegoDevelopmentLink;
+	public final String linacLegoMasterLink      = linacLegoDevelopmentLink;
 	private String linacLegoDataLink = linacLegoMasterLink;
 	private InfoPanel infoPanel;
 	private PbsLayoutPanel pbsLayoutPanel;
@@ -110,10 +110,8 @@ public class EntryPointApp implements EntryPoint
 			entryPointApp.pbsLayoutPanel.addTree(result[0]);
 			entryPointApp.pbsTreePanel.addTree(result[0]);
 			entryPointApp.pbsTreePanel.getRootTreeItem().expand();
-			entryPointApp.pbsTreePanel.getRootTreeItem().getMyTreeItemChildrenList().get(0).expand();
 			entryPointApp.xmlTreePanel.addTree(result[1]);
 			entryPointApp.xmlTreePanel.getRootTreeItem().expand();
-			entryPointApp.xmlTreePanel.getRootTreeItem().getMyTreeItemChildrenList().get(0).expand();
 			entryPointApp.infoPanel.getLatticeVersionInlineHTML().setHTML(result[1].getInlineHtmlString(false, true));
 			entryPointApp.infoPanel.getLatticeVersionCaptionPanel().setVisible(true);
 			entryPointApp.setupApp.getMessageDialog().hide();

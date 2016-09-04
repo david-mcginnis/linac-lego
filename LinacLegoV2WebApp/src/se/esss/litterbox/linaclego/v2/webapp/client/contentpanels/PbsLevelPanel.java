@@ -68,6 +68,8 @@ public class PbsLevelPanel extends VerticalPanel
 		if (odd) setStyleName("pbsBorderOdd" + ilevel);
 		if (!odd) setStyleName("pbsBorderEven" + ilevel);
 		add(mainWrapperPanel);
+//		gskelTabLayoutScrollPanel.getSetupApp().getStatusTextArea().addStatus("Adding " + textTree.getAttribute(0).getAttributeValue());
+		
 	}
 	private void addChildrenPanels()
 	{

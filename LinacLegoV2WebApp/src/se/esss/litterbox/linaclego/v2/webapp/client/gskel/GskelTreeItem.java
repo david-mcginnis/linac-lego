@@ -27,7 +27,7 @@ public class GskelTreeItem extends TreeItem
 	ArrayList<GskelTreeItem> treeItemChildrenList = new ArrayList<GskelTreeItem>();
 	GskelSetupApp setupApp;
 	
-	public ArrayList<GskelTreeItem> getMyTreeItemChildrenList() {return treeItemChildrenList;} 
+	public ArrayList<GskelTreeItem> getGskelTreeItemChildrenList() {return treeItemChildrenList;} 
 	
 	GskelTreeItem(HtmlTextTree textTree, int iconWidthPx, int iconHeightPx, GskelSetupApp setupApp)
 	{
@@ -54,15 +54,19 @@ public class GskelTreeItem extends TreeItem
 		{
 			infoAnchor = new Anchor(textTree.getInfoLinkTitle());
 			horizontalPanel.add(infoAnchor);
-			infoAnchor.addClickHandler(new InfoAnchorClickHandler(textTree.getInfoLink()));
 			infoAnchor.setStyleName("treeItemInfoAnchor");
 
 		}
-		expand();
+//		expand();
 	}
 	public void expand()
 	{
 		if (beenExpanded) return;
+		if (textTree.getInfoLink() != null)
+		{
+			infoAnchor.addClickHandler(new InfoAnchorClickHandler(textTree.getInfoLink()));
+
+		}
 		if (textTree.hasDataFolder())
 		{
 			GskelTreeItem treeItem = new GskelTreeItem(textTree.getDataFolder(), iconWidthPx, iconHeightPx, setupApp);
@@ -80,7 +84,7 @@ public class GskelTreeItem extends TreeItem
 		}
 		inlineHTML.setHTML("<font style=\"font-weight:bold;\" size=\"3px\" color=\"FFFFFF\">* </font>" + textTree.getInlineHtmlString(iconWidthPx, iconHeightPx, true, false));
 		beenExpanded = true;
-		setState(false);
+		setState(true);
 	}
 	class InfoAnchorClickHandler implements ClickHandler
 	{

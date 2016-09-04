@@ -22,9 +22,9 @@ public class EntryPointApp implements EntryPoint
 	
 //	public final String latticeDataWeb = "https://dl.dropboxusercontent.com/u/41799517/LinacLegoData/data";
 //	public final String latticeDataWeb = "http://localhost:8080/LinacLegoData/data";
-//	public final String linacLegoMasterLink      = "https://aig.esss.lu.se:8443/LinacLegoData";
+	public final String linacLegoMasterLink      = "https://aig.esss.lu.se:8443/LinacLegoData";
 	public final String linacLegoDevelopmentLink = "https://dl.dropboxusercontent.com/u/41799517/lattice-repository/LinacLegoData/WebContent";
-	public final String linacLegoMasterLink      = linacLegoDevelopmentLink;
+//	public final String linacLegoMasterLink      = linacLegoDevelopmentLink;
 	private String linacLegoDataLink = linacLegoMasterLink;
 	private InfoPanel infoPanel;
 	private PbsLayoutPanel pbsLayoutPanel;
@@ -42,8 +42,8 @@ public class EntryPointApp implements EntryPoint
 	{
 		setupApp = new GskelSetupApp();
 		setupApp.setDebug(false);
-		setupApp.setVersionDate("August 31, 2016 21:31");
-		setupApp.setVersion("v2.3");
+		setupApp.setVersionDate("September 4, 2016 14:07");
+		setupApp.setVersion("v2.4");
 		setupApp.setAuthor("Dave McGinnis david.mcginnis@esss.se");
 		setupApp.setLogoImage("images/essLogo.png");
 		setupApp.setLogoTitle("LinacLego Parameter  Book");

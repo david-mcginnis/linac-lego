@@ -12,7 +12,8 @@ import se.esss.litterbox.linaclego.v2.data.LegoInfo;
 import se.esss.litterbox.linaclego.v2.data.LegoLatticeFileComment;
 import se.esss.litterbox.linaclego.v2.data.LegoModel;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeam;
-import se.esss.litterbox.linaclego.v2.utilities.RfFieldProfileBuilder;
+import se.esss.litterbox.linaclego.v2.utilities.MagCylFieldProfileBuilder;
+import se.esss.litterbox.linaclego.v2.utilities.Rf1DFieldProfileBuilder;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 import se.esss.litterbox.simplexml.SimpleXmlWriter;
@@ -25,7 +26,8 @@ public class LegoLinac  implements Serializable
 	private ArrayList<LegoInfo> legoInfoList = new ArrayList<LegoInfo>();
 	private ArrayList<LegoModel> legoSlotModelList = new ArrayList<LegoModel>();
 	private ArrayList<LegoModel> legoBeamModelList = new ArrayList<LegoModel>();
-	private ArrayList<RfFieldProfileBuilder> rfFieldProfileBuilderList = new ArrayList<RfFieldProfileBuilder>();
+	private ArrayList<Rf1DFieldProfileBuilder> rfFieldProfileBuilderList = new ArrayList<Rf1DFieldProfileBuilder>();
+	private ArrayList<MagCylFieldProfileBuilder> magCylFieldProfileBuilderList = new ArrayList<MagCylFieldProfileBuilder>();
 	private Lego lego = null;
 	private double[][] eulerMatrix   = {{0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}, {0.0, 0.0, 0.0}};
 	private double[] transVec   = {0.0, 0.0, 0.0}; 
@@ -35,7 +37,8 @@ public class LegoLinac  implements Serializable
 	public ArrayList<LegoInfo> getLegoInfoList() {return legoInfoList;}
 	public ArrayList<LegoModel> getLegoSlotModelList() {return legoSlotModelList;}
 	public ArrayList<LegoModel> getLegoBeamModelList() {return legoBeamModelList;}
-	public ArrayList<RfFieldProfileBuilder> getRfFieldProfileBuilderList() {return rfFieldProfileBuilderList;}
+	public ArrayList<Rf1DFieldProfileBuilder> getRfFieldProfileBuilderList() {return rfFieldProfileBuilderList;}
+	public ArrayList<MagCylFieldProfileBuilder> getMagCylFieldProfileBuilderList() {return magCylFieldProfileBuilderList;}
 	public LegoSection getFirstSection() {return getLegoSectionList().get(0);}
 	public LegoSection getLastSection() {return getLegoSectionList().get(getLegoSectionList().size() - 1);}
 	public Lego getLego() {return lego;}
@@ -291,6 +294,14 @@ public class LegoLinac  implements Serializable
 		{
 			String xmlFilePath = fileDirectoryPath + Lego.delim + rfFieldProfileBuilderList.get(ii).getTitle() + ".xml";
 			rfFieldProfileBuilderList.get(ii).writeXmlFile(xmlFilePath);
+		}
+	}
+	public void printMagCylFieldFieldBuilder(String fileDirectoryPath) throws LinacLegoException
+	{
+		for (int ii = 0; ii < magCylFieldProfileBuilderList.size(); ++ii)
+		{
+			String xmlFilePath = fileDirectoryPath + Lego.delim + magCylFieldProfileBuilderList.get(ii).getTitle() + ".xml";
+			magCylFieldProfileBuilderList.get(ii).writeXmlFile(xmlFilePath);
 		}
 	}
 	public int readLatticeFile(int iline, ArrayList<String> fileBuffer, String latticeType) throws LinacLegoException

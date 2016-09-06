@@ -149,7 +149,7 @@ public class LegoPbsHtmlTextTree
 		if (beam.getType().equals("quad")) htmlTextTree.setIconImageLocation("images/quad.jpg");
 		if (beam.getType().equals("drift")) htmlTextTree.setIconImageLocation("images/drift.png");
 		if (beam.getType().equals("rfgap")) htmlTextTree.setIconImageLocation("images/buncher.jpg");
-		if (beam.getType().equals("fieldMap")) htmlTextTree.setIconImageLocation("images/elliptical.jpg");
+		if (beam.getType().equals("rf1dFieldMap")) htmlTextTree.setIconImageLocation("images/elliptical.jpg");
 		if (beam.getType().equals("bend")) htmlTextTree.setIconImageLocation("images/bend.jpg");
 		if (beam.getType().equals("thinSteering")) htmlTextTree.setIconImageLocation("images/triangle.jpg");
 		if (beam.getType().equals("dtlDriftTube")) htmlTextTree.setIconImageLocation("images/driftTube.jpg");
@@ -166,6 +166,7 @@ public class LegoPbsHtmlTextTree
 		if (beam.getType().equals("beamEmit")) htmlTextTree.setIconImageLocation("images/slit.jpg");
 		if (beam.getType().equals("rfqCell")) htmlTextTree.setIconImageLocation("images/cell.gif");
 		if (beam.getType().equals("rfqGap")) htmlTextTree.setIconImageLocation("images/drift.png");
+		if (beam.getType().equals("magCyl2dFieldMap")) htmlTextTree.setIconImageLocation("images/solenoid.jpg");
 		
 		htmlTextTree.setTag(beam.getType(), 12);
 		htmlTextTree.addAttribute("id", beam.getId(), 15);

@@ -40,8 +40,9 @@ import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamDrift;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamDtlCell;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamEmitMonitor;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamFcupMonitor;
-import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamFieldMap;
+import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamRF1DFieldMap;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamLossMonitor;
+import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamMagCylFieldMap;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamMagneticSteerer;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamMarker;
 import se.esss.litterbox.linaclego.v2.structures.beam.LegoBeamPositionMonitor;
@@ -124,7 +125,7 @@ public class Lego implements Serializable
 	{
 		beamTypeList.add(new LegoBeamDrift());
 		beamTypeList.add(new LegoBeamQuad());
-		beamTypeList.add(new LegoBeamFieldMap());
+		beamTypeList.add(new LegoBeamRF1DFieldMap());
 		beamTypeList.add(new LegoBeamThinSteering());
 		beamTypeList.add(new LegoBeamMarker());
 		beamTypeList.add(new LegoBeamPositionMonitor());
@@ -141,6 +142,7 @@ public class Lego implements Serializable
 		beamTypeList.add(new LegoBeamEmitMonitor());
 		beamTypeList.add(new LegoBeamRfqCell());
 		beamTypeList.add(new LegoBeamRfqGap());
+		beamTypeList.add(new LegoBeamMagCylFieldMap());
 		
 	}
 	public Lego(SimpleXmlDoc sxd, StatusPanel statusPanel, boolean echoStatus) throws LinacLegoException
@@ -437,6 +439,8 @@ public class Lego implements Serializable
 				getLegoLinac().printPartCounts(fileName);
 				writeStatus("Printing RFFieldBuilder files");
 				getLegoLinac().printRfFieldBuilder(reportDirectory.getPath());
+				writeStatus("Printing MagCylFieldBuilder files");
+				getLegoLinac().printMagCylFieldFieldBuilder(reportDirectory.getPath());
 				fileName = reportDirectory.getPath() + delim +  baseName + ".bin";
 				writeStatus("Printing Serialized Lego");
 				writeSerializedFile(fileName);
@@ -535,10 +539,8 @@ public class Lego implements Serializable
 	}
 	public static void main(String[] args) throws LinacLegoException, MalformedURLException, SimpleXmlException 
 	{
-
-		
-		Lego lego = new Lego("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLego.xml", null, true);
-		lego.setLatticeFromSettings("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoSets.xml");
-		lego.triggerUpdate("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLego.xml");
+		Lego lego = new Lego("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoOutput/linacLego.xml", null, true);
+		lego.setLatticeFromSettings("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoOutput/linacLegoSets.xml");
+		lego.triggerUpdate("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoOutput/linacLego.xml");
 	}
 }

@@ -17,7 +17,7 @@ import se.esss.litterbox.simplexml.SimpleXmlDoc;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 
-public class RfFieldProfileBuilder  implements Serializable
+public class Rf1DFieldProfileBuilder  implements Serializable
 {
 	private static final long serialVersionUID = -4621367822785570283L;
 	public static final String newline = System.getProperty("line.separator");
@@ -37,14 +37,14 @@ public class RfFieldProfileBuilder  implements Serializable
 	private String lengthUnit = "mm";
 	private String storedEnergyUnit = "Joules";
 	private double storedEnergy;
-	public RfFieldProfileBuilder() 
+	public Rf1DFieldProfileBuilder() 
 	{
 	}
-	public RfFieldProfileBuilder(URL xmlFileUrl) throws LinacLegoException 
+	public Rf1DFieldProfileBuilder(URL xmlFileUrl) throws LinacLegoException 
 	{
 		readXmlFile(xmlFileUrl);
 	}
-	public RfFieldProfileBuilder(String xmlFilePath) throws LinacLegoException 
+	public Rf1DFieldProfileBuilder(String xmlFilePath) throws LinacLegoException 
 	{
 		readXmlFile(xmlFilePath);
 	}
@@ -66,9 +66,9 @@ public class RfFieldProfileBuilder  implements Serializable
 			throw new LinacLegoException(e);
 		}
 	}	
-	public  static RfFieldProfileBuilder readTraceWinFieldProfile(double storedEnergy, String traceWinFilePath) throws LinacLegoException
+	public  static Rf1DFieldProfileBuilder readTraceWinFieldProfile(double storedEnergy, String traceWinFilePath) throws LinacLegoException
 	{
-		RfFieldProfileBuilder fpb = new RfFieldProfileBuilder();
+		Rf1DFieldProfileBuilder fpb = new Rf1DFieldProfileBuilder();
 		fpb.storedEnergy = storedEnergy;
 		BufferedReader br;
 		ArrayList<String> outputBuffer = new ArrayList<String>();
@@ -158,7 +158,7 @@ public class RfFieldProfileBuilder  implements Serializable
 			throw new LinacLegoException(e);
 		}
 	}
-	public static RfFieldProfileBuilder getFieldProfileBuilderFromList(ArrayList<RfFieldProfileBuilder> fieldProfileBuilderList, String title)
+	public static Rf1DFieldProfileBuilder getFieldProfileBuilderFromList(ArrayList<Rf1DFieldProfileBuilder> fieldProfileBuilderList, String title)
 	{
 		int icount = 0;
 		while (icount < fieldProfileBuilderList.size())
@@ -186,7 +186,7 @@ public class RfFieldProfileBuilder  implements Serializable
 	
 	public static void main(String[] args) throws LinacLegoException 
 	{
-		RfFieldProfileBuilder fpb = RfFieldProfileBuilder.readTraceWinFieldProfile(1.0, "testFiles/Spoke_W_coupler.edz");
+		Rf1DFieldProfileBuilder fpb = Rf1DFieldProfileBuilder.readTraceWinFieldProfile(1.0, "testFiles/Spoke_W_coupler.edz");
 		fpb.writeXmlFile("testFiles/Spoke_W_coupler.xml");
 	}
 

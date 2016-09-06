@@ -7,10 +7,10 @@ import java.net.URL;
 import se.esss.litterbox.linaclego.v2.Lego;
 import se.esss.litterbox.linaclego.v2.LinacLegoException;
 import se.esss.litterbox.linaclego.v2.structures.LegoSlot;
-import se.esss.litterbox.linaclego.v2.utilities.RfFieldProfileBuilder;
+import se.esss.litterbox.linaclego.v2.utilities.Rf1DFieldProfileBuilder;
 import se.esss.litterbox.simplexml.SimpleXmlReader;
 
-public class LegoBeamFieldMap extends LegoBeam
+public class LegoBeamRF1DFieldMap extends LegoBeam
 {
 	private static final long serialVersionUID = -507594913033285726L;
 	private double rfpdeg;
@@ -21,20 +21,20 @@ public class LegoBeamFieldMap extends LegoBeam
 	private String file;
 	private double scaleFactor;
 
-	private RfFieldProfileBuilder fieldProfileBuilder = null;
+	private Rf1DFieldProfileBuilder fieldProfileBuilder = null;
 	private double[] phiZprofile;
 	private double phisdeg = -361.0;
 	private double energyGain = 0.0;
 	
-	public LegoBeamFieldMap() throws LinacLegoException 
+	public LegoBeamRF1DFieldMap() throws LinacLegoException 
 	{
 		super();
 	}
-	public LegoBeamFieldMap(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
+	public LegoBeamRF1DFieldMap(LegoSlot legoSlot, int beamListIndex, SimpleXmlReader beamTag) throws LinacLegoException 
 	{
 		super(legoSlot, beamListIndex, beamTag);
 	}
-	public LegoBeamFieldMap(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException
+	public LegoBeamRF1DFieldMap(LegoSlot legoSlot, int beamListIndex, String id, String disc, String model) throws LinacLegoException
 	{
 		super(legoSlot, beamListIndex, id, disc, model);
 	}
@@ -65,7 +65,7 @@ public class LegoBeamFieldMap extends LegoBeam
 	protected String defaultLatticeCommand() throws LinacLegoException 
 	{
 		String latticeCommand = "";
-		latticeCommand = getDefaultLatticeFileKeyWord();
+		latticeCommand = "FIELD_MAP";
 		latticeCommand = latticeCommand + " 100";
 		latticeCommand = latticeCommand + Lego.space + getDataValue("lengthmm");
 		latticeCommand = latticeCommand + Lego.space + getDataValue("rfpdeg");
@@ -108,13 +108,13 @@ public class LegoBeamFieldMap extends LegoBeam
 		lengthmm = Double.parseDouble(getDataValue("lengthmm"));
 		scaleFactor = Double.parseDouble(getDataValue("scaleFactor"));
 		file = getDataValue("file");
-		fieldProfileBuilder = RfFieldProfileBuilder.getFieldProfileBuilderFromList(getLegoLinac().getRfFieldProfileBuilderList(), file);
+		fieldProfileBuilder = Rf1DFieldProfileBuilder.getFieldProfileBuilderFromList(getLegoLinac().getRfFieldProfileBuilderList(), file);
 		if (fieldProfileBuilder == null)
 		{
 			try 
 			{
 				URL fieldProfileBuilderUrl = new URL(getLego().getSourceParentUrl() + "/" + file + ".xml");
-				fieldProfileBuilder = new RfFieldProfileBuilder(fieldProfileBuilderUrl);
+				fieldProfileBuilder = new Rf1DFieldProfileBuilder(fieldProfileBuilderUrl);
 				getLegoLinac().getRfFieldProfileBuilderList().add(fieldProfileBuilder);
 			} 
 			catch (MalformedURLException e) {throw new LinacLegoException(e); }
@@ -152,9 +152,9 @@ public class LegoBeamFieldMap extends LegoBeam
 		phisdeg = Math.atan(dWsin / dWcos ) / Lego.degToRad;
 	}
 	@Override
-	protected void setType() {type = "fieldMap";}
+	protected void setType() {type = "rf1dFieldMap";}
 	@Override
-	public String getDefaultLatticeFileKeyWord() {return "FIELD_MAP";}
+	public String getDefaultLatticeFileKeyWord() {return "RF1DFIELD_MAP";}
 	@Override
 	public String getLatticeFileKeyWord(String latticeType) 
 	{

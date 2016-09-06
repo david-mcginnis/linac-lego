@@ -22,7 +22,8 @@ import se.esss.litterbox.jframeskeleton.JFrameSkeleton;
 import se.esss.litterbox.jframeskeleton.StatusPanel;
 import se.esss.litterbox.linaclego.v2.Lego;
 import se.esss.litterbox.linaclego.v2.LinacLegoException;
-import se.esss.litterbox.linaclego.v2.utilities.RfFieldProfileBuilder;
+import se.esss.litterbox.linaclego.v2.utilities.MagCylFieldProfileBuilder;
+import se.esss.litterbox.linaclego.v2.utilities.Rf1DFieldProfileBuilder;
 import se.esss.litterbox.simplexml.SimpleXmlException;
 
 @SuppressWarnings("serial")
@@ -33,8 +34,8 @@ public class LegoApp extends JFrameSkeleton
 	private static final String frametitle = "LinacLego";
 	private static final String statusBarTitle = "Info";
 	private static final int numStatusLines = 10;
-	private static final String version = "v2.14";
-	private static final String versionDate = "September 04, 2016";
+	private static final String version = "v2.15";
+	private static final String versionDate = "September 05, 2016";
 
 	private Lego lego;
 	private JTabbedPane mainTabbedPane; 
@@ -87,7 +88,9 @@ public class LegoApp extends JFrameSkeleton
 		if (menu.equals("PBS Level View") && menuItem.equals("Beam")) expandPbsTreeTo(4, pbsTree);
 		if (menu.equals("Actions") && menuItem.equals("Match Slot Models")) matchSlotModels();
 		if (menu.equals("Actions") && menuItem.equals("Create Reports")) createReports();
-		if (menu.equals("Actions") && menuItem.equals("Build XML Field File")) buildRFField();
+		if (menu.equals("Actions") && menuItem.equals("Build RF1D XML Field File")) buildRFField();
+		if (menu.equals("Actions") && menuItem.equals("Build MagCyl2D XML Field File")) buildMagCylField();
+		
 		if (menu.equals("Actions") && menuItem.equals("Update LegoSets from Lattice")) updateLegoSetsFromLattice();
 		if (menu.equals("Actions") && menuItem.equals("Update Lattice from LegoSets")) updateLatticeFromLegoSets();
 		
@@ -132,7 +135,8 @@ public class LegoApp extends JFrameSkeleton
 		addMenuItem("Actions","Create Reports");
 		addMenuItem("Actions","Update Lattice from LegoSets");
 		addMenuItem("Actions","Update LegoSets from Lattice");
-		addMenuItem("Actions","Build XML Field File");
+		addMenuItem("Actions","Build RF1D XML Field File");
+		addMenuItem("Actions","Build MagCyl2D XML Field File");
 		addMenuItem("PBS Level View","Section");
 		addMenuItem("PBS Level View","Cell");
 		addMenuItem("PBS Level View","Slot");
@@ -351,10 +355,31 @@ public class LegoApp extends JFrameSkeleton
 			String storedEnergyString = JOptionPane.showInputDialog("Enter Stored Energy (J): ");
 			if (storedEnergyString != null) storedEnergy = Double.parseDouble(storedEnergyString);
 			try {
-				RfFieldProfileBuilder fpb = RfFieldProfileBuilder.readTraceWinFieldProfile(storedEnergy, traceWinFile.getPath());
+				Rf1DFieldProfileBuilder fpb = Rf1DFieldProfileBuilder.readTraceWinFieldProfile(storedEnergy, traceWinFile.getPath());
 				String xmlFieldFilePath = traceWinFile.getPath().substring(0, traceWinFile.getPath().lastIndexOf(".")) + ".xml";
 				if (!this.overwriteFileDialog(xmlFieldFilePath)) return;
 				getStatusPanel().setText("Writing RfFieldProfileBuilder " + xmlFieldFilePath);
+				fpb.writeXmlFile(xmlFieldFilePath);
+			} catch (LinacLegoException e) 
+			{
+				if (printStackTrace) e.printStackTrace();
+				messageDialog("Error: " + e.getMessage());
+			}
+		}
+		
+	}
+	private void buildMagCylField()
+	{
+		String[] extensions = {"bsr","bsz"};
+		File traceWinFile  = openFileDialog(extensions, "Open TraceWin FieldMap File");
+		if (traceWinFile != null)
+		{
+			try {
+				MagCylFieldProfileBuilder fpb = new MagCylFieldProfileBuilder();
+				fpb.readTraceWinFieldProfile(traceWinFile.getPath());
+				String xmlFieldFilePath = traceWinFile.getPath().substring(0, traceWinFile.getPath().lastIndexOf(".")) + ".xml";
+				if (!this.overwriteFileDialog(xmlFieldFilePath)) return;
+				getStatusPanel().setText("Writing MagCylFieldProfileBuilder " + xmlFieldFilePath);
 				fpb.writeXmlFile(xmlFieldFilePath);
 			} catch (LinacLegoException e) 
 			{

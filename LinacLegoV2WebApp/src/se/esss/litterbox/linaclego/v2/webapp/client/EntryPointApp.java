@@ -20,14 +20,12 @@ public class EntryPointApp implements EntryPoint
 {
 	private GskelSetupApp setupApp;
 	
-//	public final String latticeDataWeb = "https://dl.dropboxusercontent.com/u/41799517/LinacLegoData/data";
-//	public final String latticeDataWeb = "http://localhost:8080/LinacLegoData/data";
-	public final String linacLegoConfig1Link      = "https://aig.esss.lu.se:8443/LinacLegoDataTargetConfig";
-	public final String linacLegoConfig2Link      = "https://aig.esss.lu.se:8443/LinacLegoDataDumpConfig";
+	public final String linacLegoConfig1Link      = "https://se-esss-litterbox.github.io/EssLinacLegoDataSandBox/LinacLegoData/WebContent";
+	public final String linacLegoConfig2Link      = "https://se-esss-litterbox.github.io/EssLinacLegoDataSandBox/LinacLegoData/WebContent";
+//	public final String linacLegoConfig1Link      = "https://aig.esss.lu.se:8443/LinacLegoDataTargetConfig";
+//	public final String linacLegoConfig2Link      = "https://aig.esss.lu.se:8443/LinacLegoDataDumpConfig";
 	public final String linacLegoConfig1Name      = "Target";
 	public final String linacLegoConfig2Name      = "Dump";
-//	public final String linacLegoDevelopmentLink = "https://dl.dropboxusercontent.com/u/41799517/lattice-repository/LinacLegoData/WebContent";
-//	public final String linacLegoMasterLink      = linacLegoDevelopmentLink;
 	private String linacLegoDataLink = linacLegoConfig1Link;
 	private InfoPanel infoPanel;
 	private PbsLayoutPanel pbsLayoutPanel;

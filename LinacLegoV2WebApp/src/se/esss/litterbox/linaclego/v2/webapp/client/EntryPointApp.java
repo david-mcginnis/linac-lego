@@ -22,10 +22,13 @@ public class EntryPointApp implements EntryPoint
 	
 //	public final String latticeDataWeb = "https://dl.dropboxusercontent.com/u/41799517/LinacLegoData/data";
 //	public final String latticeDataWeb = "http://localhost:8080/LinacLegoData/data";
-	public final String linacLegoMasterLink      = "https://aig.esss.lu.se:8443/LinacLegoData";
-	public final String linacLegoDevelopmentLink = "https://dl.dropboxusercontent.com/u/41799517/lattice-repository/LinacLegoData/WebContent";
+	public final String linacLegoConfig1Link      = "https://aig.esss.lu.se:8443/LinacLegoDataTargetConfig";
+	public final String linacLegoConfig2Link      = "https://aig.esss.lu.se:8443/LinacLegoDataDumpConfig";
+	public final String linacLegoConfig1Name      = "Target";
+	public final String linacLegoConfig2Name      = "Dump";
+//	public final String linacLegoDevelopmentLink = "https://dl.dropboxusercontent.com/u/41799517/lattice-repository/LinacLegoData/WebContent";
 //	public final String linacLegoMasterLink      = linacLegoDevelopmentLink;
-	private String linacLegoDataLink = linacLegoMasterLink;
+	private String linacLegoDataLink = linacLegoConfig1Link;
 	private InfoPanel infoPanel;
 	private PbsLayoutPanel pbsLayoutPanel;
 	private GskelTreePanel pbsTreePanel;
@@ -42,8 +45,8 @@ public class EntryPointApp implements EntryPoint
 	{
 		setupApp = new GskelSetupApp();
 		setupApp.setDebug(false);
-		setupApp.setVersionDate("September 6, 2016 15:05");
-		setupApp.setVersion("v2.8");
+		setupApp.setVersionDate("September 9, 2016 06:27");
+		setupApp.setVersion("v2.15");
 		setupApp.setAuthor("Dave McGinnis david.mcginnis@esss.se");
 		setupApp.setLogoImage("images/essLogo.png");
 		setupApp.setLogoTitle("LinacLego Parameter  Book");
@@ -59,7 +62,7 @@ public class EntryPointApp implements EntryPoint
 		slotPartsCsvFilePanel = new CsvLinkFilePanel("Slot Parts", 1, "partsFilePanelHeader", setupApp);
 		beamPartsCsvFilePanel = new GskelCsvFilePanel("Beam Parts", 1, "partsFilePanelHeader", setupApp);
 		legoSetsCsvFilePanel = new GskelCsvFilePanel("LegoSets", 1, "csvFilePanelHeader", setupApp);
-		setLinks(linacLegoMasterLink);
+		setLinks(linacLegoConfig1Link);
 		loadDataPanels();
 	}
 	public void loadDataPanels()
@@ -117,7 +120,7 @@ public class EntryPointApp implements EntryPoint
 			entryPointApp.setupApp.getMessageDialog().hide();
 			entryPointApp.setupApp.getGskelTabLayoutPanel().selectTab(0);
 			entryPointApp.infoPanel.getChangeSourceSelectButtonl().setVisible(true);
-			entryPointApp.infoPanel.getSourceViewLabel().setText("Currently viewing " + entryPointApp.infoPanel.getCurrentSource() + " Source");
+			entryPointApp.infoPanel.getSourceViewLabel().setText("Currently viewing " + entryPointApp.infoPanel.getCurrentSource() + " Configuration");
 		}
 	}
 	public static class LoadCsvFileCallback implements AsyncCallback<CsvFile>

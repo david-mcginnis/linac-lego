@@ -3,7 +3,6 @@ package se.esss.litterbox.linaclego.v2.webapp.server;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -29,7 +28,7 @@ public class EntryPointAppServiceImpl extends RemoteServiceServlet implements En
 		{
 			String logFilePath = getServletContext().getRealPath("log/log.txt");
 			String ip = getThreadLocalRequest().getRemoteAddr();
-			LegoUtilities.appendTextToFile(logFilePath, new Date().toString() + " " + ip + "\n");
+			LegoUtilities.appendTextToFile(logFilePath,EntryPointAppServiceImplStaticMethods.ipSniffer(ip) + "\n");
 			
 			Lego lego = new Lego(new URL(linacLegoDataLink + "/linacLego.xml"), null, false);
 			lego.setLatticeFromSettings(new URL(linacLegoDataLink + "/linacLegoSets.xml"));

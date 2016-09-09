@@ -539,8 +539,10 @@ public class Lego implements Serializable
 	}
 	public static void main(String[] args) throws LinacLegoException, MalformedURLException, SimpleXmlException 
 	{
-		Lego lego = new Lego("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoOutput/linacLego.xml", null, true);
-		lego.setLatticeFromSettings("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoOutput/linacLegoSets.xml");
-		lego.triggerUpdate("/home/dmcginnis427/Dropbox/TB18LatticeImport/linacLegoOutput/linacLego.xml");
+		URL linagLegoData = new URL("https://aig.esss.lu.se:8443/LinacLegoData" + "/linacLegoOutput/linacLego.xml");
+		URL linagLegoSettings = new URL("https://aig.esss.lu.se:8443/LinacLegoData" + "/linacLegoOutput/linacLegoSets.xml");
+		Lego lego = new Lego(linagLegoData, null, true);
+		lego.setLatticeFromSettings(linagLegoSettings);
+		lego.triggerUpdate("https://aig.esss.lu.se:8443/LinacLegoData" + "/linacLegoOutput/linacLego.xml");
 	}
 }

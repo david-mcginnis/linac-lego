@@ -4,9 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import org.json.JSONObject;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -232,11 +235,42 @@ public class EntryPointAppServiceImplStaticMethods
 			throw new GskelException(e);
 		}
 	}
-	public static void main(String[] args) throws LinacLegoException 
+	public  static String ipSniffer(String ipRequest) throws LinacLegoException
 	{
-	
-		Lego linacLego = Lego.readSerializedLegoFromWeb("https://aig.esss.lu.se:8443/LinacLegoV2DataWeb/data/test/linacLego.bin");
-		linacLego.getLegoLinac().triggerUpdate();
+		String info = new Date().toString() + ",\t" + ipRequest;
+		try
+		{
+			String link = "http://freegeoip.net/json/" + ipRequest;
+			URL urlLink = new URL(link);
+			URLConnection urlc = urlLink.openConnection();
+
+	        //get result
+	        InputStream is = urlc.getInputStream();
+	        InputStreamReader isr = new InputStreamReader(is);
+	        BufferedReader br = new BufferedReader(isr);
+			String inputLine = br.readLine();
+ 	        br.close();
+            isr.close();
+            is.close();
+            JSONObject jsonObj = new JSONObject(inputLine);
+            info = info + ",\t" + jsonObj.getString("city");
+            info = info + ",\t" + jsonObj.getString("region_name");
+            info = info + ",\t" + jsonObj.getString("country_name");
+            info = info + ",\t" + jsonObj.getString("zip_code");
+            return info;
+		}
+		catch (Exception e) { return info;}
+	}
+	public static void main(String[] args) throws Exception 
+	{
+/*
+
+		URL linagLegoSettings = new URL("https://aig.esss.lu.se:8443/LinacLegoDataDumpConfig" + "/linacLegoOutput/linacLegoSets.xml");
+		Lego lego = new Lego(linagLegoData, null, true);
+		lego.setLatticeFromSettings(linagLegoSettings);
+		lego.triggerUpdate("https://aig.esss.lu.se:8443/LinacLegoDataDumpConfig" + "/linacLegoOutput/linacLego.xml");
+*/
+			System.out.println(EntryPointAppServiceImplStaticMethods.ipSniffer("132.166.10.44"));	
 	}	
 
 }

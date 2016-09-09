@@ -19,9 +19,9 @@ import se.esss.litterbox.linaclego.v2.webapp.client.gskel.GskelVerticalPanel;
 
 public class InfoPanel extends GskelVerticalPanel 
 {
-	private String currentSource = "Master";
-	private String previousSource = "Master";
-	private Label sourceViewLabel = new Label("Loading Master Source...");
+	private String currentSource ;
+	private String previousSource;
+	private Label sourceViewLabel;
 	CaptionPanel latticeVersionCaptionPanel;
 	InlineHTML latticeVersionInlineHTML;
 	CaptionPanel sourceTypeCaptionPanel;
@@ -31,16 +31,16 @@ public class InfoPanel extends GskelVerticalPanel
 	DownLoadClickHandler helpClickHandler;
 	DownLoadClickHandler linacLegoAppClickHandler;
 	
-	Button changeSourceSelectButton;
-	Button masterSourceSelectButton;
-	Button developmentSourceSelectButton;
+	Button changeConfigSelectButton;
+	Button config1SelectButton;
+	Button config2SelectButton;
 	
 	public CaptionPanel getLatticeVersionCaptionPanel() {return latticeVersionCaptionPanel;}
 	public InlineHTML getLatticeVersionInlineHTML() {return latticeVersionInlineHTML;}
 	public String getCurrentSource() {return currentSource;}
 	public String getPreviousSource() {return previousSource;}
 	public Label getSourceViewLabel() {return sourceViewLabel;}
-	public Button getChangeSourceSelectButtonl() {return changeSourceSelectButton;}
+	public Button getChangeSourceSelectButtonl() {return changeConfigSelectButton;}
 	
 	public void setCurrentSource(String currentSource) {this.currentSource = currentSource;}
 
@@ -48,6 +48,10 @@ public class InfoPanel extends GskelVerticalPanel
 	{
 		super(tabTitle, tabStyle, setupApp);
 		this.entryPointApp = entryPointApp;
+		
+		currentSource = entryPointApp.linacLegoConfig1Name;
+		previousSource = entryPointApp.linacLegoConfig1Name;
+		sourceViewLabel = new Label("Loading " + entryPointApp.linacLegoConfig1Name + " Configuration...");
 		
 		CaptionPanel versionCaptionPanel = new CaptionPanel("ESS Linac Parameter Book " + setupApp.getVersion());
 		VerticalPanel versionVerticalPanel = new VerticalPanel();
@@ -86,15 +90,15 @@ public class InfoPanel extends GskelVerticalPanel
 		downloadsVerticalPanel.add(linacLegoAppAnchor);
 
 		
-		changeSourceSelectButton = new Button("Change");
-		changeSourceSelectButton.addClickHandler(new SourceButtonClickHandler(this));
+		changeConfigSelectButton = new Button("Change");
+		changeConfigSelectButton.addClickHandler(new SourceButtonClickHandler(this));
 
-		sourceTypeCaptionPanel = new CaptionPanel("Current Source");
+		sourceTypeCaptionPanel = new CaptionPanel("Configuration");
 		VerticalPanel sourceTypeVPanel = new VerticalPanel();
 		HorizontalPanel sourceTypeHPanel = new HorizontalPanel();
 		sourceTypeHPanel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
 		sourceTypeHPanel.add(sourceViewLabel);
-		sourceTypeHPanel.add(changeSourceSelectButton);
+		sourceTypeHPanel.add(changeConfigSelectButton);
 		sourceTypeVPanel.add(sourceTypeHPanel);
 		
 		sourceTypeCaptionPanel.add(sourceTypeVPanel);
@@ -127,18 +131,18 @@ public class InfoPanel extends GskelVerticalPanel
 	{
 		previousSource = currentSource;
 		currentSource = choiceButtonText;
-		getSourceViewLabel().setText("Loading " + choiceButtonText + " source...");
-		if (choiceButtonText.equals("Production"))
+		getSourceViewLabel().setText("Loading " + choiceButtonText + " configuration...");
+		if (choiceButtonText.equals(entryPointApp.linacLegoConfig1Name))
 		{
-			getSetupApp().getStatusTextArea().addStatus("Reloading Production Source...");
-			entryPointApp.setLinks(entryPointApp.linacLegoMasterLink);
+			getSetupApp().getStatusTextArea().addStatus("Reloading " + entryPointApp.linacLegoConfig1Name + " configuration...");
+			entryPointApp.setLinks(entryPointApp.linacLegoConfig1Link);
 			entryPointApp.loadDataPanels();
 		}
-		if (choiceButtonText.equals("Development"))
+		if (choiceButtonText.equals(entryPointApp.linacLegoConfig2Name))
 		{
 			previousSource = currentSource;
-			getSetupApp().getStatusTextArea().addStatus("Reloading Development Source...");
-			entryPointApp.setLinks(entryPointApp.linacLegoDevelopmentLink);
+			getSetupApp().getStatusTextArea().addStatus("Reloading " + entryPointApp.linacLegoConfig2Name + " configuration...");
+			entryPointApp.setLinks(entryPointApp.linacLegoConfig2Link);
 			entryPointApp.loadDataPanels();
 		}
 	}
@@ -177,8 +181,8 @@ public class InfoPanel extends GskelVerticalPanel
 		public void onClick(ClickEvent event) 
 		{
 
-			infoPanel.changeSourceSelectButton.setVisible(false);
-			infoPanel.getOptionDialog().setOption("Source Change", "Change Source", "Production", "Development", infoPanel);
+			infoPanel.changeConfigSelectButton.setVisible(false);
+			infoPanel.getOptionDialog().setOption("Configuration Change", "Change Configuration", infoPanel.entryPointApp.linacLegoConfig1Name, infoPanel.entryPointApp.linacLegoConfig2Name, infoPanel);
 			infoPanel.getOptionDialog().coverOverWidget(infoPanel.sourceTypeCaptionPanel);;
 		}
 		
